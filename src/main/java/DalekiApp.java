@@ -4,5 +4,4 @@ public class DalekiApp {
 		System.out.println("daleki init");
 	}
 
-
 }
