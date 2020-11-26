@@ -38,4 +38,18 @@ public enum Direction {
             case NORTH_WEST -> new Field(-1, 1);
         };
     }
+
+    public static Direction convertInputToDirection(String input){
+        input = input.toLowerCase();
+        return switch (input){
+            case "s" -> Direction.SOUTH;
+            case "w" -> Direction.NORTH;
+            case "d" -> Direction.EAST;
+            case "a" -> Direction.WEST;
+            default -> throw new IllegalStateException("You've just invoked static function from Direction class " +
+                    "convertInputToDirection with invalid input (string that's not w, a, s, d). If it was supposed " +
+                    "to be teleportation, try another function. " +
+                    "Didn't you want to use another function?");
+        };
+    }
 }
