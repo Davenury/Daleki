@@ -1,7 +1,21 @@
-public class DalekiApp {
+import javafx.application.Application;
+import javafx.stage.Stage;
+import model.map.World;
+import presenter.Presenter;
+
+public class DalekiApp extends Application {
+
+	private World world;
+	private Presenter presenter;
+
+	@Override
+	public void start(Stage primaryStage){
+		this.world = new World();
+		this.presenter = new Presenter(primaryStage, world);
+	}
 
 	public static void main(String[] args) {
-		System.out.println("daleki init");
+		launch(args);
 	}
 
 }
