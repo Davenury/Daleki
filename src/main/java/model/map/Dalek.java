@@ -1,6 +1,6 @@
 package model.map;
 
-public class Dalek /*extends Movable*/ {
+public class Dalek extends Movable {
     Doctor doctor;
 
     public Daleki(Doctor doctor, Field field){
