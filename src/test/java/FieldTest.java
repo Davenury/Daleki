@@ -143,4 +143,94 @@ public class FieldTest {
         //then
         assertEquals(moved, new Field(0,0));
     }
+
+    @Test
+    public void fieldMoveFromInputTestMoveToW(){
+        //given
+        Field field = new Field(1,1);
+        //when
+        Field moved = field.moveFromInput("w");
+        //then
+        assertEquals(moved, new Field(1,2));
+    }
+
+    @Test
+    public void fieldMoveFromInputTestMoveToD(){
+        //given
+        Field field = new Field(1,1);
+        //when
+        Field moved = field.moveFromInput("d");
+        //then
+        assertEquals(moved, new Field(2,1));
+    }
+
+    @Test
+    public void fieldMoveFromInputTestMoveToS(){
+        //given
+        Field field = new Field(1,1);
+        //when
+        Field moved = field.moveFromInput("s");
+        //then
+        assertEquals(moved, new Field(1,0));
+    }
+
+    @Test
+    public void fieldMoveFromInputTestMoveToA(){
+        //given
+        Field field = new Field(1,1);
+        //when
+        Field moved = field.moveFromInput("a");
+        //then
+        assertEquals(moved, new Field(0,1));
+    }
+
+    @Test
+    public void fieldMoveFromInputTestMoveToWBigLetter(){
+        //given
+        Field field = new Field(1,1);
+        //when
+        Field moved = field.moveFromInput("W");
+        //then
+        assertEquals(moved, new Field(1,2));
+    }
+
+    @Test
+    public void fieldMoveFromInputTestMoveToDBigLetter(){
+        //given
+        Field field = new Field(1,1);
+        //when
+        Field moved = field.moveFromInput("D");
+        //then
+        assertEquals(moved, new Field(2,1));
+    }
+
+    @Test
+    public void fieldMoveFromInputTestMoveToSBigLetter(){
+        //given
+        Field field = new Field(1,1);
+        //when
+        Field moved = field.moveFromInput("S");
+        //then
+        assertEquals(moved, new Field(1,0));
+    }
+
+    @Test
+    public void fieldMoveFromInputTestMoveToABigLetter(){
+        //given
+        Field field = new Field(1,1);
+        //when
+        Field moved = field.moveFromInput("A");
+        //then
+        assertEquals(moved, new Field(0,1));
+    }
+
+    @Test
+    public void fieldMoveFromInputInvalidInput(){
+        //given
+        Field field = new Field(1, 1);
+        //when
+        String input = "f";
+        //then
+        assertThrows(IllegalStateException.class, () -> field.moveFromInput(input));
+    }
 }

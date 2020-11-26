@@ -34,4 +34,8 @@ public class Field {
     public Field moveInDirection(Direction direction){
         return this.add(direction.convertToField());
     }
+
+    public Field moveFromInput(String input){
+        return this.moveInDirection(Direction.convertInputToDirection(input));
+    }
 }
