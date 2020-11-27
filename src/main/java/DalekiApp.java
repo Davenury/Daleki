@@ -10,7 +10,7 @@ public class DalekiApp extends Application {
 
 	@Override
 	public void start(Stage primaryStage){
-		this.world = new World();
+		this.world = new World(10, 10);
 		this.presenter = new Presenter(primaryStage, world);
 	}
 
