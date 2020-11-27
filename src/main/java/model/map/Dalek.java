@@ -3,7 +3,7 @@ package model.map;
 public class Dalek extends Movable {
     Doctor doctor;
 
-    public Daleki(Doctor doctor, Field field){
+    public Dalek(Doctor doctor, Field field){
         this.doctor = doctor;
         super.field = field;
     }

@@ -1,7 +1,25 @@
-DalekiApp.java
- DalekiApp
+model/map/Movable.java
+ model.map.Movable
+view/View.java
+ view.View
+model/map/Doctor.java
+ model.map.Doctor
+model/map/MapObject.java
+ model.map.MapObject
+model/map/NotSoMovable.java
+ model.map.NotSoMovable
+model/map/World.java
+ model.map.World
+model/map/Field.java
+ model.map.Field
 model/map/Direction.java
  model.map.Direction
  model.map.Direction$1
-model/map/Field.java
- model.map.Field
+view/InputOperationInterface.java
+ view.InputOperationInterface
+view/Inputer.java
+ view.Inputer
+presenter/Presenter.java
+ presenter.Presenter
+DalekiApp.java
+ DalekiApp

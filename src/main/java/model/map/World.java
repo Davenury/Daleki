@@ -3,7 +3,6 @@ package model.map;
 import java.util.List;
 
 public class World {
-
     private List<Movable> mapObjects;
 
     private int width;
@@ -18,4 +17,8 @@ public class World {
 
     public int getHeight(){ return height; }
 
+
+    public void move(String input){
+        System.out.println(input);
+    }
 }
