@@ -48,7 +48,7 @@ public class FieldTest {
         Field field = new Field(1,1);
         Field field1 = new Field(1,1);
         //when
-        Field result = field.add(field1);
+        Field result = field.addAsVector(field1);
         //then
         assertEquals(result, new Field(2,2));
     }
@@ -59,7 +59,7 @@ public class FieldTest {
         Field field = new Field(5,10);
         Field field1 = new Field(-1,-5);
         //when
-        Field result = field.add(field1);
+        Field result = field.addAsVector(field1);
         //then
         assertEquals(result, new Field(4,5));
     }

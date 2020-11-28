@@ -9,6 +9,10 @@ public class Field {
         this.x = x;
         this.y = y;
     }
+    @Override
+    public String toString(){
+        return "(" + this.x + ", " + this.y + ")";
+    }
 
     @Override
     public int hashCode() {
@@ -27,15 +31,24 @@ public class Field {
         return ((this.x == that.x) && (this.y==that.y));
     }
 
-    public Field add(Field other){
+    public int getX() {        return x;}
+
+    public int getY() {        return y;}
+
+    public Field addAsVector(Field other){
         return new Field(this.x + other.x, this.y + other.y);
     }
 
     public Field moveInDirection(Direction direction){
-        return this.add(direction.convertToField());
+        return this.addAsVector(direction.convertToField());
     }
 
     public Field moveFromInput(String input){
         return this.moveInDirection(Direction.convertInputToDirection(input));
+    }
+
+    public boolean isADirection(){
+        if (this.x <=1 && this.x >=-1 && this.y <=1 && this.y >=-1) return true;
+        return false;
     }
 }

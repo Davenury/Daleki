@@ -15,7 +15,7 @@ public class Dalek extends Movable {
 
     @Override
     public void move(){
-        super.moveToField(super.getField().addAsVector(this.calculateNextMove()));
+        super.updateField(super.getField().addAsVector(this.calculateNextMove()));
     }
 
     public Field calculateNextMove(){
