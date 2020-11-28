@@ -1,25 +1,27 @@
-model/map/Movable.java
- model.map.Movable
-view/InputOperationInterface.java
- view.InputOperationInterface
-view/View.java
- view.View
-model/map/Doctor.java
- model.map.Doctor
 model/map/MapObject.java
  model.map.MapObject
-model/map/NotSoMovable.java
- model.map.NotSoMovable
-model/map/World.java
- model.map.World
-model/map/Field.java
- model.map.Field
+DalekiApp.java
+ DalekiApp
 model/map/Direction.java
  model.map.Direction
  model.map.Direction$1
 view/Inputer.java
  view.Inputer
+model/map/Field.java
+ model.map.Field
+view/View.java
+ view.View
+model/map/NotSoMovable.java
+ model.map.NotSoMovable
+view/InputOperationInterface.java
+ view.InputOperationInterface
+model/map/Movable.java
+ model.map.Movable
+model/map/Doctor.java
+ model.map.Doctor
 presenter/Presenter.java
  presenter.Presenter
-DalekiApp.java
- DalekiApp
+model/map/World.java
+ model.map.World
+model/map/Dalek.java
+ model.map.Dalek

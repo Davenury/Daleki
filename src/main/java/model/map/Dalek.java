@@ -18,6 +18,7 @@ public class Dalek extends Movable {
         super.updateField(super.getField().addAsVector(this.calculateNextMove()));
     }
 
+    @Override
     public Field calculateNextMove(){
         int horizontal_diff = this.getField().getX() - this.doctor.getField().getX();
         int vertical_diff = this.getField().getY() - this.doctor.getField().getY();
