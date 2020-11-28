@@ -1,8 +1,8 @@
 package presenter;
 
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import model.map.Doctor;
+import model.map.Movable;
 import model.map.World;
 import view.InputOperationInterface;
 import view.Inputer;
@@ -24,6 +24,12 @@ public class Presenter {
     private void paintWorld(){
         this.view.setParameters(this.getWorldWidth(), this.getWorldHeight());
         this.view.paintWorld();
+
+        for(Movable mapObject : world.getMapObjects()){
+            if(mapObject instanceof Doctor){
+                this.view.paintDoctor(mapObject.getField().getX(), mapObject.getField().getY());
+            }
+        }
     }
 
     private void setInput(){
