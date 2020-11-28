@@ -12,15 +12,14 @@ public class View {
 
     private Stage stage;
 
-    private World world;
+    private int worldHeight;
+    private int worldWidth;
 
-    public View(Stage primaryStage, World world){
+    public View(Stage primaryStage){
         this.stage = primaryStage;
-        this.world = world;
-        initialize();
     }
 
-    public void initialize(){
+    public void paintWorld(){
         stage.setTitle("Daleki");
 
         Group root = new Group();
@@ -31,8 +30,8 @@ public class View {
         gridPane.setVgap(2);
         gridPane.setStyle("-fx-background-color: grey;");
 
-        for (int y = 0 ; y < world.getWidth() ; y++) {
-            for (int x = 0 ; x < world.getHeight() ; x++) {
+        for (int y = 0 ; y < this.worldWidth; y++) {
+            for (int x = 0 ; x < this.worldHeight; x++) {
                 Rectangle rect = new Rectangle(30, 30, Color.LIGHTGRAY);
                 gridPane.add(rect, x, y);
             }
@@ -42,5 +41,18 @@ public class View {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void setParameters(int worldWidth, int worldHeight){
+        this.setWorldWidth(worldWidth);
+        this.setWorldHeight(worldHeight);
+    }
+
+    private void setWorldWidth(int worldWidth){
+        this.worldWidth = worldWidth;
+    }
+
+    private void setWorldHeight(int worldHeight){
+        this.worldHeight = worldHeight;
     }
 }

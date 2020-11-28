@@ -9,10 +9,9 @@ import view.Inputer;
 import view.View;
 
 public class Presenter {
-    private Stage stage;
-    private World world;
-    private View view;
-    private Inputer inputer;
+    private final Stage stage;
+    private final World world;
+    private final View view;
 
     public Presenter(Stage primaryStage, World world){
         this.stage = primaryStage;
@@ -23,12 +22,21 @@ public class Presenter {
     }
 
     private void paintWorld(){
-
+        this.view.setParameters(this.getWorldWidth(), this.getWorldHeight());
+        this.view.paintWorld();
     }
 
     private void setInput(){
-        this.inputer = new Inputer(this.stage);
-        InputOperationInterface moveOnWorld = (input) -> this.world.move(input);
-        this.inputer.subscribeToInput(moveOnWorld);
+        Inputer inputer = new Inputer(this.stage);
+        InputOperationInterface moveOnWorld = this.world::move;
+        inputer.subscribeToInput(moveOnWorld);
+    }
+
+    public int getWorldWidth(){
+        return this.world.getWidth();
+    }
+
+    public int getWorldHeight(){
+        return this.world.getHeight();
     }
 }
