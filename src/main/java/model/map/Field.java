@@ -31,9 +31,9 @@ public class Field {
         return ((this.x == that.x) && (this.y==that.y));
     }
 
-    public int getX() {        return x;}
+    public int getX() { return x;}
 
-    public int getY() {        return y;}
+    public int getY() { return y;}
 
     public Field addAsVector(Field other){
         return new Field(this.x + other.x, this.y + other.y);
