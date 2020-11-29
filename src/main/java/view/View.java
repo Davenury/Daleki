@@ -6,6 +6,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
 public class View {
@@ -19,8 +20,14 @@ public class View {
     private final int fieldSize = 60;
     private final int fieldGap = 2;
 
-    private Circle doctor;
     private final float doctorSize = 50;
+    private final Color doctorColor = Color.BLUE;
+
+    private final float dalekSize = 40;
+    private final Color dalekColor = Color.RED;
+
+    private final float junkSize = fieldSize;
+    private final Color junkColor = Color.DARKGRAY;
 
     public View(Stage primaryStage){
         this.stage = primaryStage;
@@ -50,9 +57,25 @@ public class View {
         stage.show();
     }
 
-    public void paintDoctor(int gridX, int gridY){
-        doctor = new Circle(calculateElementPosition(gridX), calculateElementPosition(gridY), doctorSize/2, Color.BLUE);
-        root.getChildren().add(doctor);
+    public void paintElement(Element elementType, int gridX, int gridY){
+        float elementSize;
+        Color elementColor;
+        switch(elementType) {
+            case DOCTOR:
+                elementSize = doctorSize;
+                elementColor = doctorColor;
+                break;
+            case DALEK:
+                elementSize = dalekSize;
+                elementColor = dalekColor;
+                break;
+            default:
+                elementSize = junkSize;
+                elementColor = junkColor;
+        }
+        Shape element = new Circle(calculateElementPosition(gridX, false), calculateElementPosition(gridY, true), elementSize/2, elementColor);
+        root.getChildren().add(element);
+
     }
 
     public void setParameters(int worldWidth, int worldHeight){
@@ -68,7 +91,8 @@ public class View {
         this.worldHeight = worldHeight;
     }
 
-    private int calculateElementPosition(int gridPosition){
-        return gridPosition*fieldSize - fieldSize/2 + (gridPosition-1)*fieldGap;
+    private double calculateElementPosition(int gridPosition, boolean yAxis){
+        if(yAxis) gridPosition = worldHeight - gridPosition + 1;
+        return gridPosition*fieldSize - (double) fieldSize/2 + (gridPosition-1)*fieldGap;
     }
 }

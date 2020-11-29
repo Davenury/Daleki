@@ -2,10 +2,7 @@ package presenter;
 
 import javafx.stage.Stage;
 import model.map.*;
-import view.InputOperationInterface;
-import view.Inputer;
-import view.RepaintWorldOperationInterface;
-import view.View;
+import view.*;
 
 public class Presenter {
     private final Stage stage;
@@ -25,9 +22,14 @@ public class Presenter {
         this.view.paintWorld();
 
         for(MapObject mapObject : world.getMapObjects()){
-            if(mapObject instanceof Doctor){
-                this.view.paintDoctor(mapObject.getField().getX(), mapObject.getField().getY());
-            }
+            Element element;
+            if(mapObject instanceof Doctor)
+                element = Element.DOCTOR;
+            else if(mapObject instanceof Dalek)
+                element = Element.DALEK;
+            else
+                element = Element.JUNK;
+            this.view.paintElement(element, mapObject.getField().getX(), mapObject.getField().getY());
         }
     }
 

@@ -19,7 +19,10 @@ public class World {
         this.width = width;
         this.height = height;
         this.mover = new Mover(width, height);
-        mapObjects.add(new Doctor(new Field(width/2 + 1, height/2 + 1)));
+        Doctor doctor = new Doctor(new Field(width/2 + 1, height/2 + 1));
+        mapObjects.add(doctor);
+//        mapObjects.add(new Dalek(doctor, new Field(5, 2))); //test dalek
+//        mapObjects.add(new PileOfJunk(7, 7)); //test junk
     }
 
     public int getWidth(){ return width; }
