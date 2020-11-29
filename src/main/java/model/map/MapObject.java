@@ -7,4 +7,11 @@ public class MapObject {
         return field;
     }
 
+    public void setField(Field field) {
+        this.field = field;
+    }
+
+    public boolean isMovable(){
+        return this instanceof Movable;
+    }
 }

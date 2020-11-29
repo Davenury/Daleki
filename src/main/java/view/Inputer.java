@@ -30,4 +30,13 @@ public class Inputer {
                 .doOnNext(operation::operation)
                 .subscribe();
     }
+
+    public void subscribeToInput(InputOperationInterface moveOnWorld, RepaintWorldOperationInterface repaint) {
+        this.userInput
+                .map(KeyEvent::getCode)
+                .map(KeyCode::getChar)
+                .doOnNext(moveOnWorld::operation)
+                .doOnNext(input -> repaint.operation())
+                .subscribe();
+    }
 }

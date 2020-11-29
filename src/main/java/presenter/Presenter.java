@@ -1,11 +1,10 @@
 package presenter;
 
 import javafx.stage.Stage;
-import model.map.Doctor;
-import model.map.Movable;
-import model.map.World;
+import model.map.*;
 import view.InputOperationInterface;
 import view.Inputer;
+import view.RepaintWorldOperationInterface;
 import view.View;
 
 public class Presenter {
@@ -25,7 +24,7 @@ public class Presenter {
         this.view.setParameters(this.getWorldWidth(), this.getWorldHeight());
         this.view.paintWorld();
 
-        for(Movable mapObject : world.getMapObjects()){
+        for(MapObject mapObject : world.getMapObjects()){
             if(mapObject instanceof Doctor){
                 this.view.paintDoctor(mapObject.getField().getX(), mapObject.getField().getY());
             }
@@ -35,7 +34,8 @@ public class Presenter {
     private void setInput(){
         Inputer inputer = new Inputer(this.stage);
         InputOperationInterface moveOnWorld = this.world::move;
-        inputer.subscribeToInput(moveOnWorld);
+        RepaintWorldOperationInterface repaint = this::paintWorld;
+        inputer.subscribeToInput(moveOnWorld, repaint);
     }
 
     public int getWorldWidth(){
