@@ -5,9 +5,10 @@ import model.moves.Mover;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class World {
-    private List<Movable> mapObjects = new ArrayList<>();
+    private List<MapObject> mapObjects = new ArrayList<>();
 
     private int width;
     private int height;
@@ -25,14 +26,28 @@ public class World {
 
     public int getHeight(){ return height; }
 
-    public List<Movable> getMapObjects() { return mapObjects; }
+    public List<MapObject> getMapObjects() {
+        List<MapObject> notSoMovables = mover.getMapObjects();
+        List<MapObject> result = new ArrayList<>();
+        result.addAll(mapObjects);
+        result.addAll(notSoMovables);
+        return result;
+    }
 
     public void move(String input){
         System.out.println(input);
         try {
-            this.mover.moveAll(mapObjects, input);
+            this.mover.moveAll(
+                    mapObjects.stream()
+                            .filter(MapObject::isMovable)
+                            .map(it -> (Movable) it)
+                            .collect(Collectors.toList()),
+                    input);
         } catch (EndGameException e) {
             e.printStackTrace();   //-> you've lost!
+        } catch (IllegalStateException e){  //->TODO sometimes may be teleporation, so there's need to make it out
+            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

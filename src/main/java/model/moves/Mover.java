@@ -16,7 +16,7 @@ public class Mover {
         this.moveDecider = new MoveDecider(mapWidth, mapHeight);
     }
 
-    public void moveAll(List<Movable> toMoveObjects, String input) throws EndGameException {
+    public void moveAll(List<Movable> toMoveObjects, String input) throws EndGameException, IllegalStateException {
         HashMap<Movable, MoveResult> results = this.moveDecider.simulateMove(toMoveObjects, input);
         if(results == null) return;    // -> znaczy, że użytkownik podał input, dzięki któremu doktor wyszedłby poza mapę
         for(Map.Entry<Movable, MoveResult> entry : results.entrySet()){
@@ -37,5 +37,9 @@ public class Mover {
 
     public void teleport(){
         //TODO
+    }
+
+    public List<MapObject> getMapObjects(){
+        return this.moveDecider.getWorldMapAsList();
     }
 }

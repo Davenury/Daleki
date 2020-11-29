@@ -17,9 +17,11 @@ public class MoveDecider {
     public MoveDecider(int mapWidth, int mapHeight){
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
+        //this.map.put(new Field(5,5), new PileOfJunk(5, 5));// -> uncomment to put a pile of Junk
     }
 
-    public HashMap<Movable, MoveResult> simulateMove(List<Movable> movables, String input) throws EndGameException {
+    public HashMap<Movable, MoveResult> simulateMove(List<Movable> movables, String input)
+            throws EndGameException, IllegalStateException {
         HashMap<Movable, MoveResult> results = new HashMap<>();
         for (Movable movable : movables){
             if(movable instanceof Doctor)
@@ -34,7 +36,7 @@ public class MoveDecider {
 
     private void checkCollisionWithPieceOfJunkInTheMap(Movable movable,
                                                        HashMap<Movable, MoveResult> results, String input)
-            throws EndGameException {
+            throws EndGameException, IllegalStateException {
         Field calculatedField = calculateFieldDependsOnMovable(movable, input);
         if(map.get(calculatedField) != null){
             if(movable instanceof Doctor) throw new EndGameException("Game Over");
@@ -46,7 +48,7 @@ public class MoveDecider {
     }
 
     private void checkCollisionWithPreviousMoves(Movable movable, HashMap<Movable, MoveResult> results, String input)
-            throws EndGameException {
+            throws EndGameException, IllegalStateException {
         Field calculatedField = calculateFieldDependsOnMovable(movable, input);
         Movable movableOnField = move.get(calculatedField);
         if(movableOnField != null){
@@ -55,7 +57,7 @@ public class MoveDecider {
             else{
                 results.put(movable, MoveResult.COLLISION);
                 results.put(movableOnField, MoveResult.COLLISION);
-                map.put(calculatedField, new PileOfJunk());
+                map.put(calculatedField, new PileOfJunk(calculatedField.getX(), calculatedField.getY()));
             }
         }
         else{
@@ -64,7 +66,7 @@ public class MoveDecider {
         }
     }
 
-    private Field calculateFieldDependsOnMovable(Movable movable, String input){
+    private Field calculateFieldDependsOnMovable(Movable movable, String input) throws IllegalStateException{
         Field calculatedField;
         if(movable instanceof Doctor)
             calculatedField = movable.calculateNextMove(Direction.convertInputToDirection(input));
@@ -75,7 +77,7 @@ public class MoveDecider {
 
     private boolean isInMap(Movable movable, String input){
         Field calculatedField = calculateFieldDependsOnMovable(movable, input);
-        return calculatedField.moreThan(new Field(0, 0)) &&
+        return calculatedField.moreThan(new Field(1, 1)) &&
                 calculatedField.lessThan(new Field(mapWidth, mapHeight));
     }
 
@@ -83,8 +85,13 @@ public class MoveDecider {
         move.clear();
     }
 
-    private void clearMap(){
-        this.clearMove();
-        map.clear();
+    public List<MapObject> getWorldMapAsList(){
+        List<MapObject> result = new ArrayList<>();
+        for(Map.Entry<Field, MapObject> entry : this.map.entrySet()){
+            MapObject object = entry.getValue();
+            object.setField(entry.getKey());
+            result.add(object);
+        }
+        return result;
     }
 }
