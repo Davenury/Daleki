@@ -233,4 +233,85 @@ public class FieldTest {
         //then
         assertThrows(IllegalStateException.class, () -> field.moveFromInput(input));
     }
+
+    @Test
+    public void fieldMoreThanTestMoreThan(){
+        //given
+        Field filed = new Field(5,10);
+        //when
+        Field field2 = new Field(0, 0);
+        //then
+        assertTrue(filed.moreThan(field2));
+    }
+
+    @Test
+    public void fieldMoreThanTestNotMoreThan(){
+        //given
+        Field filed = new Field(0,0);
+        //when
+        Field field2 = new Field(10, 10);
+        //then
+        assertFalse(filed.moreThan(field2));
+    }
+
+    @Test
+    public void fieldMoreThanTestXMoreThan(){
+        //given
+        Field filed = new Field(5,0);
+        //when
+        Field field2 = new Field(0, 0);
+        //then
+        assertTrue(filed.moreThan(field2));
+    }
+
+    @Test
+    public void fieldMoreThanTestYMoreThan(){
+        //given
+        Field filed = new Field(0,10);
+        //when
+        Field field2 = new Field(0, 0);
+        //then
+        assertTrue(filed.moreThan(field2));
+    }
+
+    @Test
+    public void fieldLessThanTestMoreThan(){
+        //given
+        Field filed = new Field(5,10);
+        //when
+        Field field2 = new Field(10, 12);
+        //then
+        assertTrue(filed.lessThan(field2));
+    }
+
+    @Test
+    public void fieldLessThanTestNotLessThan(){
+        //given
+        Field filed = new Field(10,10);
+        //when
+        Field field2 = new Field(0, 0);
+        //then
+        assertFalse(filed.lessThan(field2));
+    }
+
+    @Test
+    public void fieldLessThanTestXLessThan(){
+        //given
+        Field filed = new Field(0,0);
+        //when
+        Field field2 = new Field(5, 0);
+        //then
+        assertTrue(filed.lessThan(field2));
+    }
+
+    @Test
+    public void fieldLessThanTestYLessThan(){
+        //given
+        Field filed = new Field(0,0);
+        //when
+        Field field2 = new Field(0, 10);
+        //then
+        assertTrue(filed.lessThan(field2));
+    }
+
 }

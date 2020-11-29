@@ -1,27 +1,37 @@
+view/InputOperationInterface.java
+ view.InputOperationInterface
+view/View.java
+ view.View
 model/map/MapObject.java
  model.map.MapObject
-DalekiApp.java
- DalekiApp
 model/map/Direction.java
  model.map.Direction
  model.map.Direction$1
-view/Inputer.java
- view.Inputer
+model/EndGameException.java
+ model.EndGameException
 model/map/Field.java
  model.map.Field
-view/View.java
- view.View
+view/Inputer.java
+ view.Inputer
 model/map/NotSoMovable.java
  model.map.NotSoMovable
-view/InputOperationInterface.java
- view.InputOperationInterface
+model/map/PileOfJunk.java
+ model.map.PileOfJunk
 model/map/Movable.java
  model.map.Movable
+model/map/Dalek.java
+ model.map.Dalek
 model/map/Doctor.java
  model.map.Doctor
 presenter/Presenter.java
  presenter.Presenter
 model/map/World.java
  model.map.World
-model/map/Dalek.java
- model.map.Dalek
+model/moves/MoveResult.java
+ model.moves.MoveResult
+DalekiApp.java
+ DalekiApp
+model/moves/MoveDecider.java
+ model.moves.MoveDecider
+model/moves/Mover.java
+ model.moves.Mover
