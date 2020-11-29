@@ -16,11 +16,11 @@ public class Doctor extends Movable {
     }
 
     @Override
-    public Field calculateNextMove(Field field){
-        return super.getField().addAsVector(field);
+    public Field calculateNextMove(Direction direction){
+        return super.getField().addAsVector(direction.convertToField());
     }
     @Override
-    public void move(Field field){
+    public void moveTo(Field field){
         super.updateField(super.getField().addAsVector(field));
     }
 

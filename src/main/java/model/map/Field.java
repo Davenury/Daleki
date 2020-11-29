@@ -51,4 +51,12 @@ public class Field {
         if (this.x <=1 && this.x >=-1 && this.y <=1 && this.y >=-1) return true;
         return false;
     }
+
+    public boolean moreThan(Field other){
+        return this.x >= other.x && this.y >= other.y;
+    }
+
+    public boolean lessThan(Field other){
+        return this.x <= other.x && this.y <= other.y;
+    }
 }

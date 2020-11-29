@@ -10,10 +10,10 @@ public abstract class Movable extends MapObject {
         return null;
     };
 
-    public Field calculateNextMove(Field field){
+    public Field calculateNextMove(Direction direction){
         return null;
     };
-    void move(Direction direction){};
-    void move(Field field){};
-    void move(){};
+    public void move(Direction direction){};
+    public void moveTo(Field field){};
+    public void move(){};
 }
