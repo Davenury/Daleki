@@ -1,6 +1,5 @@
 package model.moves;
 
-import javafx.util.Pair;
 import model.EndGameException;
 import model.map.*;
 
@@ -52,8 +51,7 @@ public class MoveDecider {
         Field calculatedField = calculateFieldDependsOnMovable(movable, input);
         Movable movableOnField = move.get(calculatedField);
         if(movableOnField != null){
-            if(movable instanceof Doctor){
-                throw new EndGameException("Game Over");}
+            if(movable instanceof Doctor){ throw new EndGameException("Game Over"); }
             else{
                 results.put(movable, MoveResult.COLLISION);
                 results.put(movableOnField, MoveResult.COLLISION);

@@ -25,7 +25,7 @@ public class DoctorTest {
         Field field = new Field(1,1);
         Doctor doctor = new Doctor(field);
         //when
-        doctor.move(new Field(0,1));
+        doctor.moveTo(new Field(0,1));
         //then
         assertEquals(doctor.getField(), new Field(1, 2));
     }
