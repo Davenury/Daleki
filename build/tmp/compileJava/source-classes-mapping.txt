@@ -27,13 +27,13 @@ view/RepaintWorldOperationInterface.java
  view.RepaintWorldOperationInterface
 view/Inputer.java
  view.Inputer
-model/moves/MoveDecider.java
- model.moves.MoveDecider
+DalekiApp.java
+ DalekiApp
 presenter/Presenter.java
  presenter.Presenter
 model/map/World.java
  model.map.World
+model/moves/MoveDecider.java
+ model.moves.MoveDecider
 model/moves/Mover.java
  model.moves.Mover
-DalekiApp.java
- DalekiApp
