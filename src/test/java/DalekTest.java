@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+//Tests outdated due to improved implementation of Dalek class
+//TODO: rewrite those tests
 public class DalekTest {
 
     @Test
