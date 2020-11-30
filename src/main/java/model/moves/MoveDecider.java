@@ -41,7 +41,7 @@ public class MoveDecider {
     private void checkCollisionWithPieceOfJunkInTheMap(Movable movable,
                                                        HashMap<Movable, MoveResult> results, String input)
             throws EndGameException, IllegalStateException {
-        Field calculatedField = calculateFieldDependsOnMovable(movable, input);
+        Field calculatedField = calculateField(movable, input);
         if(map.get(calculatedField) != null){
             if(movable instanceof Doctor) throw new EndGameException("Game Over");
             else results.put(movable, MoveResult.COLLISION);
@@ -53,15 +53,14 @@ public class MoveDecider {
 
     private void checkCollisionWithPreviousMoves(Movable movable, HashMap<Movable, MoveResult> results, String input)
             throws EndGameException, IllegalStateException {
-        Field calculatedField = calculateFieldDependsOnMovable(movable, input);
-        Movable movableOnField = move.get(calculatedField);
-        if(movableOnField != null){
-            if(movable instanceof Doctor){ throw new EndGameException("Game Over"); }
-            else{
-                results.put(movable, MoveResult.COLLISION);
-                results.put(movableOnField, MoveResult.COLLISION);
-                map.put(calculatedField, new PileOfJunk(calculatedField.getX(), calculatedField.getY()));
-            }
+        Field calculatedField = calculateField(movable, input);
+        Movable movableOnFutureField = move.get(calculatedField);
+        Movable movableOnField = move.get(movable.getField());
+        if(movableOnFutureField != null){
+            evaluateNotNullEncounter(movable, results, calculatedField, movableOnFutureField);
+        }
+        else if(movableOnField != null){
+            evaluateNotNullEncounter(movable, results, calculatedField, movableOnField);
         }
         else{
             results.put(movable, MoveResult.OK);
@@ -69,17 +68,24 @@ public class MoveDecider {
         }
     }
 
-    private Field calculateFieldDependsOnMovable(Movable movable, String input) throws IllegalStateException{
-        Field calculatedField;
-        if(movable instanceof Doctor)
-            calculatedField = movable.calculateNextMove(Direction.convertInputToDirection(input));
-        else
-            calculatedField = movable.calculateNextMove();
-        return calculatedField;
+    private void evaluateNotNullEncounter(Movable movable, HashMap<Movable, MoveResult> results,
+                                          Field calculatedField, Movable movableOnFutureField) throws EndGameException {
+        if(movable instanceof Doctor || movableOnFutureField instanceof Doctor){
+            throw new EndGameException("Game Over");
+        }
+        else{
+            results.put(movable, MoveResult.COLLISION);
+            results.put(movableOnFutureField, MoveResult.COLLISION);
+            map.put(calculatedField, new PileOfJunk(calculatedField.getX(), calculatedField.getY()));
+        }
+    }
+
+    private Field calculateField(Movable movable, String input) throws IllegalStateException{
+        return movable.calculateNextMove(Direction.convertInputToDirection(input));
     }
 
     private boolean isInMap(Movable movable, String input){
-        Field calculatedField = calculateFieldDependsOnMovable(movable, input);
+        Field calculatedField = calculateField(movable, input);
         return calculatedField.moreThan(new Field(1, 1)) &&
                 calculatedField.lessThan(new Field(mapWidth, mapHeight));
     }

@@ -1,44 +1,44 @@
-view/View.java
- view.View
- view.View$1
+model/things/PileOfJunk.java
+ model.things.PileOfJunk
+model/creatures/Doctor.java
+ model.creatures.Doctor
+DalekiApp.java
+ DalekiApp
 view/Element.java
  view.Element
-view/InputOperationInterface.java
- view.InputOperationInterface
-model/EndGameException.java
- model.EndGameException
 model/moves/MoveResult.java
  model.moves.MoveResult
 model/map/Direction.java
  model.map.Direction
  model.map.Direction$1
-model/map/Field.java
- model.map.Field
-view/RepaintWorldOperationInterface.java
- view.RepaintWorldOperationInterface
-view/Inputer.java
- view.Inputer
-model/creatures/Dalek.java
- model.creatures.Dalek
-model/creatures/MapObject.java
- model.creatures.MapObject
 model/things/NotSoMovable.java
  model.things.NotSoMovable
+model/map/Field.java
+ model.map.Field
+view/Inputer.java
+ view.Inputer
+model/EndGameException.java
+ model.EndGameException
+view/RepaintWorldOperationInterface.java
+ view.RepaintWorldOperationInterface
+view/InputOperationInterface.java
+ view.InputOperationInterface
+model/creatures/MapObject.java
+ model.creatures.MapObject
+view/View.java
+ view.View
+ view.View$1
 model/other/ListConcatener.java
  model.other.ListConcatener
 model/creatures/Movable.java
  model.creatures.Movable
-model/things/PileOfJunk.java
- model.things.PileOfJunk
+model/moves/MoveDecider.java
+ model.moves.MoveDecider
+model/creatures/Dalek.java
+ model.creatures.Dalek
 presenter/Presenter.java
  presenter.Presenter
 model/map/World.java
  model.map.World
-DalekiApp.java
- DalekiApp
-model/creatures/Doctor.java
- model.creatures.Doctor
-model/moves/MoveDecider.java
- model.moves.MoveDecider
 model/moves/Mover.java
  model.moves.Mover

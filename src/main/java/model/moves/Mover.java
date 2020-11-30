@@ -9,6 +9,7 @@ import model.map.*;
 import model.things.NotSoMovable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Mover {
     private MoveDecider moveDecider;
@@ -17,18 +18,36 @@ public class Mover {
         this.moveDecider = new MoveDecider(mapWidth, mapHeight);
     }
 
-    public void moveAll(List<Movable> toMoveObjects, String input) throws EndGameException, IllegalStateException {
+    public List<MapObject> moveAll(List<Movable> toMoveObjects, String input) throws EndGameException, IllegalStateException {
         HashMap<Movable, MoveResult> results = this.moveDecider.simulateMove(toMoveObjects, input);
-        if(results == null) return;    // -> znaczy, że użytkownik podał input, dzięki któremu doktor wyszedłby poza mapę
-        for(Map.Entry<Movable, MoveResult> entry : results.entrySet()){
-            if(entry.getValue() == MoveResult.OK){
-                Movable movable = entry.getKey();
-                if(movable instanceof Doctor) movable.move(Direction.convertInputToDirection(input));
-                else movable.move();
-            }
+        if(results != null) {
+            this.evaluateResults(results, toMoveObjects, input);
+        }
+        return toMoveObjects.stream()
+                .map(it -> (MapObject) it)
+                .collect(Collectors.toList());
+    }
+
+    private void evaluateResults(HashMap<Movable, MoveResult> results, List<Movable> toMoveObjects, String input) {
+        for (Map.Entry<Movable, MoveResult> entry : results.entrySet()) {
+            this.evaluateMovable(entry, toMoveObjects, input);
         }
         this.printResults(results);
     }
+
+    private void evaluateMovable(Map.Entry<Movable, MoveResult> entry, List<Movable> toMoveObjects, String input) {
+        Movable movable = entry.getKey();
+        if (entry.getValue() == MoveResult.OK) {
+            this.evaluateOKResult(movable, input);
+        } else {
+            toMoveObjects.remove(movable);
+        }
+    }
+
+    private void evaluateOKResult(Movable movable, String input) {
+        movable.move(Direction.convertInputToDirection(input));
+    }
+
 
     private void printResults(HashMap<Movable, MoveResult> results) {
         for(Map.Entry<Movable, MoveResult> entry : results.entrySet()){
