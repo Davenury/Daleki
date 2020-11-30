@@ -34,9 +34,9 @@ Link do diagramu klas: https://app.diagrams.net/#G14g6zF8lE2PfWCMw01uFXGjzt2axL6
 
 ---
 
-### Sposób testowania (na dzień 29.11.2020)
-W chwili obecnej (godzina 16:31), testować program można na dwa sposoby.
+### Sposób testowania (na dzień 30.11.2020)
+W chwili obecnej (godzina 10:02), testować program można na dwa sposoby.
 
 1) W katalogu test użytkownik może znaleźć trzy sety testów, które można odpalić i zobaczyć, że wszystkie świecą na zielono.
 
-2) Można skorzystać z przygotowanej konfiguracji run i odpalić projekt. Na razie można pochodzić sobie Doktorem po mapie oraz zobaczyć, że nie wychodzi poza mapę (uwaga na inwersję osi Y). Aby spróbować, czy po zderzeniu z górą złomu gra się zakończy, należy przejść do klasy MoveDecider i odkomentować linijkę 19. Spowoduje to powstanie kupy złomu w mapie, jednak nie zostanie ona jeszcze narysowana (brak kodu na stan obecny).
+2) Można skorzystać z przygotowanej konfiguracji run i odpalić projekt. Na razie można pochodzić sobie Doktorem po mapie oraz zobaczyć, że nie wychodzi poza mapę. Aby spróbować, czy po zderzeniu z górą złomu gra się zakończy, należy przejść do klasy MoveDecider i odkomentować linijkę 24. Spowoduje to powstanie kupy złomu na mapie. Gdy Doktor wejdzie na kupę złomu, zostanie rzucony wyjątek EndGameException, jednak nie zakończy on jeszcze gry. Można także odkomentować linijkę 30 w klasie World, aby sprawdzić, że Dalek podąża za Doktorem.

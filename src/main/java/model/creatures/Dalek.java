@@ -1,5 +1,6 @@
 package model.creatures;
 
+import model.map.Direction;
 import model.map.Field;
 
 public class Dalek extends Movable {
@@ -16,14 +17,13 @@ public class Dalek extends Movable {
     }
 
     @Override
-    public void move(){
-        super.updateField(super.getField().addAsVector(this.calculateNextMove()));
+    public void move(Direction direction){
+        super.updateField(super.getField().addAsVector(this.calculateNextVector(direction)));
     }
 
-    @Override
-    public Field calculateNextMove(){
-        int horizontal_diff = this.getField().getX() - this.doctor.getField().getX();
-        int vertical_diff = this.getField().getY() - this.doctor.getField().getY();
+    public Field calculateNextVector(Direction direction){
+        int horizontal_diff = this.getField().getX() - this.doctor.calculateNextMove(direction).getX();
+        int vertical_diff = this.getField().getY() - this.doctor.calculateNextMove(direction).getY();
 
         Field horizontal_vector, vertical_vector;
 
@@ -44,5 +44,9 @@ public class Dalek extends Movable {
         }
 
         return vertical_vector.addAsVector(horizontal_vector);
+    }
+
+    public Field calculateNextMove(Direction direction){
+        return super.getField().addAsVector(this.calculateNextVector(direction));
     }
 }
