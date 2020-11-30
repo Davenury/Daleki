@@ -1,5 +1,6 @@
 import model.creatures.Dalek;
 import model.creatures.Doctor;
+import model.map.Direction;
 import model.map.Field;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +34,7 @@ public class DalekTest {
 
         //when
         for (int i = 0; i<8; i++){
-            daleks[i].move();
+            daleks[i].move(Direction.STAY);
         }
 
         //then

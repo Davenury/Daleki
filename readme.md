@@ -37,6 +37,6 @@ Link do diagramu klas: https://app.diagrams.net/#G14g6zF8lE2PfWCMw01uFXGjzt2axL6
 ### Sposób testowania (na dzień 30.11.2020)
 W chwili obecnej (godzina 11:13), testować program można na dwa sposoby.
 
-1) W katalogu test użytkownik może znaleźć trzy sety testów, które można odpalić i zobaczyć, że wszystkie świecą na zielono. (Dalek Tests są nieaktualne)
+1) W katalogu test użytkownik może znaleźć trzy sety testów, które można odpalić i zobaczyć, że wszystkie świecą na zielono.
 
 2) Można skorzystać z przygotowanej konfiguracji run i odpalić projekt. Na razie można pochodzić sobie Doktorem po mapie oraz zobaczyć, że nie wychodzi poza mapę. Aby sprawdzić różne warianty, należy zmienić metodę generacji w linijce 28.
