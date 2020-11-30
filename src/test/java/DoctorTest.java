@@ -1,9 +1,7 @@
 import model.map.Direction;
-import model.map.Doctor;
+import model.creatures.Doctor;
 import model.map.Field;
 import org.junit.jupiter.api.Test;
-
-import javax.print.attribute.standard.NumberOfDocuments;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

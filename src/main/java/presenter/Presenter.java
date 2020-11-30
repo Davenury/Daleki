@@ -1,6 +1,9 @@
 package presenter;
 
 import javafx.stage.Stage;
+import model.creatures.Dalek;
+import model.creatures.Doctor;
+import model.creatures.MapObject;
 import model.map.*;
 import view.*;
 
