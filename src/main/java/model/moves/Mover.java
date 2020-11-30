@@ -2,10 +2,11 @@ package model.moves;
 
 
 import model.EndGameException;
-import model.map.Direction;
-import model.map.Doctor;
-import model.map.MapObject;
-import model.map.Movable;
+import model.creatures.Doctor;
+import model.creatures.MapObject;
+import model.creatures.Movable;
+import model.map.*;
+import model.things.NotSoMovable;
 
 import java.util.*;
 
@@ -41,5 +42,10 @@ public class Mover {
 
     public List<MapObject> getMapObjects(){
         return this.moveDecider.getWorldMapAsList();
+    }
+
+    /**For use cases look in the MoveDecider class*/
+    public void setInitialMap(List<NotSoMovable> objectsToAddOnMap){
+        this.moveDecider.setInitialMap(objectsToAddOnMap);
     }
 }

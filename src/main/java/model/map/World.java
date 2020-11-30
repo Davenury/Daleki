@@ -1,7 +1,11 @@
 package model.map;
 
 import model.EndGameException;
+import model.creatures.Doctor;
+import model.creatures.MapObject;
+import model.creatures.Movable;
 import model.moves.Mover;
+import model.other.ListConcatener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +34,7 @@ public class World {
     public int getHeight(){ return height; }
 
     public List<MapObject> getMapObjects() {
-        List<MapObject> notSoMovables = mover.getMapObjects();
-        List<MapObject> result = new ArrayList<>();
-        result.addAll(mapObjects);
-        result.addAll(notSoMovables);
-        return result;
+        return ListConcatener.concatenate(mover.getMapObjects(), mapObjects);
     }
 
     public void move(String input){

@@ -1,7 +1,12 @@
 package model.moves;
 
 import model.EndGameException;
+import model.creatures.Doctor;
+import model.creatures.MapObject;
+import model.creatures.Movable;
 import model.map.*;
+import model.things.NotSoMovable;
+import model.things.PileOfJunk;
 
 import java.util.*;
 import java.util.HashMap;
@@ -91,5 +96,17 @@ public class MoveDecider {
             result.add(object);
         }
         return result;
+    }
+
+
+    /**
+     * setInitialMap -> sets pilesOfJunk to the map of MoveDecider
+     * Use ONLY if you want to add some pile of junks or other not movable elements BEFORE the game starts
+     * @param objects - list of NotSoMovable that you want to add before the game starts
+     */
+    public void setInitialMap(List<NotSoMovable> objects){
+        for (NotSoMovable object : objects){
+            this.map.put(object.getField(), object);
+        }
     }
 }

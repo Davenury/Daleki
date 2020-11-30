@@ -1,4 +1,6 @@
-package model.map;
+package model.creatures;
+
+import model.map.Field;
 
 public class Dalek extends Movable {
     Doctor doctor;

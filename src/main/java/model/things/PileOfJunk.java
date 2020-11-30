@@ -1,4 +1,6 @@
-package model.map;
+package model.things;
+
+import model.things.NotSoMovable;
 
 public class PileOfJunk extends NotSoMovable {
     public PileOfJunk(int x, int y){

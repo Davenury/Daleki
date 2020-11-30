@@ -1,4 +1,8 @@
-package model.map;
+package model.creatures;
+
+import model.creatures.MapObject;
+import model.map.Direction;
+import model.map.Field;
 
 public abstract class Movable extends MapObject {
 

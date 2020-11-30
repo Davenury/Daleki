@@ -1,5 +1,5 @@
-import model.map.Dalek;
-import model.map.Doctor;
+import model.creatures.Dalek;
+import model.creatures.Doctor;
 import model.map.Field;
 import org.junit.jupiter.api.Test;
 

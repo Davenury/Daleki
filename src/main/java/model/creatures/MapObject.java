@@ -1,7 +1,9 @@
-package model.map;
+package model.creatures;
+
+import model.map.Field;
 
 public class MapObject {
-    Field field;
+    public Field field;
 
     public Field getField() {
         return field;

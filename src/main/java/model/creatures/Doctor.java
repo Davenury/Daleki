@@ -1,4 +1,7 @@
-package model.map;
+package model.creatures;
+
+import model.map.Direction;
+import model.map.Field;
 
 public class Doctor extends Movable {
 
