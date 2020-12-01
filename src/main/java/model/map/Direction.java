@@ -53,6 +53,7 @@ public enum Direction {
             case "1" -> Direction.SOUTH_WEST;
             case "4", "a" -> Direction.WEST;
             case "7" -> Direction.NORTH_WEST;
+            case "5", "q" -> Direction.STAY;
 
             default -> throw new IllegalStateException("You've just invoked static function from Direction class " +
                     "convertInputToDirection with invalid input (string that's not w, a, s, d). If it was supposed " +
