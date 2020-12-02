@@ -7,7 +7,6 @@ import model.creatures.Doctor;
 import model.creatures.MapObject;
 import model.map.*;
 import view.*;
-import view.input.Inputer;
 import view.input.InputerInterface;
 
 public class Presenter {

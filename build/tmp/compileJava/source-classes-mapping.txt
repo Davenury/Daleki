@@ -1,9 +1,9 @@
-model/creatures/Dalek.java
- model.creatures.Dalek
-model/moves/MoveDecider.java
- model.moves.MoveDecider
-model/creatures/Doctor.java
- model.creatures.Doctor
+view/input/InputerInterface.java
+ view.input.InputerInterface
+view/input/Inputer.java
+ view.input.Inputer
+model/things/PileOfJunk.java
+ model.things.PileOfJunk
 view/Element.java
  view.Element
 model/moves/Mover.java
@@ -23,8 +23,8 @@ model/EndGameException.java
  model.EndGameException
 view/RepaintWorldOperationInterface.java
  view.RepaintWorldOperationInterface
-model/map/World.java
- model.map.World
+model/creatures/Movable.java
+ model.creatures.Movable
 view/InputOperationInterface.java
  view.InputOperationInterface
 model/creatures/MapObject.java
@@ -34,17 +34,23 @@ view/View.java
  view.View$1
 model/other/ListConcatener.java
  model.other.ListConcatener
-model/creatures/Movable.java
- model.creatures.Movable
-model/things/PileOfJunk.java
- model.things.PileOfJunk
 guice/GuiceModule.java
  guice.GuiceModule
-view/input/Inputer.java
- view.input.Inputer
+diproviders/DimensionsSetter.java
+ diproviders.DimensionsSetter
+diproviders/IDimensionsSetter.java
+ diproviders.IDimensionsSetter
+diproviders/DimensionsSetterProvider.java
+ diproviders.DimensionsSetterProvider
+model/creatures/Dalek.java
+ model.creatures.Dalek
+model/moves/MoveDecider.java
+ model.moves.MoveDecider
 presenter/Presenter.java
  presenter.Presenter
+model/map/World.java
+ model.map.World
+model/creatures/Doctor.java
+ model.creatures.Doctor
 DalekiApp.java
  DalekiApp
-view/input/InputerInterface.java
- view.input.InputerInterface

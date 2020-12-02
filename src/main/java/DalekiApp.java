@@ -11,15 +11,22 @@ public class DalekiApp extends Application {
 	private World world;
 	private Presenter presenter;
 
-	private final int worldWidth = 11;
-	private final int worldHeight = 11;
-
 	@Override
 	public void start(Stage primaryStage){
-		this.world = new World(worldWidth, worldHeight);
-
 		Injector injector = Guice.createInjector(new GuiceModule());
 
+		this.setUpWorld(injector);
+
+		this.setUpPresenter(injector, primaryStage);
+	}
+
+	private void setUpWorld(Injector injector){
+		this.world = injector.getInstance(World.class);
+		this.world.setInjector(injector);
+		this.world.generateExampleGame();
+	}
+
+	private void setUpPresenter(Injector injector, Stage primaryStage) {
 		this.presenter = injector.getInstance(Presenter.class);
 		this.presenter.setUpPresenter(primaryStage, world);
 	}

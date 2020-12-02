@@ -1,5 +1,8 @@
 package model.map;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import diproviders.dimensions.IDimensionsSetter;
 import model.EndGameException;
 import model.creatures.Dalek;
 import model.creatures.Doctor;
@@ -7,7 +10,6 @@ import model.creatures.MapObject;
 import model.creatures.Movable;
 import model.moves.Mover;
 import model.other.ListConcatener;
-import model.things.PileOfJunk;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +22,23 @@ public class World {
     private int height;
 
     private Mover mover;
+    private Injector injector;
 
     public Boolean gameOver = false;
 
-    public World(int width, int height){
-        this.width = width;
-        this.height = height;
+    @Inject
+    public World(IDimensionsSetter setter){
+        this.width = setter.getWidth();
+        this.height = setter.getHeight();
         this.mover = new Mover(width, height);
-        this.generateDalekToMoveBehindTheDoctor();
+    }
+
+    public void setInjector(Injector injector){
+        this.injector = injector;
+    }
+
+    public void generateExampleGame(){
+        this.generateDaleksToBoom();
     }
 
     public int getWidth(){ return width; }
@@ -58,19 +69,23 @@ public class World {
 
     /**To boom Daleks, please move one step up (press W key right after beginning of the game)*/
     private void generateDaleksToBoom(){
-        Doctor doctor = new Doctor(new Field(6, 4));
+        Doctor doctor = injector.getInstance(Doctor.class);
+        doctor.setField(new Field(6, 4));
+        doctor.teleport();
         mapObjects.add(doctor);
         mapObjects.add(new Dalek(doctor, new Field(5, 2))); //test dalek
         mapObjects.add(new Dalek(doctor, new Field(7, 2)));
     }
 
     private void generateDoctorToMoveAround(){
-        Doctor doctor = new Doctor(new Field(width/2 + 1, height/2 + 1));
+        Doctor doctor = injector.getInstance(Doctor.class);
+        doctor.setField(new Field(width/2 + 1, height/2 + 1));
         mapObjects.add(doctor);
     }
 
     private void generateDalekToMoveBehindTheDoctor(){
-        Doctor doctor = new Doctor(new Field(width/2 + 1, height/2 + 1));
+        Doctor doctor = injector.getInstance(Doctor.class);
+        doctor.setField(new Field(width/2 + 1, height/2 + 1));
         mapObjects.add(doctor);
         mapObjects.add(new Dalek(doctor, new Field(1, 1)));
     }

@@ -1,13 +1,22 @@
 package model.creatures;
 
+import com.google.inject.Inject;
+import diproviders.dimensions.IDimensionsSetter;
 import model.map.Direction;
 import model.map.Field;
 
 public class Doctor extends Movable {
 
-    public Doctor(Field field){
-        super.field = field;
+    private final int worldWidth;
+
+    private final int worldHeight;
+
+    @Inject
+    public Doctor(IDimensionsSetter setter){
+        this.worldWidth = setter.getWidth();
+        this.worldHeight = setter.getHeight();
     }
+
     @Override
     public String toString(){
         return "Doctor " + super.getField().toString();
@@ -29,6 +38,7 @@ public class Doctor extends Movable {
 
     public void teleport(){
         //TODO
+
     }
 
 }
