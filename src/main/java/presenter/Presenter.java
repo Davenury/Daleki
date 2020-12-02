@@ -1,23 +1,33 @@
 package presenter;
 
+import com.google.inject.Inject;
 import javafx.stage.Stage;
 import model.creatures.Dalek;
 import model.creatures.Doctor;
 import model.creatures.MapObject;
 import model.map.*;
 import view.*;
+import view.input.Inputer;
+import view.input.InputerInterface;
 
 public class Presenter {
-    private final Stage stage;
-    private final World world;
-    private final View view;
+    private Stage stage;
+    private World world;
+    private View view;
+    private InputerInterface inputer;
 
-    public Presenter(Stage primaryStage, World world){
+    @Inject
+    public Presenter(InputerInterface inputer){
+        this.inputer = inputer;
+    }
+
+    public void setUpPresenter(Stage primaryStage, World world){
         this.stage = primaryStage;
         this.world = world;
         this.view = new View(primaryStage);
         this.paintWorld();
         this.setInput();
+        this.inputer.setStageAndAddHandler(primaryStage);
     }
 
     private void paintWorld(){
@@ -41,10 +51,9 @@ public class Presenter {
     }
 
     private void setInput(){
-        Inputer inputer = new Inputer(this.stage);
         InputOperationInterface moveOnWorld = this.world::move;
         RepaintWorldOperationInterface repaint = this::paintWorld;
-        inputer.subscribeToInput(moveOnWorld, repaint);
+        this.inputer.subscribeToInput(moveOnWorld, repaint);
 
     }
 

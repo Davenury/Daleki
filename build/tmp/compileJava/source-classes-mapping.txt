@@ -2,8 +2,10 @@ model/creatures/Dalek.java
  model.creatures.Dalek
 model/moves/MoveDecider.java
  model.moves.MoveDecider
-presenter/Presenter.java
- presenter.Presenter
+model/creatures/Doctor.java
+ model.creatures.Doctor
+view/Element.java
+ view.Element
 model/moves/Mover.java
  model.moves.Mover
 model/moves/MoveResult.java
@@ -11,18 +13,18 @@ model/moves/MoveResult.java
 model/map/Direction.java
  model.map.Direction
  model.map.Direction$1
-view/GameOver.java
- view.GameOver
-view/Inputer.java
- view.Inputer
 model/things/NotSoMovable.java
  model.things.NotSoMovable
 model/map/Field.java
  model.map.Field
+view/GameOver.java
+ view.GameOver
 model/EndGameException.java
  model.EndGameException
 view/RepaintWorldOperationInterface.java
  view.RepaintWorldOperationInterface
+model/map/World.java
+ model.map.World
 view/InputOperationInterface.java
  view.InputOperationInterface
 model/creatures/MapObject.java
@@ -36,11 +38,13 @@ model/creatures/Movable.java
  model.creatures.Movable
 model/things/PileOfJunk.java
  model.things.PileOfJunk
-model/map/World.java
- model.map.World
-model/creatures/Doctor.java
- model.creatures.Doctor
-view/Element.java
- view.Element
+guice/GuiceModule.java
+ guice.GuiceModule
+view/input/Inputer.java
+ view.input.Inputer
+presenter/Presenter.java
+ presenter.Presenter
 DalekiApp.java
  DalekiApp
+view/input/InputerInterface.java
+ view.input.InputerInterface

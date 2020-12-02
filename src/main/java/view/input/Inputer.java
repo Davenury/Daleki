@@ -1,4 +1,4 @@
-package view;
+package view.input;
 
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
@@ -6,14 +6,19 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import view.InputOperationInterface;
+import view.RepaintWorldOperationInterface;
 
-public class Inputer {
+public class Inputer implements InputerInterface{
     public PublishSubject<KeyEvent> userInput;
-    private final Stage stage;
+    private Stage stage;
 
-    public Inputer(Stage stage){
-        this.stage = stage;
+    public Inputer(){
         this.userInput = PublishSubject.create();
+    }
+
+    public void setStageAndAddHandler(Stage stage){
+        this.stage = stage;
         this.addKeyEventHandler();
     }
 

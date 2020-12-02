@@ -1,3 +1,6 @@
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import guice.GuiceModule;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.map.World;
@@ -14,7 +17,11 @@ public class DalekiApp extends Application {
 	@Override
 	public void start(Stage primaryStage){
 		this.world = new World(worldWidth, worldHeight);
-		this.presenter = new Presenter(primaryStage, world);
+
+		Injector injector = Guice.createInjector(new GuiceModule());
+
+		this.presenter = injector.getInstance(Presenter.class);
+		this.presenter.setUpPresenter(primaryStage, world);
 	}
 
 	public static void main(String[] args) {
