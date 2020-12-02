@@ -8,6 +8,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class View {
 
@@ -31,6 +32,11 @@ public class View {
 
     public View(Stage primaryStage){
         this.stage = primaryStage;
+    }
+
+    public void setGameOverScene(){
+        root = new Group();
+        stage.setScene(new GameOver(root, worldHeight*fieldSize, worldWidth*fieldSize).getScene());
     }
 
     public void paintWorld(){

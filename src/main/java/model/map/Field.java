@@ -44,7 +44,8 @@ public class Field {
     }
 
     public Field moveFromInput(String input){
-        return this.moveInDirection(Direction.convertInputToDirection(input));
+        Direction direction = Direction.convertInputToDirection(input);
+        return this.moveInDirection(direction);
     }
 
     public boolean isADirection(){

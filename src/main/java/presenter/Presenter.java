@@ -21,6 +21,10 @@ public class Presenter {
     }
 
     private void paintWorld(){
+        if (this.world.gameOver){
+            this.view.setGameOverScene();
+            return;
+        }
         this.view.setParameters(this.getWorldWidth(), this.getWorldHeight());
         this.view.paintWorld();
 
@@ -41,6 +45,7 @@ public class Presenter {
         InputOperationInterface moveOnWorld = this.world::move;
         RepaintWorldOperationInterface repaint = this::paintWorld;
         inputer.subscribeToInput(moveOnWorld, repaint);
+
     }
 
     public int getWorldWidth(){

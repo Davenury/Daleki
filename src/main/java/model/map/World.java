@@ -21,6 +21,8 @@ public class World {
 
     private Mover mover;
 
+    public Boolean gameOver = false;
+
     public World(int width, int height){
         this.width = width;
         this.height = height;
@@ -47,6 +49,7 @@ public class World {
                     input);
         } catch (EndGameException e) {
             e.printStackTrace();   //-> you've lost!
+            this.gameOver = true;
         } catch (IllegalStateException e){  //->TODO sometimes may be teleporation, so there's need to make it out
             e.printStackTrace();
             System.out.println(e.getMessage());
