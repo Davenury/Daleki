@@ -6,8 +6,8 @@ model/things/PileOfJunk.java
  model.things.PileOfJunk
 view/Element.java
  view.Element
-model/moves/Mover.java
- model.moves.Mover
+model/creatures/Dalek.java
+ model.creatures.Dalek
 model/moves/MoveResult.java
  model.moves.MoveResult
 model/map/Direction.java
@@ -36,21 +36,27 @@ model/other/ListConcatener.java
  model.other.ListConcatener
 guice/GuiceModule.java
  guice.GuiceModule
-diproviders/DimensionsSetter.java
- diproviders.DimensionsSetter
-diproviders/IDimensionsSetter.java
- diproviders.IDimensionsSetter
-diproviders/DimensionsSetterProvider.java
- diproviders.DimensionsSetterProvider
-model/creatures/Dalek.java
- model.creatures.Dalek
+model/creatures/DoctorFactory.java
+ model.creatures.DoctorFactory
+model/creatures/Doctor.java
+ model.creatures.Doctor
+diproviders/dimensions/IDimensionsSetter.java
+ diproviders.dimensions.IDimensionsSetter
+diproviders/dimensions/DimensionsSetter.java
+ diproviders.dimensions.DimensionsSetter
+diproviders/dimensions/DimensionsSetterProvider.java
+ diproviders.dimensions.DimensionsSetterProvider
 model/moves/MoveDecider.java
  model.moves.MoveDecider
+model/moves/Mover.java
+ model.moves.Mover
+model/map/WorldFactory.java
+ model.map.WorldFactory
+presenter/PresenterFactory.java
+ presenter.PresenterFactory
 presenter/Presenter.java
  presenter.Presenter
 model/map/World.java
  model.map.World
-model/creatures/Doctor.java
- model.creatures.Doctor
 DalekiApp.java
  DalekiApp

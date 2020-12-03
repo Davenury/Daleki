@@ -16,7 +16,7 @@ public class Presenter {
     private InputerInterface inputer;
 
     @Inject
-    public Presenter(InputerInterface inputer){
+    private Presenter(InputerInterface inputer){
         this.inputer = inputer;
     }
 

@@ -12,8 +12,8 @@ import java.util.*;
 import java.util.HashMap;
 
 public class MoveDecider {
-    private HashMap<Field, MapObject> map= new HashMap<>();
-    private HashMap<Field, Movable> move = new HashMap<>();
+    private HashMap<Field, MapObject> map;
+    private HashMap<Field, Movable> move;
 
     private final int mapWidth;
     private final int mapHeight;
@@ -21,7 +21,8 @@ public class MoveDecider {
     public MoveDecider(int mapWidth, int mapHeight){
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
-        //this.map.put(new Field(5,5), new PileOfJunk(5, 5));// -> uncomment to put a pile of Junk
+        this.map = new HashMap<>();
+        this.move = new HashMap<>();
     }
 
     public HashMap<Movable, MoveResult> simulateMove(List<Movable> movables, String input)
@@ -63,7 +64,8 @@ public class MoveDecider {
             evaluateNotNullEncounter(movable, results, calculatedField, movableOnField);
         }
         else{
-            results.put(movable, MoveResult.OK);
+            if(results.get(movable) != MoveResult.COLLISION)
+                results.put(movable, MoveResult.OK);
             move.put(calculatedField, movable);
         }
     }

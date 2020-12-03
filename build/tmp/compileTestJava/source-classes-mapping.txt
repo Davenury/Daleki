@@ -2,5 +2,9 @@ DoctorTest.java
  DoctorTest
 DalekTest.java
  DalekTest
+DoctorFactoryTest.java
+ DoctorFactoryTest
+WorldFactoryTest.java
+ WorldFactoryTest
 FieldTest.java
  FieldTest

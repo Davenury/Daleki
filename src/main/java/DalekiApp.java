@@ -4,7 +4,9 @@ import guice.GuiceModule;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import model.map.World;
+import model.map.WorldFactory;
 import presenter.Presenter;
+import presenter.PresenterFactory;
 
 public class DalekiApp extends Application {
 
@@ -14,21 +16,8 @@ public class DalekiApp extends Application {
 	@Override
 	public void start(Stage primaryStage){
 		Injector injector = Guice.createInjector(new GuiceModule());
-
-		this.setUpWorld(injector);
-
-		this.setUpPresenter(injector, primaryStage);
-	}
-
-	private void setUpWorld(Injector injector){
-		this.world = injector.getInstance(World.class);
-		this.world.setInjector(injector);
-		this.world.generateExampleGame();
-	}
-
-	private void setUpPresenter(Injector injector, Stage primaryStage) {
-		this.presenter = injector.getInstance(Presenter.class);
-		this.presenter.setUpPresenter(primaryStage, world);
+		this.world = WorldFactory.createWorld(injector);
+		this.presenter = PresenterFactory.createPresenter(primaryStage, this.world, injector);
 	}
 
 	public static void main(String[] args) {
