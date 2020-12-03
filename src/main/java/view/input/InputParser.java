@@ -15,7 +15,7 @@ public class InputParser {
     public static Direction parseInput(String input) throws IllegalStateException{
         input = input.toLowerCase();
         switch (input) {
-            case "a", "w", "s", "d" -> {
+            case "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "w", "s", "d" -> {
                 return Direction.convertInputToDirection(input);
             }
             case "t" -> {
