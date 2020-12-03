@@ -9,6 +9,7 @@ import model.moves.Mover;
 import model.other.ListConcatener;
 import model.things.NotSoMovable;
 import model.things.PileOfJunk;
+import view.input.InputParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class World {
     }
 
     public void generateExampleGame(){
-        this.generateDaleksToBoom();
+        this.generateDalekToMoveBehindTheDoctor();
     }
 
     public int getWidth(){ return width; }
@@ -51,12 +52,13 @@ public class World {
     public void move(String input){
         System.out.println(input);
         try {
+            Direction directionInput = InputParser.parseInput(input);
             this.mapObjects = this.mover.moveAll(
                     mapObjects.stream()
                             .filter(MapObject::isMovable)
                             .map(it -> (Movable) it)
                             .collect(Collectors.toList()),
-                    input);
+                    directionInput);
         } catch (EndGameException e) {
             e.printStackTrace();   //-> you've lost!
             this.gameOver = true;
@@ -69,7 +71,6 @@ public class World {
     /**To boom Daleks, please move one step up (press W key right after beginning of the game)*/
     private void generateDaleksToBoom(){
         Doctor doctor = DoctorFactory.createDoctor(new Field(6, 4), injector);
-        doctor.teleport();
         mapObjects.add(doctor);
         mapObjects.add(new Dalek(doctor, new Field(5, 2)));
         mapObjects.add(new Dalek(doctor, new Field(7, 2)));

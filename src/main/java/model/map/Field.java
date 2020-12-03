@@ -1,5 +1,10 @@
 package model.map;
 
+import view.input.InputParser;
+
+import java.util.*;
+import java.util.ArrayList;
+
 public class Field {
 
     private final int x;
@@ -44,7 +49,7 @@ public class Field {
     }
 
     public Field moveFromInput(String input){
-        Direction direction = Direction.convertInputToDirection(input);
+        Direction direction = InputParser.parseInput(input);
         return this.moveInDirection(direction);
     }
 
@@ -59,5 +64,23 @@ public class Field {
 
     public boolean lessThan(Field other){
         return this.x <= other.x && this.y <= other.y;
+    }
+
+    public List<Field> getFieldsAround(){
+        List<Field> fields = new ArrayList<>();
+        List<Field> vectors = Arrays.asList(
+                new Field(0,1),
+                new Field(1,1),
+                new Field(1,0),
+                new Field(1,-1),
+                new Field(0,-1),
+                new Field(-1,-1),
+                new Field(-1,0),
+                new Field(-1,1)
+            );
+        for(Field vector : vectors){
+            fields.add(this.addAsVector(vector));
+        }
+        return fields;
     }
 }
