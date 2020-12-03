@@ -12,7 +12,7 @@ public class Doctor extends Movable {
     private final int worldHeight;
 
     @Inject
-    public Doctor(IDimensionsSetter setter){
+    private Doctor(IDimensionsSetter setter){
         this.worldWidth = setter.getWidth();
         this.worldHeight = setter.getHeight();
     }
