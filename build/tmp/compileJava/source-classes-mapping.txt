@@ -12,9 +12,8 @@ model/map/Field.java
  model.map.Field
 model/EndGameException.java
  model.EndGameException
-view/View.java
- view.View
- view.View$1
+model/creatures/Doctor.java
+ model.creatures.Doctor
 model/map/WorldFactory.java
  model.map.WorldFactory
 model/creatures/Movable.java
@@ -37,8 +36,8 @@ model/creatures/DoctorFactory.java
  model.creatures.DoctorFactory
 view/input/Inputer.java
  view.input.Inputer
-presenter/Presenter.java
- presenter.Presenter
+model/things/PileOfJunk.java
+ model.things.PileOfJunk
 model/moves/Mover.java
  model.moves.Mover
 view/input/InputParser.java
@@ -58,7 +57,8 @@ model/other/ListConcatener.java
  model.other.ListConcatener
 diproviders/dimensions/DimensionsSetterProvider.java
  diproviders.dimensions.DimensionsSetterProvider
-model/things/PileOfJunk.java
- model.things.PileOfJunk
-model/creatures/Doctor.java
- model.creatures.Doctor
+view/View.java
+ view.View
+ view.View$1
+presenter/Presenter.java
+ presenter.Presenter
