@@ -2,12 +2,9 @@ package view.input;
 
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import view.InputOperationInterface;
-import view.RepaintWorldOperationInterface;
 
 public class Inputer implements InputerInterface{
     public PublishSubject<KeyEvent> userInput;
@@ -28,7 +25,7 @@ public class Inputer implements InputerInterface{
         });
     }
 
-    public void subscribeToInput(InputOperationInterface operation){
+    public void subscribeToInput(StringOperationInterface operation){
         this.userInput
                 .map(KeyEvent::getCode)
                 .map(KeyCode::getChar)
@@ -36,7 +33,7 @@ public class Inputer implements InputerInterface{
                 .subscribe();
     }
 
-    public void subscribeToInput(InputOperationInterface moveOnWorld, RepaintWorldOperationInterface repaint) {
+    public void subscribeToInput(StringOperationInterface moveOnWorld, VoidOperationInterface repaint) {
         this.userInput
                 .map(KeyEvent::getCode)
                 .map(KeyCode::getChar)

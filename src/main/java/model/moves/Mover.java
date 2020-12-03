@@ -2,10 +2,10 @@ package model.moves;
 
 
 import model.EndGameException;
-import model.creatures.Doctor;
 import model.creatures.MapObject;
 import model.creatures.Movable;
-import model.map.*;
+import model.map.Direction;
+import view.input.InputParser;
 import model.things.NotSoMovable;
 
 import java.util.*;
@@ -18,7 +18,8 @@ public class Mover {
         this.moveDecider = new MoveDecider(mapWidth, mapHeight);
     }
 
-    public List<MapObject> moveAll(List<Movable> toMoveObjects, String input) throws EndGameException, IllegalStateException {
+    public List<MapObject> moveAll(List<Movable> toMoveObjects, Direction input)
+            throws EndGameException, IllegalStateException {
         HashMap<Movable, MoveResult> results = this.moveDecider.simulateMove(toMoveObjects, input);
         if(results != null) {
             this.evaluateResults(results, toMoveObjects, input);
@@ -28,14 +29,15 @@ public class Mover {
                 .collect(Collectors.toList());
     }
 
-    private void evaluateResults(HashMap<Movable, MoveResult> results, List<Movable> toMoveObjects, String input) {
+    private void evaluateResults(HashMap<Movable, MoveResult> results, List<Movable> toMoveObjects, Direction input)
+        throws IllegalStateException{
         for (Map.Entry<Movable, MoveResult> entry : results.entrySet()) {
             this.evaluateMovable(entry, toMoveObjects, input);
         }
         this.printResults(results);
     }
 
-    private void evaluateMovable(Map.Entry<Movable, MoveResult> entry, List<Movable> toMoveObjects, String input) {
+    private void evaluateMovable(Map.Entry<Movable, MoveResult> entry, List<Movable> toMoveObjects, Direction input) {
         Movable movable = entry.getKey();
         if (entry.getValue() == MoveResult.OK) {
             this.evaluateOKResult(movable, input);
@@ -44,8 +46,8 @@ public class Mover {
         }
     }
 
-    private void evaluateOKResult(Movable movable, String input) {
-        movable.move(Direction.convertInputToDirection(input));
+    private void evaluateOKResult(Movable movable, Direction input) throws IllegalStateException{
+        movable.move(input);
     }
 
 

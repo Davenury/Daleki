@@ -1,62 +1,64 @@
-view/input/InputerInterface.java
- view.input.InputerInterface
-view/input/Inputer.java
- view.input.Inputer
-model/things/PileOfJunk.java
- model.things.PileOfJunk
-view/Element.java
- view.Element
-model/creatures/Dalek.java
- model.creatures.Dalek
+diproviders/dimensions/IDimensionsSetter.java
+ diproviders.dimensions.IDimensionsSetter
+diproviders/dimensions/DimensionsSetter.java
+ diproviders.dimensions.DimensionsSetter
 model/moves/MoveResult.java
  model.moves.MoveResult
-model/map/Direction.java
- model.map.Direction
- model.map.Direction$1
-model/things/NotSoMovable.java
- model.things.NotSoMovable
-model/map/Field.java
- model.map.Field
+diproviders/dimensions/DimensionsSetterProvider.java
+ diproviders.dimensions.DimensionsSetterProvider
 view/GameOver.java
  view.GameOver
 model/EndGameException.java
  model.EndGameException
-view/RepaintWorldOperationInterface.java
- view.RepaintWorldOperationInterface
-model/creatures/Movable.java
- model.creatures.Movable
-view/InputOperationInterface.java
- view.InputOperationInterface
-model/creatures/MapObject.java
- model.creatures.MapObject
+view/Element.java
+ view.Element
 view/View.java
  view.View
  view.View$1
 model/other/ListConcatener.java
  model.other.ListConcatener
+model/things/PileOfJunk.java
+ model.things.PileOfJunk
+model/things/NotSoMovable.java
+ model.things.NotSoMovable
+view/input/InputParser.java
+ view.input.InputParser
+view/input/StringOperationInterface.java
+ view.input.StringOperationInterface
+view/input/Inputer.java
+ view.input.Inputer
+model/map/Field.java
+ model.map.Field
+view/input/VoidOperationInterface.java
+ view.input.VoidOperationInterface
+view/input/InputerInterface.java
+ view.input.InputerInterface
 guice/GuiceModule.java
  guice.GuiceModule
-model/creatures/DoctorFactory.java
- model.creatures.DoctorFactory
+model/map/WorldFactory.java
+ model.map.WorldFactory
+model/map/Direction.java
+ model.map.Direction
+ model.map.Direction$1
+model/map/World.java
+ model.map.World
+presenter/PresenterFactory.java
+ presenter.PresenterFactory
+model/creatures/MapObject.java
+ model.creatures.MapObject
+model/creatures/Movable.java
+ model.creatures.Movable
+DalekiApp.java
+ DalekiApp
+model/creatures/Dalek.java
+ model.creatures.Dalek
 model/creatures/Doctor.java
  model.creatures.Doctor
-diproviders/dimensions/IDimensionsSetter.java
- diproviders.dimensions.IDimensionsSetter
-diproviders/dimensions/DimensionsSetter.java
- diproviders.dimensions.DimensionsSetter
-diproviders/dimensions/DimensionsSetterProvider.java
- diproviders.dimensions.DimensionsSetterProvider
+model/creatures/DoctorFactory.java
+ model.creatures.DoctorFactory
+presenter/Presenter.java
+ presenter.Presenter
 model/moves/MoveDecider.java
  model.moves.MoveDecider
 model/moves/Mover.java
  model.moves.Mover
-model/map/WorldFactory.java
- model.map.WorldFactory
-presenter/PresenterFactory.java
- presenter.PresenterFactory
-presenter/Presenter.java
- presenter.Presenter
-model/map/World.java
- model.map.World
-DalekiApp.java
- DalekiApp

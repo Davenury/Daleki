@@ -7,7 +7,9 @@ import model.creatures.Doctor;
 import model.creatures.MapObject;
 import model.map.*;
 import view.*;
+import view.input.StringOperationInterface;
 import view.input.InputerInterface;
+import view.input.VoidOperationInterface;
 
 public class Presenter {
     private Stage stage;
@@ -50,8 +52,8 @@ public class Presenter {
     }
 
     private void setInput(){
-        InputOperationInterface moveOnWorld = this.world::move;
-        RepaintWorldOperationInterface repaint = this::paintWorld;
+        StringOperationInterface moveOnWorld = this.world::move;
+        VoidOperationInterface repaint = this::paintWorld;
         this.inputer.subscribeToInput(moveOnWorld, repaint);
 
     }

@@ -14,6 +14,7 @@ import java.util.HashMap;
 public class MoveDecider {
     private HashMap<Field, MapObject> map;
     private HashMap<Field, Movable> move;
+    private HashMap<Field, Movable> previousMove;
 
     private final int mapWidth;
     private final int mapHeight;
@@ -23,11 +24,67 @@ public class MoveDecider {
         this.mapHeight = mapHeight;
         this.map = new HashMap<>();
         this.move = new HashMap<>();
+        this.previousMove = new HashMap<>();
     }
 
-    public HashMap<Movable, MoveResult> simulateMove(List<Movable> movables, String input)
+    public HashMap<Movable, MoveResult> simulateMove(List<Movable> movables, Direction input)
             throws EndGameException, IllegalStateException {
         HashMap<Movable, MoveResult> results = new HashMap<>();
+        if(input == Direction.TELEPORT){
+            simulateMoveWithTeleportation(movables, results);
+        }
+        else{
+            results = simulateMoveWithoutTeleportation(movables, input, results);
+        }
+        this.copyMove();
+        this.move.clear();
+        return results;
+    }
+
+    private void copyMove() {
+        previousMove.clear();
+        for(Map.Entry<Field, Movable> entry : move.entrySet()){
+            previousMove.put(entry.getKey(), entry.getValue());
+        }
+    }
+
+    private void simulateMoveWithTeleportation(List<Movable> movables, HashMap<Movable,
+            MoveResult> results) throws EndGameException{
+        Field teleportationField = new Field(1, 1);
+        for(Movable movable : movables){
+            results.put(movable, MoveResult.OK);
+            if(movable instanceof Doctor){
+                teleportationField = ((Doctor) movable).teleportationField;
+                while(this.getTeleportCondition(teleportationField)){
+                    ((Doctor) movable).setNewTeleportationField();
+                    teleportationField = ((Doctor) movable).teleportationField;
+                    System.out.println(teleportationField);
+                }
+            }
+            else {      // -> nie chcemy, żeby Doctor się poruszył. Chcemy znaleźć dla niego dobre miejsce
+                checkCollisionWithPieceOfJunkInTheMap(movable, results, Direction.STAY);
+                checkCollisionWithPreviousMoves(movable, results, Direction.STAY);
+            }
+        }
+        for(Movable movable : movables){
+            if(movable instanceof Doctor)
+                movable.setField(teleportationField);
+        }
+    }
+
+    private boolean getTeleportCondition(Field teleportationField){
+        List<Field> dangerFields = teleportationField.getFieldsAround();
+        dangerFields.add(teleportationField);
+        System.out.println("Here");
+        for(Field dangerField : dangerFields){
+            if(map.get(dangerField) != null || previousMove.get(dangerField) != null) return true;
+        }
+        return false;
+    }
+
+    private HashMap<Movable, MoveResult> simulateMoveWithoutTeleportation(List<Movable> movables, Direction input,
+                                                  HashMap<Movable, MoveResult> results)
+                                                    throws EndGameException{
         for (Movable movable : movables){
             if(movable instanceof Doctor)
                 if(!isInMap(movable, input))
@@ -35,12 +92,17 @@ public class MoveDecider {
             checkCollisionWithPieceOfJunkInTheMap(movable, results, input);
             checkCollisionWithPreviousMoves(movable, results, input);
         }
-        clearMove();
         return results;
     }
 
+    private boolean isInMap(Movable movable, Direction input){
+        Field calculatedField = calculateField(movable, input);
+        return calculatedField.moreThan(new Field(1, 1)) &&
+                calculatedField.lessThan(new Field(mapWidth, mapHeight));
+    }
+
     private void checkCollisionWithPieceOfJunkInTheMap(Movable movable,
-                                                       HashMap<Movable, MoveResult> results, String input)
+                                                       HashMap<Movable, MoveResult> results, Direction input)
             throws EndGameException, IllegalStateException {
         Field calculatedField = calculateField(movable, input);
         if(map.get(calculatedField) != null){
@@ -52,7 +114,7 @@ public class MoveDecider {
         }
     }
 
-    private void checkCollisionWithPreviousMoves(Movable movable, HashMap<Movable, MoveResult> results, String input)
+    private void checkCollisionWithPreviousMoves(Movable movable, HashMap<Movable, MoveResult> results, Direction input)
             throws EndGameException, IllegalStateException {
         Field calculatedField = calculateField(movable, input);
         Movable movableOnFutureField = move.get(calculatedField);
@@ -82,18 +144,8 @@ public class MoveDecider {
         }
     }
 
-    private Field calculateField(Movable movable, String input) throws IllegalStateException{
-        return movable.calculateNextMove(Direction.convertInputToDirection(input));
-    }
-
-    private boolean isInMap(Movable movable, String input){
-        Field calculatedField = calculateField(movable, input);
-        return calculatedField.moreThan(new Field(1, 1)) &&
-                calculatedField.lessThan(new Field(mapWidth, mapHeight));
-    }
-
-    private void clearMove(){
-        move.clear();
+    private Field calculateField(Movable movable, Direction input) throws IllegalStateException{
+        return movable.calculateNextMove(input);
     }
 
     public List<MapObject> getWorldMapAsList(){
