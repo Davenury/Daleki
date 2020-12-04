@@ -1,6 +1,5 @@
 package model.creatures;
 
-import model.creatures.MapObject;
 import model.map.Direction;
 import model.map.Field;
 

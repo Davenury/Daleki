@@ -5,7 +5,6 @@ import model.EndGameException;
 import model.creatures.MapObject;
 import model.creatures.Movable;
 import model.map.Direction;
-import view.input.InputParser;
 import model.things.NotSoMovable;
 
 import java.util.*;

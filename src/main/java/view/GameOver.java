@@ -6,7 +6,6 @@ import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.BoxBlur;
@@ -24,7 +23,6 @@ import javafx.util.Duration;
 
 import static java.lang.Math.random;
 
-import javax.swing.*;
 
 public class GameOver {
     Scene scene;
