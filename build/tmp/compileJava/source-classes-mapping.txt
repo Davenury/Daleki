@@ -6,10 +6,10 @@ presenter/PresenterFactory.java
  presenter.PresenterFactory
 view/input/StringOperationInterface.java
  view.input.StringOperationInterface
-view/GameOver.java
- view.GameOver
 model/map/Field.java
  model.map.Field
+view/GameOver.java
+ view.GameOver
 model/EndGameException.java
  model.EndGameException
 view/View.java
