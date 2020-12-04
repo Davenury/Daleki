@@ -16,36 +16,30 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import static view.Element.DALEK;
-
 public class View {
 
-    private Stage stage;
+    private final Stage stage;
     private Group root;
 
     private int worldHeight;
     private int worldWidth;
 
-    private float fieldSize;
-    private final int fieldGap = 2;
+    private double fieldSize;
+    private final double fieldGap = 2.0d;
 
-    private float doctorSize = 60;
-    private final Color doctorColor = Color.BLUE;
+    private double doctorSize;
+    private final String doctorTexturePath = "src/images/doctor.png";
 
-    private float dalekSize = 60;
-    private final Color dalekColor = Color.RED;
-    private final String doctorImageSrc = "src/images/doctor.png";
+    private double dalekSize;
+    private final String dalekTexturePath = "src/images/dalek.png";
 
-    private final String dalekImageSrc = "src/images/dalek.png";
-
-    private float junkSize;
+    private double junkSize;
     private final Color junkColor = Color.DARKGRAY;
 
-    private final float sidePanelWidth = 200;
+    private final double sidePanelWidth = 200.0d;
 
     public View(Stage primaryStage){
         this.stage = primaryStage;
@@ -108,49 +102,47 @@ public class View {
     }
 
     public void paintElement(Element elementType, int gridX, int gridY){
-        float elementSize = 0;
+        double elementSize;
         Color elementColor = null;
-        Boolean pictureType = true;
+        boolean pictureType = true;
 
-        String elementImageSrc = null;
+        String elementTexturePath = null;
 
-        switch(elementType) {
-            case DOCTOR:
-                elementImageSrc = doctorImageSrc;
+        switch (elementType) {
+            case DOCTOR -> {
+                elementTexturePath = doctorTexturePath;
                 elementSize = doctorSize;
-                break;
-            case DALEK:
-                elementImageSrc = dalekImageSrc;
+            }
+            case DALEK -> {
+                elementTexturePath = dalekTexturePath;
                 elementSize = dalekSize;
-                break;
-            default:
-                pictureType = false;
-        }
-        switch(elementType) {
-            case JUNK:
+            }
+            default -> {
                 elementSize = junkSize;
                 elementColor = junkColor;
+                pictureType = false;
+            }
         }
-            if (pictureType == false) {
-                Shape element = new Circle(calculateElementPosition(gridX, false), calculateElementPosition(gridY, true), elementSize / 2,  elementColor);
-                root.getChildren().add(element);
-            }
-            
-            if (pictureType == true){
-                Image image = null;
-                try {
-                    image = new Image(new FileInputStream(elementImageSrc));
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                ImageView imageView1 = new ImageView(image);
-                imageView1.setY(calculateImageElementPosition(gridY, elementSize, true));
-                imageView1.setX(calculateImageElementPosition(gridX, elementSize, false));
+        if (!pictureType) {
+            Shape element = new Circle(calculateElementPosition(gridX, false), calculateElementPosition(gridY, true), elementSize / 2,  elementColor);
+            root.getChildren().add(element);
+        }
 
-                imageView1.setFitHeight(elementSize);
-                imageView1.setFitWidth(elementSize);
-                root.getChildren().add(imageView1);
+        if (pictureType){
+            Image image = null;
+            try {
+                image = new Image(new FileInputStream(elementTexturePath));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
+            ImageView imageView1 = new ImageView(image);
+            imageView1.setY(calculateImageElementPosition(gridY, elementSize, true));
+            imageView1.setX(calculateImageElementPosition(gridX, elementSize, false));
+
+            imageView1.setFitHeight(elementSize);
+            imageView1.setFitWidth(elementSize);
+            root.getChildren().add(imageView1);
+        }
     }
 
     public void setParameters(int worldWidth, int worldHeight){
@@ -168,15 +160,15 @@ public class View {
     }
 
     private void setWindowSize(){
-        double gridMaxWidth = Screen.getPrimary().getBounds().getWidth() - sidePanelWidth - 100;
-        double gridMaxHeight = Screen.getPrimary().getBounds().getHeight() - 100;
+        double gridMaxWidth = Screen.getPrimary().getBounds().getWidth() - sidePanelWidth - 100.0d;
+        double gridMaxHeight = Screen.getPrimary().getBounds().getHeight() - 100.0d;
 
-        double fieldMaxWidth = gridMaxWidth/worldWidth - fieldGap;
-        double fieldMaxHeight = gridMaxHeight/worldHeight - fieldGap;
+        double fieldMaxWidth = gridMaxWidth/(double)worldWidth - fieldGap;
+        double fieldMaxHeight = gridMaxHeight/(double)worldHeight - fieldGap;
 
-        fieldSize = (float) (fieldMaxWidth < fieldMaxHeight ? fieldMaxWidth : fieldMaxHeight);
-        doctorSize = (float) (fieldSize * 0.9);
-        dalekSize = (float) (fieldSize * 0.8);
+        fieldSize = Math.min(fieldMaxWidth, fieldMaxHeight);
+        doctorSize = fieldSize * 0.9d;
+        dalekSize = fieldSize * 0.8d;
         junkSize = fieldSize;
 
         stage.setResizable(false);
@@ -187,8 +179,8 @@ public class View {
         return gridPosition*fieldSize - fieldSize/2 + (gridPosition-1)*fieldGap;
     }
 
-    private double calculateImageElementPosition(int gridPosition, float picSize, boolean yAxis){
+    private double calculateImageElementPosition(int gridPosition, double picSize, boolean yAxis){
         if(yAxis) gridPosition = worldHeight - gridPosition + 1;
-        return gridPosition*fieldSize - fieldSize + (gridPosition - 1)*fieldGap + (fieldSize - picSize)/2;
+        return (double)gridPosition*fieldSize - fieldSize + ((double)gridPosition - 1.0d)*fieldGap + (fieldSize - picSize)/2.0d;
     }
 }
