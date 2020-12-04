@@ -1,14 +1,17 @@
 package view;
 
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class View {
 
@@ -43,6 +46,8 @@ public class View {
         root = new Group();
         stage.setTitle("Daleki");
 
+        HBox hBox = new HBox();
+
         GridPane gridPane = new GridPane();
 
         gridPane.setHgap(fieldGap);
@@ -56,7 +61,32 @@ public class View {
             }
         }
 
-        root.getChildren().add(gridPane);
+        hBox.getChildren().add(gridPane);
+
+        VBox sidePanel = new VBox();
+        sidePanel.setPrefWidth(300);
+        sidePanel.setAlignment(Pos.CENTER);
+        sidePanel.setBackground(new Background(new BackgroundFill(Color.DIMGRAY,
+                CornerRadii.EMPTY,
+                Insets.EMPTY)));
+        Text instruction = new Text(
+                                "W/8\t\tgo North\n" +
+                                "9\t\tgo North-East\n" +
+                                "D/6\t\tgo East\n" +
+                                "3\t\tgo South-East\n" +
+                                "S/2\t\tgo South\n" +
+                                "1\t\tgo South-West\n" +
+                                "A/4\t\tgo West\n" +
+                                "7\t\tgo North-West\n" +
+                                "Q/5\t\tstay\n" +
+                                "T\t\tteleport"
+        );
+        instruction.setFill(Color.LIGHTGRAY);
+        sidePanel.getChildren().add(instruction);
+
+        hBox.getChildren().add(sidePanel);
+
+        root.getChildren().add(hBox);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
