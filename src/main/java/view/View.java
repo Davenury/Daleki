@@ -9,8 +9,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class View {
@@ -21,17 +21,19 @@ public class View {
     private int worldHeight;
     private int worldWidth;
 
-    private final int fieldSize = 60;
+    private double fieldSize;
     private final int fieldGap = 2;
 
-    private final float doctorSize = 50;
+    private double doctorSize;
     private final Color doctorColor = Color.BLUE;
 
-    private final float dalekSize = 40;
+    private double dalekSize;
     private final Color dalekColor = Color.RED;
 
-    private final float junkSize = fieldSize;
+    private double junkSize;
     private final Color junkColor = Color.DARKGRAY;
+
+    private final float sidePanelWidth = 200;
 
     public View(Stage primaryStage){
         this.stage = primaryStage;
@@ -64,7 +66,7 @@ public class View {
         hBox.getChildren().add(gridPane);
 
         VBox sidePanel = new VBox();
-        sidePanel.setPrefWidth(300);
+        sidePanel.setPrefWidth(sidePanelWidth);
         sidePanel.setAlignment(Pos.CENTER);
         sidePanel.setBackground(new Background(new BackgroundFill(Color.DIMGRAY,
                 CornerRadii.EMPTY,
@@ -94,7 +96,7 @@ public class View {
     }
 
     public void paintElement(Element elementType, int gridX, int gridY){
-        float elementSize;
+        double elementSize;
         Color elementColor;
         switch(elementType) {
             case DOCTOR:
@@ -117,6 +119,7 @@ public class View {
     public void setParameters(int worldWidth, int worldHeight){
         this.setWorldWidth(worldWidth);
         this.setWorldHeight(worldHeight);
+        this.setWindowSize();
     }
 
     private void setWorldWidth(int worldWidth){
@@ -127,8 +130,23 @@ public class View {
         this.worldHeight = worldHeight;
     }
 
+    private void setWindowSize(){
+        double gridMaxWidth = Screen.getPrimary().getBounds().getWidth() - sidePanelWidth - 100;
+        double gridMaxHeight = Screen.getPrimary().getBounds().getHeight() - 100;
+
+        double fieldMaxWidth = gridMaxWidth/worldWidth - fieldGap;
+        double fieldMaxHeight = gridMaxHeight/worldHeight - fieldGap;
+
+        fieldSize = fieldMaxWidth < fieldMaxHeight ? fieldMaxWidth : fieldMaxHeight;
+        doctorSize = fieldSize * 0.9;
+        dalekSize = fieldSize * 0.8;
+        junkSize = fieldSize;
+
+        stage.setResizable(false);
+    }
+
     private double calculateElementPosition(int gridPosition, boolean yAxis){
         if(yAxis) gridPosition = worldHeight - gridPosition + 1;
-        return gridPosition*fieldSize - (double) fieldSize/2 + (gridPosition-1)*fieldGap;
+        return gridPosition*fieldSize - fieldSize/2 + (gridPosition-1)*fieldGap;
     }
 }
