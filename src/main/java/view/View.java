@@ -47,7 +47,8 @@ public class View {
 
     public void setGameOverScene(){
         root = new Group();
-        stage.setScene(new GameOver(root, worldHeight*fieldSize, worldWidth*fieldSize).getScene());
+        stage.setScene(new GameOver(root, worldHeight*(fieldSize+fieldGap) - fieldGap,
+                worldWidth*(fieldSize+fieldGap) - fieldGap + sidePanelWidth).getScene());
     }
 
     public void paintWorld(){
@@ -92,7 +93,8 @@ public class View {
             }
         }
         if (!pictureType) {
-            Shape element = new Circle(calculateElementPosition(gridX, false), calculateElementPosition(gridY, true), elementSize / 2.0d,  elementColor);
+            Shape element = new Circle(calculateElementPosition(gridX, false),
+                    calculateElementPosition(gridY, true), elementSize / 2.0d,  elementColor);
             root.getChildren().add(element);
         }
 
@@ -149,7 +151,7 @@ public class View {
 
     private double calculateImageElementPosition(int gridPosition, double picSize, boolean yAxis){
         if(yAxis) gridPosition = worldHeight - gridPosition + 1;
-        return (double)gridPosition*fieldSize - fieldSize + ((double)gridPosition - 1.0d)*fieldGap + (fieldSize - picSize)/2.0d;
+        return (double)gridPosition*fieldSize - fieldSize + ((double)gridPosition-1.0d)*fieldGap + (fieldSize-picSize)/2.0d;
     }
 
     private GridPane createWorldGrid(){
@@ -176,7 +178,7 @@ public class View {
                 CornerRadii.EMPTY,
                 Insets.EMPTY)));
         Text instruction = new Text(
-                "W/8\t\tgo North\n" +
+                        "W/8\t\tgo North\n" +
                         "9\t\tgo North-East\n" +
                         "D/6\t\tgo East\n" +
                         "3\t\tgo South-East\n" +
