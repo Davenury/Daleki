@@ -54,47 +54,15 @@ public class View {
         root = new Group();
         stage.setTitle("Daleki");
 
-        HBox hBox = new HBox();
+        HBox gameView = new HBox();
 
-        GridPane gridPane = new GridPane();
+        GridPane worldGrid = createWorldGrid();
+        gameView.getChildren().add(worldGrid);
 
-        gridPane.setHgap(fieldGap);
-        gridPane.setVgap(fieldGap);
-        gridPane.setStyle("-fx-background-color: grey;");
+        VBox sidePanel = createSidePanel();
+        gameView.getChildren().add(sidePanel);
 
-        for(int x=0; x<this.worldWidth; x++) {
-            for(int y=0; y<this.worldHeight; y++) {
-                Rectangle rect = new Rectangle(fieldSize, fieldSize, Color.LIGHTGRAY);
-                gridPane.add(rect, x, y);
-            }
-        }
-
-        hBox.getChildren().add(gridPane);
-
-        VBox sidePanel = new VBox();
-        sidePanel.setPrefWidth(sidePanelWidth);
-        sidePanel.setAlignment(Pos.CENTER);
-        sidePanel.setBackground(new Background(new BackgroundFill(Color.DIMGRAY,
-                CornerRadii.EMPTY,
-                Insets.EMPTY)));
-        Text instruction = new Text(
-                                "W/8\t\tgo North\n" +
-                                "9\t\tgo North-East\n" +
-                                "D/6\t\tgo East\n" +
-                                "3\t\tgo South-East\n" +
-                                "S/2\t\tgo South\n" +
-                                "1\t\tgo South-West\n" +
-                                "A/4\t\tgo West\n" +
-                                "7\t\tgo North-West\n" +
-                                "Q/5\t\tstay\n" +
-                                "T\t\tteleport"
-        );
-        instruction.setFill(Color.LIGHTGRAY);
-        sidePanel.getChildren().add(instruction);
-
-        hBox.getChildren().add(sidePanel);
-
-        root.getChildren().add(hBox);
+        root.getChildren().add(gameView);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -124,7 +92,7 @@ public class View {
             }
         }
         if (!pictureType) {
-            Shape element = new Circle(calculateElementPosition(gridX, false), calculateElementPosition(gridY, true), elementSize / 2,  elementColor);
+            Shape element = new Circle(calculateElementPosition(gridX, false), calculateElementPosition(gridY, true), elementSize / 2.0d,  elementColor);
             root.getChildren().add(element);
         }
 
@@ -176,11 +144,51 @@ public class View {
 
     private double calculateElementPosition(int gridPosition, boolean yAxis){
         if(yAxis) gridPosition = worldHeight - gridPosition + 1;
-        return gridPosition*fieldSize - fieldSize/2 + (gridPosition-1)*fieldGap;
+        return (double)gridPosition*fieldSize - fieldSize/2.0d + ((double)gridPosition-1.0d)*fieldGap;
     }
 
     private double calculateImageElementPosition(int gridPosition, double picSize, boolean yAxis){
         if(yAxis) gridPosition = worldHeight - gridPosition + 1;
         return (double)gridPosition*fieldSize - fieldSize + ((double)gridPosition - 1.0d)*fieldGap + (fieldSize - picSize)/2.0d;
+    }
+
+    private GridPane createWorldGrid(){
+        GridPane worldGrid = new GridPane();
+
+        worldGrid.setHgap(fieldGap);
+        worldGrid.setVgap(fieldGap);
+        worldGrid.setStyle("-fx-background-color: grey;");
+
+        for(int x=0; x<this.worldWidth; x++) {
+            for(int y=0; y<this.worldHeight; y++) {
+                Rectangle rect = new Rectangle(fieldSize, fieldSize, Color.LIGHTGRAY);
+                worldGrid.add(rect, x, y);
+            }
+        }
+        return worldGrid;
+    }
+
+    private VBox createSidePanel(){
+        VBox sidePanel = new VBox();
+        sidePanel.setPrefWidth(sidePanelWidth);
+        sidePanel.setAlignment(Pos.CENTER);
+        sidePanel.setBackground(new Background(new BackgroundFill(Color.DIMGRAY,
+                CornerRadii.EMPTY,
+                Insets.EMPTY)));
+        Text instruction = new Text(
+                "W/8\t\tgo North\n" +
+                        "9\t\tgo North-East\n" +
+                        "D/6\t\tgo East\n" +
+                        "3\t\tgo South-East\n" +
+                        "S/2\t\tgo South\n" +
+                        "1\t\tgo South-West\n" +
+                        "A/4\t\tgo West\n" +
+                        "7\t\tgo North-West\n" +
+                        "Q/5\t\tstay\n" +
+                        "T\t\tteleport"
+        );
+        instruction.setFill(Color.LIGHTGRAY);
+        sidePanel.getChildren().add(instruction);
+        return sidePanel;
     }
 }
