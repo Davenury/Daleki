@@ -27,8 +27,8 @@ import static java.lang.Math.random;
 public class GameOver {
     Scene scene;
 
-    GameOver(Group root, double worldHeight, double worldWidth) {
-        this.scene = new Scene(root,  worldWidth, worldHeight, Color.BLACK);
+    GameOver(Group root, double height, double width) {
+        this.scene = new Scene(root, width, height, Color.BLACK);
         if (random()<0.5)
             this.matrixTheme(root);
         else this.colorCirclesTheme(root);

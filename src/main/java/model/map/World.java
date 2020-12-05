@@ -49,8 +49,15 @@ public class World {
         return ListConcatener.concatenate(mapObjects, mover.getMapObjects());
     }
 
-    public void move(String input){
+    public void update(String input){
         System.out.println(input);
+        if(!gameOver)
+            move(input);
+        else
+            resetWorld();
+    }
+
+    private void move(String input){
         try {
             Direction directionInput = InputParser.parseInput(input);
             this.mapObjects = this.mover.moveAll(
@@ -94,5 +101,11 @@ public class World {
         List<NotSoMovable> initialMap = new ArrayList<NotSoMovable>();
         initialMap.add(new PileOfJunk(5,4));
         this.mover.setInitialMap(initialMap);
+    }
+
+    private void resetWorld(){
+        gameOver = false;
+        mapObjects.clear();
+        generateExampleGame();
     }
 }

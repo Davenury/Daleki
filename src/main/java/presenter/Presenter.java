@@ -52,9 +52,9 @@ public class Presenter {
     }
 
     private void setInput(){
-        StringOperationInterface moveOnWorld = this.world::move;
+        StringOperationInterface updateWorld = this.world::update;
         VoidOperationInterface repaint = this::paintWorld;
-        this.inputer.subscribeToInput(moveOnWorld, repaint);
+        this.inputer.subscribeToInput(updateWorld, repaint);
 
     }
 
