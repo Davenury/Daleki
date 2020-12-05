@@ -24,7 +24,7 @@ public class World {
     private Mover mover;
     private Injector injector;
 
-    public Boolean gameOver = false;
+    private Boolean gameOver = false;
 
     @Inject
     private World(IDimensionsSetter setter){
@@ -44,6 +44,8 @@ public class World {
     public int getWidth(){ return width; }
 
     public int getHeight(){ return height; }
+
+    public boolean getGameOver(){ return this.gameOver; }
 
     public List<MapObject> getMapObjects() {
         return ListConcatener.concatenate(mapObjects, mover.getMapObjects());
@@ -98,7 +100,7 @@ public class World {
         Doctor doctor = DoctorFactory.createDoctor(new Field(6, 4), injector);
         mapObjects.add(doctor);
         mapObjects.add(new Dalek(doctor, new Field(4, 4)));
-        List<NotSoMovable> initialMap = new ArrayList<NotSoMovable>();
+        List<NotSoMovable> initialMap = new ArrayList<>();
         initialMap.add(new PileOfJunk(5,4));
         this.mover.setInitialMap(initialMap);
     }
@@ -108,4 +110,5 @@ public class World {
         mapObjects.clear();
         generateExampleGame();
     }
+
 }
