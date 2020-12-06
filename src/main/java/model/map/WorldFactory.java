@@ -4,10 +4,16 @@ import com.google.inject.Injector;
 
 public class WorldFactory {
 
+    private static World world;
+
     public static World createWorld(Injector injector){
-        World world = injector.getInstance(World.class);
+        world = injector.getInstance(World.class);
         world.setInjector(injector);
-        world.generateExampleGame();
+        resetWorld();
         return world;
+    }
+
+    public static void resetWorld(){
+        world.generateExampleGame();
     }
 }

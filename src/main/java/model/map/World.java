@@ -108,7 +108,7 @@ public class World {
     private void resetWorld(){
         gameOver = false;
         mapObjects.clear();
-        generateExampleGame();
+        WorldFactory.resetWorld();
     }
 
 }
