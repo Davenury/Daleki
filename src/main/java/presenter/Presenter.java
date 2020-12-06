@@ -32,7 +32,7 @@ public class Presenter {
     }
 
     private void paintWorld(){
-        if (this.world.gameOver){
+        if (world.getGameOver()){
             this.view.setGameOverScene();
             return;
         }
