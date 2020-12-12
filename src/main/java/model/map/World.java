@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import diproviders.dimensions.IDimensionsSetter;
 import model.EndGameException;
+import model.GameWonException;
 import model.creatures.*;
 import model.moves.Mover;
 import model.other.ListConcatener;
@@ -25,6 +26,7 @@ public class World {
     private Injector injector;
 
     private Boolean gameOver = false;
+    private Boolean gameWon = false;
 
     @Inject
     private World(IDimensionsSetter setter){
@@ -38,7 +40,7 @@ public class World {
     }
 
     public void generateExampleGame(){
-        this.generateDalekToMoveBehindTheDoctor();
+        this.generateDalekToBoomIntoPieceOfJunk();
     }
 
     public int getWidth(){ return width; }
@@ -47,16 +49,18 @@ public class World {
 
     public boolean getGameOver(){ return this.gameOver; }
 
+    public boolean getGameWon() { return this.gameWon; }
+
     public List<MapObject> getMapObjects() {
         return ListConcatener.concatenate(mapObjects, mover.getMapObjects());
     }
 
     public void update(String input){
         System.out.println(input);
-        if(!gameOver)
-            move(input);
-        else
+        if(gameOver || gameWon)
             resetWorld();
+        else
+            move(input);
     }
 
     private void move(String input){
@@ -71,7 +75,11 @@ public class World {
         } catch (EndGameException e) {
             e.printStackTrace();   //-> you've lost!
             this.gameOver = true;
-        } catch (IllegalStateException e){  //->TODO sometimes may be teleporation, so there's need to make it out
+        } catch (GameWonException e) {
+            e.printStackTrace();
+            this.gameWon = true;
+        }
+        catch (IllegalStateException e){  //->TODO sometimes may be teleporation, so there's need to make it out
             e.printStackTrace();
             System.out.println(e.getMessage());
         }
@@ -109,6 +117,7 @@ public class World {
         mapObjects.clear();
         WorldFactory.resetWorld();
         gameOver = false;
+        gameWon = false;
     }
 
 }

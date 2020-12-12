@@ -24,11 +24,13 @@ import javafx.util.Duration;
 import static java.lang.Math.random;
 
 
-public class GameOver {
-    Scene scene;
+public class GameEnd {
+    private Scene scene;
+    private String message;
 
-    GameOver(Group root, double height, double width) {
+    public GameEnd(String endMessage, Group root, double height, double width) {
         this.scene = new Scene(root, width, height, Color.BLACK);
+        this.message = endMessage;
         if (random()<0.5)
             this.matrixTheme(root);
         else this.colorCirclesTheme(root);
@@ -86,7 +88,7 @@ public class GameOver {
         Text text = new Text();
 
         //Setting the text to be added.
-        text.setText("GAME\nOVER");
+        text.setText(message);
         text.setFont(Font.font("arial", FontWeight.BOLD, FontPosture.REGULAR, 100));
 
         //Setting the color
@@ -173,7 +175,7 @@ public class GameOver {
         Text text = new Text();
 
         //Setting the text to be added.
-        text.setText("GAME\nOVER");
+        text.setText(message);
         text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 100));
 
         //setting the position of the text

@@ -33,7 +33,11 @@ public class Presenter {
 
     private void paintWorld(){
         if (world.getGameOver()){
-            this.view.setGameOverScene();
+            this.view.setGameLostScene();
+            return;
+        }
+        else if (world.getGameWon()){
+            this.view.setGameWonScene();
             return;
         }
         this.view.setParameters(this.getWorldWidth(), this.getWorldHeight());

@@ -2,6 +2,8 @@ package model.moves;
 
 
 import model.EndGameException;
+import model.GameWonException;
+import model.creatures.Dalek;
 import model.creatures.MapObject;
 import model.creatures.Movable;
 import model.map.Direction;
@@ -12,13 +14,14 @@ import java.util.stream.Collectors;
 
 public class Mover {
     private MoveDecider moveDecider;
+    private boolean allDaleksRemoved;
 
     public Mover(int mapWidth, int mapHeight){
         this.moveDecider = new MoveDecider(mapWidth, mapHeight);
     }
 
     public List<MapObject> moveAll(List<Movable> toMoveObjects, Direction input)
-            throws EndGameException, IllegalStateException {
+            throws EndGameException, IllegalStateException, GameWonException {
         HashMap<Movable, MoveResult> results = this.moveDecider.simulateMove(toMoveObjects, input);
         if(results != null) {
             this.evaluateResults(results, toMoveObjects, input);
@@ -29,17 +32,20 @@ public class Mover {
     }
 
     private void evaluateResults(HashMap<Movable, MoveResult> results, List<Movable> toMoveObjects, Direction input)
-        throws IllegalStateException{
+            throws IllegalStateException, GameWonException {
+        allDaleksRemoved = true;
         for (Map.Entry<Movable, MoveResult> entry : results.entrySet()) {
             this.evaluateMovable(entry, toMoveObjects, input);
         }
         this.printResults(results);
+        if(allDaleksRemoved) throw new GameWonException();
     }
 
     private void evaluateMovable(Map.Entry<Movable, MoveResult> entry, List<Movable> toMoveObjects, Direction input) {
         Movable movable = entry.getKey();
         if (entry.getValue() == MoveResult.OK) {
             this.evaluateOKResult(movable, input);
+            if(movable instanceof Dalek) allDaleksRemoved = false;
         } else {
             toMoveObjects.remove(movable);
         }

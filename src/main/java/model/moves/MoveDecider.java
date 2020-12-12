@@ -106,7 +106,7 @@ public class MoveDecider {
             throws EndGameException, IllegalStateException {
         Field calculatedField = calculateField(movable, input);
         if(map.get(calculatedField) != null){
-            if(movable instanceof Doctor) throw new EndGameException("Game Over");
+            if(movable instanceof Doctor) throw new EndGameException();
             else results.put(movable, MoveResult.COLLISION);
         }
         else{
@@ -135,7 +135,7 @@ public class MoveDecider {
     private void evaluateNotNullEncounter(Movable movable, HashMap<Movable, MoveResult> results,
                                           Field calculatedField, Movable movableOnFutureField) throws EndGameException {
         if(movable instanceof Doctor || movableOnFutureField instanceof Doctor){
-            throw new EndGameException("The Game is Over");
+            throw new EndGameException();
         }
         else{
             results.put(movable, MoveResult.COLLISION);

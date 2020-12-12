@@ -45,10 +45,12 @@ public class View {
         this.stage = primaryStage;
     }
 
-    public void setGameOverScene(){
-        root = new Group();
-        stage.setScene(new GameOver(root, worldHeight*(fieldSize+fieldGap) - fieldGap,
-                worldWidth*(fieldSize+fieldGap) - fieldGap + sidePanelWidth).getScene());
+    public void setGameLostScene(){
+        setGameOverScene(false);
+    }
+
+    public void setGameWonScene(){
+        setGameOverScene(true);
     }
 
     public void paintWorld(){
@@ -192,5 +194,16 @@ public class View {
         instruction.setFill(Color.LIGHTGRAY);
         sidePanel.getChildren().add(instruction);
         return sidePanel;
+    }
+
+    private void setGameOverScene(boolean gameWon){
+        root = new Group();
+        String endMessage;
+        if (gameWon)
+            endMessage = "You've won!";
+        else
+            endMessage = "You've lost";
+        stage.setScene(new GameEnd(endMessage, root, worldHeight*(fieldSize+fieldGap) - fieldGap,
+                worldWidth*(fieldSize+fieldGap) - fieldGap + sidePanelWidth).getScene());
     }
 }
