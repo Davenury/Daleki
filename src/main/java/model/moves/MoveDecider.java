@@ -1,7 +1,7 @@
 package model.moves;
 
-import model.EndGameException;
-import model.TeleportationTimesException;
+import exceptions.EndGameException;
+import exceptions.TeleportationTimesException;
 import model.creatures.Doctor;
 import model.creatures.MapObject;
 import model.creatures.Movable;
@@ -9,7 +9,6 @@ import model.map.*;
 import model.things.NotSoMovable;
 import model.things.PileOfJunk;
 
-import javax.print.Doc;
 import java.util.*;
 import java.util.HashMap;
 
@@ -43,24 +42,17 @@ public class MoveDecider {
         return results;
     }
 
-    private void copyMove() {
-        previousMove.clear();
-        for(Map.Entry<Field, Movable> entry : move.entrySet()){
-            previousMove.put(entry.getKey(), entry.getValue());
-        }
-    }
-
     private void simulateMoveWithTeleportation(List<Movable> movables, HashMap<Movable,
             MoveResult> results) throws EndGameException, TeleportationTimesException {
         for(Movable movable : movables){
             if(movable instanceof Doctor){
                 this.findTeleportationField((Doctor) movable, results);
+                break;
             }
         }
         for(Movable movable : movables){
             if(!(movable instanceof Doctor)){
-                checkCollisionWithPieceOfJunkInTheMap(movable, results, Direction.STAY);
-                checkCollisionWithPreviousMoves(movable, results, Direction.STAY);
+                checkCollisions(movable, results, Direction.STAY);
             }
         }
     }
@@ -83,20 +75,25 @@ public class MoveDecider {
         List<Field> dangerFields = teleportationField.getFieldsAround();
         dangerFields.add(teleportationField);
         for(Field dangerField : dangerFields){
-            if(map.get(dangerField) != null || previousMove.get(dangerField) != null || move.get(dangerField) != null) return true;
+            if(map.get(dangerField) != null
+                    || previousMove.get(dangerField) != null
+                    || move.get(dangerField) != null) return true;
         }
         return false;
     }
 
+    private void checkCollisions(Movable movable, HashMap<Movable, MoveResult> results, Direction input) throws EndGameException {
+        checkCollisionWithPieceOfJunkInTheMap(movable, results, input);
+        checkCollisionWithPreviousMovables(movable, results, input);
+    }
+
     private HashMap<Movable, MoveResult> simulateMoveWithoutTeleportation(List<Movable> movables, Direction input,
-                                                  HashMap<Movable, MoveResult> results)
-                                                    throws EndGameException{
+                                          HashMap<Movable, MoveResult> results) throws EndGameException{
         for (Movable movable : movables){
             if(movable instanceof Doctor)
                 if(!isInMap(movable, input))
                     return null;
-            checkCollisionWithPieceOfJunkInTheMap(movable, results, input);
-            checkCollisionWithPreviousMoves(movable, results, input);
+            checkCollisions(movable, results, input);
         }
         return results;
     }
@@ -116,11 +113,11 @@ public class MoveDecider {
             else results.put(movable, MoveResult.COLLISION);
         }
         else{
-            results.put(movable, MoveResult.OK);    //-> won't collide with piece of junk
+            results.put(movable, MoveResult.OK);
         }
     }
 
-    private void checkCollisionWithPreviousMoves(Movable movable, HashMap<Movable, MoveResult> results, Direction input)
+    private void checkCollisionWithPreviousMovables(Movable movable, HashMap<Movable, MoveResult> results, Direction input)
             throws EndGameException, IllegalStateException {
         Field calculatedField = calculateField(movable, input);
         Movable movableOnFutureField = move.get(calculatedField);
@@ -164,6 +161,12 @@ public class MoveDecider {
         return result;
     }
 
+    private void copyMove() {
+        previousMove.clear();
+        for(Map.Entry<Field, Movable> entry : move.entrySet()){
+            previousMove.put(entry.getKey(), entry.getValue());
+        }
+    }
 
     /**
      * setInitialMap -> sets pilesOfJunk to the map of MoveDecider

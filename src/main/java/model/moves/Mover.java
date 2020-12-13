@@ -1,9 +1,9 @@
 package model.moves;
 
 
-import model.EndGameException;
-import model.GameWonException;
-import model.TeleportationTimesException;
+import exceptions.EndGameException;
+import exceptions.GameWonException;
+import exceptions.TeleportationTimesException;
 import model.creatures.Dalek;
 import model.creatures.MapObject;
 import model.creatures.Movable;

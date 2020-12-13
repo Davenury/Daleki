@@ -2,13 +2,12 @@ package model.creatures;
 
 import com.google.inject.Inject;
 import diproviders.dimensions.IDimensionsSetter;
-import model.TeleportationTimesException;
+import exceptions.TeleportationTimesException;
 import model.map.Direction;
 import model.map.Field;
 import model.other.Constants;
 import view.input.InputParser;
 
-import java.lang.constant.Constable;
 import java.util.Random;
 
 public class Doctor extends Movable {
