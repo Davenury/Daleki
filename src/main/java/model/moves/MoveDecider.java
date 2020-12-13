@@ -1,6 +1,7 @@
 package model.moves;
 
 import model.EndGameException;
+import model.TeleportationTimesException;
 import model.creatures.Doctor;
 import model.creatures.MapObject;
 import model.creatures.Movable;
@@ -8,6 +9,7 @@ import model.map.*;
 import model.things.NotSoMovable;
 import model.things.PileOfJunk;
 
+import javax.print.Doc;
 import java.util.*;
 import java.util.HashMap;
 
@@ -28,7 +30,7 @@ public class MoveDecider {
     }
 
     public HashMap<Movable, MoveResult> simulateMove(List<Movable> movables, Direction input)
-            throws EndGameException, IllegalStateException {
+            throws EndGameException, IllegalStateException, TeleportationTimesException {
         HashMap<Movable, MoveResult> results = new HashMap<>();
         if(input == Direction.TELEPORT){
             simulateMoveWithTeleportation(movables, results);
@@ -49,35 +51,39 @@ public class MoveDecider {
     }
 
     private void simulateMoveWithTeleportation(List<Movable> movables, HashMap<Movable,
-            MoveResult> results) throws EndGameException{
-        Field teleportationField = new Field(1, 1);
+            MoveResult> results) throws EndGameException, TeleportationTimesException {
         for(Movable movable : movables){
-            results.put(movable, MoveResult.OK);
             if(movable instanceof Doctor){
-                teleportationField = ((Doctor) movable).teleportationField;
-                while(this.getTeleportCondition(teleportationField)){
-                    ((Doctor) movable).setNewTeleportationField();
-                    teleportationField = ((Doctor) movable).teleportationField;
-                    System.out.println(teleportationField);
-                }
+                this.findTeleportationField((Doctor) movable, results);
             }
-            else {      // -> nie chcemy, żeby Doctor się poruszył. Chcemy znaleźć dla niego dobre miejsce
+        }
+        for(Movable movable : movables){
+            if(!(movable instanceof Doctor)){
                 checkCollisionWithPieceOfJunkInTheMap(movable, results, Direction.STAY);
                 checkCollisionWithPreviousMoves(movable, results, Direction.STAY);
             }
         }
-        for(Movable movable : movables){
-            if(movable instanceof Doctor)
-                movable.setField(teleportationField);
-        }
+    }
+
+    private void findTeleportationField(Doctor doctor, HashMap<Movable, MoveResult> results) throws TeleportationTimesException {
+        Field teleportationField;
+        do{
+            teleportationField = this.findNewTeleportationFieldIteration(doctor);
+        } while(this.getTeleportCondition(teleportationField));
+        doctor.setField(teleportationField);
+        results.put(doctor, MoveResult.OK);
+    }
+
+    private Field findNewTeleportationFieldIteration(Doctor doctor) throws TeleportationTimesException {
+        doctor.setNewTeleportationField();
+        return doctor.teleportationField;
     }
 
     private boolean getTeleportCondition(Field teleportationField){
         List<Field> dangerFields = teleportationField.getFieldsAround();
         dangerFields.add(teleportationField);
-        System.out.println("Here");
         for(Field dangerField : dangerFields){
-            if(map.get(dangerField) != null || previousMove.get(dangerField) != null) return true;
+            if(map.get(dangerField) != null || previousMove.get(dangerField) != null || move.get(dangerField) != null) return true;
         }
         return false;
     }

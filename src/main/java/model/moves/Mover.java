@@ -3,6 +3,7 @@ package model.moves;
 
 import model.EndGameException;
 import model.GameWonException;
+import model.TeleportationTimesException;
 import model.creatures.Dalek;
 import model.creatures.MapObject;
 import model.creatures.Movable;
@@ -21,7 +22,7 @@ public class Mover {
     }
 
     public List<MapObject> moveAll(List<Movable> toMoveObjects, Direction input)
-            throws EndGameException, IllegalStateException, GameWonException {
+            throws EndGameException, IllegalStateException, GameWonException, TeleportationTimesException {
         HashMap<Movable, MoveResult> results = this.moveDecider.simulateMove(toMoveObjects, input);
         if(results != null) {
             this.evaluateResults(results, toMoveObjects, input);
@@ -33,19 +34,19 @@ public class Mover {
 
     private void evaluateResults(HashMap<Movable, MoveResult> results, List<Movable> toMoveObjects, Direction input)
             throws IllegalStateException, GameWonException {
-        allDaleksRemoved = true;
+        this.allDaleksRemoved = true;
         for (Map.Entry<Movable, MoveResult> entry : results.entrySet()) {
             this.evaluateMovable(entry, toMoveObjects, input);
         }
         this.printResults(results);
-        if(allDaleksRemoved) throw new GameWonException();
+        if(this.allDaleksRemoved) throw new GameWonException();
     }
 
     private void evaluateMovable(Map.Entry<Movable, MoveResult> entry, List<Movable> toMoveObjects, Direction input) {
         Movable movable = entry.getKey();
         if (entry.getValue() == MoveResult.OK) {
             this.evaluateOKResult(movable, input);
-            if(movable instanceof Dalek) allDaleksRemoved = false;
+            if(movable instanceof Dalek) this.allDaleksRemoved = false;
         } else {
             toMoveObjects.remove(movable);
         }
@@ -60,10 +61,6 @@ public class Mover {
         for(Map.Entry<Movable, MoveResult> entry : results.entrySet()){
             System.out.println(entry.getKey().toString() + " = " + entry.getValue().toString());
         }
-    }
-
-    public void teleport(){
-        //TODO
     }
 
     public List<MapObject> getMapObjects(){

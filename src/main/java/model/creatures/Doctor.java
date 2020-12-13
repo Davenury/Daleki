@@ -2,10 +2,13 @@ package model.creatures;
 
 import com.google.inject.Inject;
 import diproviders.dimensions.IDimensionsSetter;
+import model.TeleportationTimesException;
 import model.map.Direction;
 import model.map.Field;
+import model.other.Constants;
 import view.input.InputParser;
 
+import java.lang.constant.Constable;
 import java.util.Random;
 
 public class Doctor extends Movable {
@@ -16,6 +19,7 @@ public class Doctor extends Movable {
 
     private Random random;
     public Field teleportationField;
+    private int teleportationTimes = Constants.TELEPORTATION_TIMES;
 
     @Inject
     private Doctor(IDimensionsSetter setter){
@@ -34,8 +38,10 @@ public class Doctor extends Movable {
     public void move(Direction direction){
         if(direction != Direction.TELEPORT)
             super.updateField(super.getField().addAsVector(direction.convertToField()));
-        else
+        else {
             super.updateField(teleportationField);
+            this.teleportationTimes -= 1;
+        }
     }
 
     @Override
@@ -49,9 +55,9 @@ public class Doctor extends Movable {
         super.updateField(super.getField().addAsVector(field));
     }
 
-    public void setNewTeleportationField(){
-        //TODO
-        teleportationField = new Field(this.random.nextInt(11) + 1, this.random.nextInt(11) + 1);
+    public void setNewTeleportationField() throws TeleportationTimesException{
+        if(this.teleportationTimes <= 0) throw new TeleportationTimesException();
+        teleportationField = new Field(this.random.nextInt(worldWidth) + 1, this.random.nextInt(worldHeight) + 1);
     }
 
 }

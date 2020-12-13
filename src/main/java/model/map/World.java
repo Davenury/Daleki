@@ -5,6 +5,7 @@ import com.google.inject.Injector;
 import diproviders.dimensions.IDimensionsSetter;
 import model.EndGameException;
 import model.GameWonException;
+import model.TeleportationTimesException;
 import model.creatures.*;
 import model.moves.Mover;
 import model.other.ListConcatener;
@@ -40,7 +41,7 @@ public class World {
     }
 
     public void generateExampleGame(){
-        this.generateDalekToBoomIntoPieceOfJunk();
+        this.generateDalekToMoveBehindTheDoctor();
     }
 
     public int getWidth(){ return width; }
@@ -73,15 +74,17 @@ public class World {
                             .collect(Collectors.toList()),
                     directionInput);
         } catch (EndGameException e) {
-            e.printStackTrace();   //-> you've lost!
+            e.printStackTrace();
             this.gameOver = true;
         } catch (GameWonException e) {
             e.printStackTrace();
             this.gameWon = true;
         }
-        catch (IllegalStateException e){  //->TODO sometimes may be teleporation, so there's need to make it out
+        catch (IllegalStateException e){
             e.printStackTrace();
             System.out.println(e.getMessage());
+        } catch (TeleportationTimesException e){
+            //TODO -> show that you have no teleportations - dialog maybe?
         }
     }
 
