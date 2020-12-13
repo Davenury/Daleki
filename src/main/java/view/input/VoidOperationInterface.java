@@ -1,6 +1,6 @@
 package view.input;
 
-import model.TeleportationTimesException;
+import exceptions.TeleportationTimesException;
 
 public interface VoidOperationInterface {
     public void operation() throws TeleportationTimesException;
