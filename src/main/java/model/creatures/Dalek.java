@@ -22,6 +22,9 @@ public class Dalek extends Movable {
     }
 
     public Field calculateNextVector(Direction direction){
+        if(direction == Direction.TELEPORT){
+            return new Field(0, 0);
+        }
         int horizontal_diff = this.getField().getX() - this.doctor.calculateNextMove(direction).getX();
         int vertical_diff = this.getField().getY() - this.doctor.calculateNextMove(direction).getY();
 
