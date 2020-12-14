@@ -6,6 +6,7 @@ import diproviders.dimensions.IDimensionsSetter;
 import exceptions.EndGameException;
 import exceptions.GameWonException;
 import exceptions.TeleportationTimesException;
+import javafx.beans.property.IntegerProperty;
 import model.creatures.*;
 import model.moves.Mover;
 import model.other.ListConcatener;
@@ -117,8 +118,17 @@ public class World {
     }
 
     private void resetWorld(){
+        Doctor oldDoctor = (Doctor) mapObjects.stream()
+                .filter(mapObject -> mapObject instanceof Doctor)
+                .collect(Collectors.toList()).get(0);
+        oldDoctor.resetTeleportationTimes();
+        IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
         mapObjects.clear();
         WorldFactory.resetWorld();
+        Doctor newDoctor = (Doctor) mapObjects.stream()
+                .filter(mapObject -> mapObject instanceof Doctor)
+                .collect(Collectors.toList()).get(0);
+        newDoctor.setTeleportationTimesProperty(teleportTimes);
         gameOver = false;
         gameWon = false;
     }

@@ -3,6 +3,8 @@ package model.creatures;
 import com.google.inject.Inject;
 import diproviders.dimensions.IDimensionsSetter;
 import exceptions.TeleportationTimesException;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import model.map.Direction;
 import model.map.Field;
 import model.other.Constants;
@@ -18,7 +20,7 @@ public class Doctor extends Movable {
 
     private Random random;
     public Field teleportationField;
-    private int teleportationTimes = Constants.TELEPORTATION_TIMES;
+    private IntegerProperty teleportationTimes = new SimpleIntegerProperty(Constants.TELEPORTATION_TIMES);
 
     @Inject
     private Doctor(IDimensionsSetter setter){
@@ -39,7 +41,7 @@ public class Doctor extends Movable {
             super.updateField(super.getField().addAsVector(direction.convertToField()));
         else {
             super.updateField(teleportationField);
-            this.teleportationTimes -= 1;
+            this.teleportationTimes.set(this.teleportationTimes.get() - 1);
         }
     }
 
@@ -55,8 +57,20 @@ public class Doctor extends Movable {
     }
 
     public void setNewTeleportationField() throws TeleportationTimesException{
-        if(this.teleportationTimes <= 0) throw new TeleportationTimesException();
+        if(this.teleportationTimes.get() <= 0) throw new TeleportationTimesException();
         teleportationField = new Field(this.random.nextInt(worldWidth) + 1, this.random.nextInt(worldHeight) + 1);
+    }
+
+    public IntegerProperty teleportationTimesProperty(){
+        return teleportationTimes;
+    }
+
+    public void setTeleportationTimesProperty(IntegerProperty teleportationTimes){
+        this.teleportationTimes = teleportationTimes;
+    }
+
+    public void resetTeleportationTimes(){
+        this.teleportationTimes.set(Constants.TELEPORTATION_TIMES);
     }
 
 }
