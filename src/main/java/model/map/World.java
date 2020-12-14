@@ -41,7 +41,7 @@ public class World {
     }
 
     public void generateExampleGame(){
-        this.generateDalekToMoveBehindTheDoctor();
+        this.generateDaleksToBoom();
     }
 
     public int getWidth(){ return width; }
