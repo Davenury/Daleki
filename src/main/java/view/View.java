@@ -44,7 +44,7 @@ public class View {
 
     private final double sidePanelWidth = 200.0d;
 
-    private Label teleportTimes = new Label();
+    private final Label teleportTimes = new Label();
 
     public View(Stage primaryStage){
         this.stage = primaryStage;

@@ -12,14 +12,12 @@ import view.input.StringOperationInterface;
 import view.input.InputerInterface;
 import view.input.VoidOperationInterface;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class Presenter {
-    private Stage stage;
     private World world;
     private View view;
-    private InputerInterface inputer;
+    private final InputerInterface inputer;
 
     @Inject
     private Presenter(InputerInterface inputer){
@@ -27,7 +25,6 @@ public class Presenter {
     }
 
     public void setUpPresenter(Stage primaryStage, World world){
-        this.stage = primaryStage;
         this.world = world;
         this.view = new View(primaryStage);
         this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());

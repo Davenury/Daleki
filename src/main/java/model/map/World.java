@@ -21,10 +21,10 @@ import java.util.stream.Collectors;
 public class World {
     private List<MapObject> mapObjects = new ArrayList<>();
 
-    private int width;
-    private int height;
+    private final int width;
+    private final int height;
 
-    private Mover mover;
+    private final Mover mover;
     private Injector injector;
 
     private Boolean gameOver = false;

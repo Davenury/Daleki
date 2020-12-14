@@ -13,9 +13,9 @@ import java.util.*;
 import java.util.HashMap;
 
 public class MoveDecider {
-    private HashMap<Field, MapObject> map;
-    private HashMap<Field, Movable> move;
-    private HashMap<Field, Movable> previousMove;
+    private final HashMap<Field, MapObject> map;
+    private final HashMap<Field, Movable> move;
+    private final HashMap<Field, Movable> previousMove;
 
     private final int mapWidth;
     private final int mapHeight;
