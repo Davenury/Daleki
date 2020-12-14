@@ -25,8 +25,8 @@ import static java.lang.Math.random;
 
 
 public class GameEnd {
-    private Scene scene;
-    private String message;
+    private final Scene scene;
+    private final String message;
 
     public GameEnd(String endMessage, Group root, double height, double width) {
         this.scene = new Scene(root, width, height, Color.BLACK);

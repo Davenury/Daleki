@@ -1,6 +1,5 @@
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import diproviders.dimensions.IDimensionsSetter;
 import guice.GuiceModule;
 import model.creatures.Dalek;
 import model.creatures.Doctor;
