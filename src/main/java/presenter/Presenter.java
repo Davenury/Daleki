@@ -1,6 +1,7 @@
 package presenter;
 
 import com.google.inject.Inject;
+import javafx.beans.property.IntegerProperty;
 import javafx.stage.Stage;
 import model.creatures.Dalek;
 import model.creatures.Doctor;
@@ -10,6 +11,9 @@ import view.*;
 import view.input.StringOperationInterface;
 import view.input.InputerInterface;
 import view.input.VoidOperationInterface;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Presenter {
     private Stage stage;
@@ -26,6 +30,7 @@ public class Presenter {
         this.stage = primaryStage;
         this.world = world;
         this.view = new View(primaryStage);
+        this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
         this.paintWorld();
         this.setInput();
         this.inputer.setStageAndAddHandler(primaryStage);
@@ -68,5 +73,12 @@ public class Presenter {
 
     public int getWorldHeight(){
         return this.world.getHeight();
+    }
+
+    public IntegerProperty doctorTeleportationTimesProperty(){
+        Doctor doctor = (Doctor) world.getMapObjects().stream()
+                .filter(mapObject -> mapObject instanceof Doctor)
+                .collect(Collectors.toList()).get(0);
+        return doctor.teleportationTimesProperty();
     }
 }

@@ -1,9 +1,11 @@
 package view;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,6 +17,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.converter.NumberStringConverter;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -41,6 +44,8 @@ public class View {
 
     private final double sidePanelWidth = 200.0d;
 
+    private Label teleportTimes = new Label();
+
     public View(Stage primaryStage){
         this.stage = primaryStage;
     }
@@ -51,6 +56,10 @@ public class View {
 
     public void setGameWonScene(){
         setGameOverScene(true);
+    }
+
+    public void bindTeleportTimesProperty(IntegerProperty teleportTimes){
+        this.teleportTimes.textProperty().bindBidirectional(teleportTimes, new NumberStringConverter());
     }
 
     public void paintWorld(){
@@ -179,6 +188,7 @@ public class View {
         sidePanel.setBackground(new Background(new BackgroundFill(Color.DIMGRAY,
                 CornerRadii.EMPTY,
                 Insets.EMPTY)));
+
         Text instruction = new Text(
                         "W/8\t\tgo North\n" +
                         "9\t\tgo North-East\n" +
@@ -192,7 +202,12 @@ public class View {
                         "T\t\tteleport"
         );
         instruction.setFill(Color.LIGHTGRAY);
-        sidePanel.getChildren().add(instruction);
+
+        teleportTimes.setTextFill(Color.LIGHTGRAY);
+        Text teleports = new Text("Teleports left\t\t" + teleportTimes.getText());
+        teleports.setFill(Color.LIGHTGRAY);
+
+        sidePanel.getChildren().addAll(instruction, teleports);
         return sidePanel;
     }
 
