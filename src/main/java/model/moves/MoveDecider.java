@@ -90,9 +90,10 @@ public class MoveDecider {
     private HashMap<Movable, MoveResult> simulateMoveWithoutTeleportation(List<Movable> movables, Direction input,
                                           HashMap<Movable, MoveResult> results) throws EndGameException{
         for (Movable movable : movables){
-            if(movable instanceof Doctor)
-                if(!isInMap(movable, input))
+            if(movable instanceof Doctor) {
+                if (!isInMap(movable, input))
                     return null;
+            }
             checkCollisions(movable, results, input);
         }
         return results;
@@ -155,7 +156,6 @@ public class MoveDecider {
         List<MapObject> result = new ArrayList<>();
         for(Map.Entry<Field, MapObject> entry : this.map.entrySet()){
             MapObject object = entry.getValue();
-            object.setField(entry.getKey());
             result.add(object);
         }
         return result;
@@ -177,5 +177,11 @@ public class MoveDecider {
         for (NotSoMovable object : objects){
             this.map.put(object.getField(), object);
         }
+    }
+
+    public void clearMap(){
+        this.move.clear();
+        this.map.clear();
+        this.previousMove.clear();
     }
 }

@@ -37,8 +37,9 @@ public class Doctor extends Movable {
 
     @Override
     public void move(Direction direction){
-        if(direction != Direction.TELEPORT)
+        if(direction != Direction.TELEPORT) {
             super.updateField(super.getField().addAsVector(direction.convertToField()));
+        }
         else {
             super.updateField(teleportationField);
             this.teleportationTimes.set(this.teleportationTimes.get() - 1);
@@ -47,17 +48,20 @@ public class Doctor extends Movable {
 
     @Override
     public Field calculateNextMove(Direction direction){
-        if(direction != Direction.TELEPORT)
+        if(direction != Direction.TELEPORT) {
             return super.getField().addAsVector(direction.convertToField());
+        }
         return teleportationField;
     }
-    @Override
+
     public void moveTo(Field field){
         super.updateField(super.getField().addAsVector(field));
     }
 
     public void setNewTeleportationField() throws TeleportationTimesException{
-        if(this.teleportationTimes.get() <= 0) throw new TeleportationTimesException();
+        if(this.teleportationTimes.get() <= 0) {
+            throw new TeleportationTimesException();
+        }
         teleportationField = new Field(this.random.nextInt(worldWidth) + 1, this.random.nextInt(worldHeight) + 1);
     }
 

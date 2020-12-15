@@ -71,4 +71,8 @@ public class Mover {
     public void setInitialMap(List<NotSoMovable> objectsToAddOnMap){
         this.moveDecider.setInitialMap(objectsToAddOnMap);
     }
+
+    public void clearMap(){
+        this.moveDecider.clearMap();
+    }
 }
