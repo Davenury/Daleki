@@ -42,7 +42,7 @@ public class World {
     }
 
     public void generateExampleGame(){
-        this.generateDaleksToBoom();
+        this.generateDalekToMoveBehindTheDoctor();
     }
 
     public int getWidth(){ return width; }
@@ -59,10 +59,12 @@ public class World {
 
     public void update(String input){
         System.out.println(input);
-        if(gameOver || gameWon)
+        if(gameOver || gameWon) {
             resetWorld();
-        else
+        }
+        else {
             move(input);
+        }
     }
 
     private void move(String input){
@@ -70,7 +72,7 @@ public class World {
             Direction directionInput = InputParser.parseInput(input);
             this.mapObjects = this.mover.moveAll(
                     mapObjects.stream()
-                            .filter(MapObject::isMovable)
+                            .filter(item -> item instanceof Movable)
                             .map(it -> (Movable) it)
                             .collect(Collectors.toList()),
                     directionInput);
@@ -129,6 +131,7 @@ public class World {
                 .filter(mapObject -> mapObject instanceof Doctor)
                 .collect(Collectors.toList()).get(0);
         newDoctor.setTeleportationTimesProperty(teleportTimes);
+        this.mover.clearMap();
         gameOver = false;
         gameWon = false;
     }

@@ -7,8 +7,8 @@ public class Dalek extends Movable {
     Doctor doctor;
 
     public Dalek(Doctor doctor, Field field){
+        super(field);
         this.doctor = doctor;
-        super.field = field;
     }
 
     @Override

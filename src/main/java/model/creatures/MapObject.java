@@ -9,11 +9,7 @@ public class MapObject {
         return field;
     }
 
-    public void setField(Field field) {
+    protected MapObject(Field field){
         this.field = field;
-    }
-
-    public boolean isMovable(){
-        return this instanceof Movable;
     }
 }

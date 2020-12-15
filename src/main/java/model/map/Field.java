@@ -28,10 +28,12 @@ public class Field {
     }
 
     public boolean equals(Object other){
-        if (this == other)
+        if (this == other) {
             return true;
-        if (!(other instanceof Field))
+        }
+        if (!(other instanceof Field)) {
             return false;
+        }
         Field that = (Field) other;
         return ((this.x == that.x) && (this.y==that.y));
     }
@@ -54,8 +56,7 @@ public class Field {
     }
 
     public boolean isADirection(){
-        if (this.x <=1 && this.x >=-1 && this.y <=1 && this.y >=-1) return true;
-        return false;
+        return this.x <=1 && this.x >=-1 && this.y <=1 && this.y >=-1;
     }
 
     public boolean moreThan(Field other){
