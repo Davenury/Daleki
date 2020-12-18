@@ -18,8 +18,8 @@ public class Doctor extends Movable {
 
     private final int worldHeight;
 
-    private Random random;
-    public Field teleportationField;
+    private final Random random;
+    private Field teleportationField;
     private IntegerProperty teleportationTimes = new SimpleIntegerProperty(Constants.TELEPORTATION_TIMES);
 
     @Inject
@@ -77,4 +77,7 @@ public class Doctor extends Movable {
         this.teleportationTimes.set(Constants.TELEPORTATION_TIMES);
     }
 
+    public Field getTeleportationField(){
+        return this.teleportationField;
+    }
 }

@@ -68,7 +68,7 @@ public class MoveDecider {
 
     private Field findNewTeleportationFieldIteration(Doctor doctor) throws TeleportationTimesException {
         doctor.setNewTeleportationField();
-        return doctor.teleportationField;
+        return doctor.getTeleportationField();
     }
 
     private boolean getTeleportCondition(Field teleportationField){

@@ -73,7 +73,8 @@ public class World {
             this.mapObjects = this.mover.moveAll(
                     mapObjects.stream()
                             .filter(item -> item instanceof Movable)
-                            .map(it -> (Movable) it)
+                            .filter(Movable.class::isInstance)
+                            .map(Movable.class::cast)
                             .collect(Collectors.toList()),
                     directionInput);
         } catch (EndGameException e) {
