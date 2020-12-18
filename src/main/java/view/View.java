@@ -81,48 +81,39 @@ public class View {
         stage.show();
     }
 
+    private void paintImageTypeElement(String elementTexturePath, double elementSize, int gridX, int gridY){
+        Image image = null;
+        try {
+            image = new Image(new FileInputStream(elementTexturePath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ImageView imageView1 = new ImageView(image);
+        imageView1.setY(calculateImageElementPosition(gridY, elementSize, true));
+        imageView1.setX(calculateImageElementPosition(gridX, elementSize, false));
+
+        imageView1.setFitHeight(elementSize);
+        imageView1.setFitWidth(elementSize);
+        root.getChildren().add(imageView1);
+    }
+
+    private void paintCircleTypeElement(double elementSize, Color elementColor, int gridX, int gridY){
+        Shape element = new Circle(calculateElementPosition(gridX, false),
+                calculateElementPosition(gridY, true), elementSize / 2.0d,  elementColor);
+        root.getChildren().add(element);
+    }
+
     public void paintElement(Element elementType, int gridX, int gridY){
-        double elementSize;
-        Color elementColor = null;
-        boolean pictureType = true;
-
-        String elementTexturePath = null;
-
         switch (elementType) {
             case DOCTOR -> {
-                elementTexturePath = doctorTexturePath;
-                elementSize = doctorSize;
+                paintImageTypeElement(doctorTexturePath, doctorSize, gridX, gridY);
             }
             case DALEK -> {
-                elementTexturePath = dalekTexturePath;
-                elementSize = dalekSize;
+                paintImageTypeElement(dalekTexturePath, dalekSize, gridX, gridY);
             }
             default -> {
-                elementSize = junkSize;
-                elementColor = junkColor;
-                pictureType = false;
+                paintCircleTypeElement(junkSize, junkColor, gridX, gridY);
             }
-        }
-        if (!pictureType) {
-            Shape element = new Circle(calculateElementPosition(gridX, false),
-                    calculateElementPosition(gridY, true), elementSize / 2.0d,  elementColor);
-            root.getChildren().add(element);
-        }
-
-        if (pictureType){
-            Image image = null;
-            try {
-                image = new Image(new FileInputStream(elementTexturePath));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            ImageView imageView1 = new ImageView(image);
-            imageView1.setY(calculateImageElementPosition(gridY, elementSize, true));
-            imageView1.setX(calculateImageElementPosition(gridX, elementSize, false));
-
-            imageView1.setFitHeight(elementSize);
-            imageView1.setFitWidth(elementSize);
-            root.getChildren().add(imageView1);
         }
     }
 

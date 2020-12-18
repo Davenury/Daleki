@@ -8,13 +8,15 @@ import model.map.WorldFactory;
 import presenter.Presenter;
 import presenter.PresenterFactory;
 
+import java.io.FileNotFoundException;
+
 public class DalekiApp extends Application {
 
 	private World world;
 	private Presenter presenter;
 
 	@Override
-	public void start(Stage primaryStage){
+	public void start(Stage primaryStage) throws FileNotFoundException {
 		Injector injector = Guice.createInjector(new GuiceModule());
 		this.world = WorldFactory.createWorld(injector);
 		this.presenter = PresenterFactory.createPresenter(primaryStage, this.world, injector);

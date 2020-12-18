@@ -12,6 +12,7 @@ import view.input.StringOperationInterface;
 import view.input.InputerInterface;
 import view.input.VoidOperationInterface;
 
+import java.io.FileNotFoundException;
 import java.util.stream.Collectors;
 
 public class Presenter {
@@ -24,7 +25,7 @@ public class Presenter {
         this.inputer = inputer;
     }
 
-    public void setUpPresenter(Stage primaryStage, World world){
+    public void setUpPresenter(Stage primaryStage, World world) throws FileNotFoundException {
         this.world = world;
         this.view = new View(primaryStage);
         this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
@@ -33,7 +34,7 @@ public class Presenter {
         this.inputer.setStageAndAddHandler(primaryStage);
     }
 
-    private void paintWorld(){
+    private void paintWorld() throws FileNotFoundException {
         if (world.getGameOver()){
             this.view.setGameLostScene();
             return;
