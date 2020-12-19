@@ -1,7 +1,7 @@
 package exceptions;
 
-public class EndGameException extends Exception{
-    public EndGameException(){
-        super("Game lost");
+public class DoctorDiesException extends Exception{
+    public DoctorDiesException(){
+        super("You die");
     }
 }
