@@ -1,6 +1,7 @@
 package model.moves;
 
 
+import exceptions.DoctorDiesException;
 import exceptions.EndGameException;
 import exceptions.GameWonException;
 import exceptions.TeleportationTimesException;

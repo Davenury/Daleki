@@ -3,6 +3,7 @@ package model.map;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import diproviders.dimensions.IDimensionsSetter;
+import exceptions.DoctorDiesException;
 import exceptions.EndGameException;
 import exceptions.GameWonException;
 import exceptions.TeleportationTimesException;
@@ -42,7 +43,7 @@ public class World {
     }
 
     public void generateExampleGame(){
-        this.generateDalekToMoveBehindTheDoctor();
+        this.generateDaleksToBoom();
     }
 
     public int getWidth(){ return width; }
@@ -125,13 +126,16 @@ public class World {
                 .filter(mapObject -> mapObject instanceof Doctor)
                 .collect(Collectors.toList()).get(0);
         oldDoctor.resetTeleportationTimes();
+        oldDoctor.resetSpareLives();
         IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
+        IntegerProperty spareLives = oldDoctor.spareLivesProperty();
         mapObjects.clear();
         WorldFactory.resetWorld();
         Doctor newDoctor = (Doctor) mapObjects.stream()
                 .filter(mapObject -> mapObject instanceof Doctor)
                 .collect(Collectors.toList()).get(0);
         newDoctor.setTeleportationTimesProperty(teleportTimes);
+        newDoctor.setSpareLivesProperty(spareLives);
         this.mover.clearMap();
         gameOver = false;
         gameWon = false;

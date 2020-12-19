@@ -29,6 +29,7 @@ public class Presenter {
         this.world = world;
         this.view = new View(primaryStage);
         this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
+        this.view.bindSpareLivesProperty(doctorSpareLivesProperty());
         this.paintWorld();
         this.setInput();
         this.inputer.setStageAndAddHandler(primaryStage);
@@ -78,5 +79,12 @@ public class Presenter {
                 .filter(mapObject -> mapObject instanceof Doctor)
                 .collect(Collectors.toList()).get(0);
         return doctor.teleportationTimesProperty();
+    }
+
+    public IntegerProperty doctorSpareLivesProperty(){
+        Doctor doctor = (Doctor) world.getMapObjects().stream()
+                .filter(mapObject -> mapObject instanceof Doctor)
+                .collect(Collectors.toList()).get(0);
+        return doctor.spareLivesProperty();
     }
 }

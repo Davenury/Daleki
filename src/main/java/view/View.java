@@ -45,6 +45,7 @@ public class View {
     private final double sidePanelWidth = 200.0d;
 
     private final Label teleportTimes = new Label();
+    private final Label spareLives = new Label();
 
     public View(Stage primaryStage){
         this.stage = primaryStage;
@@ -61,6 +62,10 @@ public class View {
     public void bindTeleportTimesProperty(IntegerProperty teleportTimes){
         this.teleportTimes.textProperty().bindBidirectional(teleportTimes, new NumberStringConverter());
     }
+    public void bindSpareLivesProperty(IntegerProperty spareLives) {
+        this.spareLives.textProperty().bindBidirectional(spareLives, new NumberStringConverter());
+
+    }
 
     public void paintWorld(){
         root = new Group();
@@ -71,7 +76,7 @@ public class View {
         GridPane worldGrid = createWorldGrid();
         gameView.getChildren().add(worldGrid);
 
-        VBox sidePanel = createSidePanel();
+        VBox sidePanel = new SidePanel(sidePanelWidth, teleportTimes, spareLives).sidePanel;
         gameView.getChildren().add(sidePanel);
 
         root.getChildren().add(gameView);
@@ -172,36 +177,6 @@ public class View {
         return worldGrid;
     }
 
-    private VBox createSidePanel(){
-        VBox sidePanel = new VBox();
-        sidePanel.setPrefWidth(sidePanelWidth);
-        sidePanel.setAlignment(Pos.CENTER);
-        sidePanel.setBackground(new Background(new BackgroundFill(Color.DIMGRAY,
-                CornerRadii.EMPTY,
-                Insets.EMPTY)));
-
-        Text instruction = new Text(
-                        "W/8\t\tgo North\n" +
-                        "9\t\tgo North-East\n" +
-                        "D/6\t\tgo East\n" +
-                        "3\t\tgo South-East\n" +
-                        "S/2\t\tgo South\n" +
-                        "1\t\tgo South-West\n" +
-                        "A/4\t\tgo West\n" +
-                        "7\t\tgo North-West\n" +
-                        "Q/5\t\tstay\n" +
-                        "T\t\tteleport"
-        );
-        instruction.setFill(Color.LIGHTGRAY);
-
-        teleportTimes.setTextFill(Color.LIGHTGRAY);
-        Text teleports = new Text("Teleports left\t\t" + teleportTimes.getText());
-        teleports.setFill(Color.LIGHTGRAY);
-
-        sidePanel.getChildren().addAll(instruction, teleports);
-        return sidePanel;
-    }
-
     private void setGameOverScene(boolean gameWon){
         root = new Group();
         String endMessage;
@@ -212,4 +187,6 @@ public class View {
         stage.setScene(new GameEnd(endMessage, root, worldHeight*(fieldSize+fieldGap) - fieldGap,
                 worldWidth*(fieldSize+fieldGap) - fieldGap + sidePanelWidth).getScene());
     }
+
+
 }

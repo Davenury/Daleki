@@ -2,6 +2,8 @@ package model.creatures;
 
 import com.google.inject.Inject;
 import diproviders.dimensions.IDimensionsSetter;
+import exceptions.DoctorDiesException;
+import exceptions.EndGameException;
 import exceptions.TeleportationTimesException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -21,6 +23,9 @@ public class Doctor extends Movable {
     private final Random random;
     private Field teleportationField;
     private IntegerProperty teleportationTimes = new SimpleIntegerProperty(Constants.TELEPORTATION_TIMES);
+    private IntegerProperty spareLives = new SimpleIntegerProperty(Constants.SPARE_LIVES);
+
+    private Boolean diedInThisRound = false;
 
     @Inject
     private Doctor(IDimensionsSetter setter){
@@ -37,13 +42,15 @@ public class Doctor extends Movable {
 
     @Override
     public void move(Direction direction){
-        if(direction != Direction.TELEPORT) {
-            super.updateField(super.getField().addAsVector(direction.convertToField()));
+        if (!diedInThisRound) {
+            if (direction != Direction.TELEPORT) {
+                super.updateField(super.getField().addAsVector(direction.convertToField()));
+            } else {
+                super.updateField(teleportationField);
+                this.teleportationTimes.set(this.teleportationTimes.get() - 1);
+            }
         }
-        else {
-            super.updateField(teleportationField);
-            this.teleportationTimes.set(this.teleportationTimes.get() - 1);
-        }
+        diedInThisRound = false;
     }
 
     @Override
@@ -72,6 +79,9 @@ public class Doctor extends Movable {
     public void setTeleportationTimesProperty(IntegerProperty teleportationTimes){
         this.teleportationTimes = teleportationTimes;
     }
+    public void setSpareLivesProperty(IntegerProperty teleportationTimes){
+        this.teleportationTimes = teleportationTimes;
+    }
 
     public void resetTeleportationTimes(){
         this.teleportationTimes.set(Constants.TELEPORTATION_TIMES);
@@ -79,5 +89,26 @@ public class Doctor extends Movable {
 
     public Field getTeleportationField(){
         return this.teleportationField;
+    }
+
+    public void die() throws EndGameException{
+        System.out.println(teleportationField);
+        if (!diedInThisRound){//Lose one life in case of many Daleks
+            this.spareLives.set(this.spareLives.get() - 1);
+            if(this.spareLives.get() <= 0) {
+                throw new EndGameException();
+            }
+            //teleport without loosing any teleportation
+            teleportationField = new Field(this.random.nextInt(worldWidth) + 1, this.random.nextInt(worldHeight) + 1);
+            super.updateField(teleportationField);
+        }
+        diedInThisRound = true;
+
+    }
+    public IntegerProperty spareLivesProperty(){
+        return spareLives;
+    }
+    public void resetSpareLives(){
+        this.spareLives.set(Constants.SPARE_LIVES);
     }
 }
