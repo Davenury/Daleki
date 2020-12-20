@@ -21,20 +21,20 @@ public class Presenter {
     private final InputerInterface inputer;
 
     @Inject
-    private Presenter(InputerInterface inputer){
+    public Presenter(InputerInterface inputer){
         this.inputer = inputer;
     }
 
-    public void setUpPresenter(Stage primaryStage, World world) throws FileNotFoundException {
+    public void setUpPresenter(Stage primaryStage, World world) {
         this.world = world;
         this.view = new View(primaryStage);
-        this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
+        //this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
         this.paintWorld();
         this.setInput();
         this.inputer.setStageAndAddHandler(primaryStage);
     }
 
-    private void paintWorld() throws FileNotFoundException {
+    private void paintWorld(){
         if (world.getGameOver()){
             this.view.setGameLostScene();
             return;

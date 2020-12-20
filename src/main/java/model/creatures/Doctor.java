@@ -1,7 +1,7 @@
 package model.creatures;
 
 import com.google.inject.Inject;
-import diproviders.dimensions.IDimensionsSetter;
+import com.google.inject.name.Named;
 import exceptions.TeleportationTimesException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -14,18 +14,18 @@ import java.util.Random;
 
 public class Doctor extends Movable {
 
-    private final int worldWidth;
-
-    private final int worldHeight;
+    private int worldWidth;
+    private int worldHeight;
 
     private final Random random;
     private Field teleportationField;
     private IntegerProperty teleportationTimes = new SimpleIntegerProperty(Constants.TELEPORTATION_TIMES);
 
     @Inject
-    private Doctor(IDimensionsSetter setter){
-        this.worldWidth = setter.getWidth();
-        this.worldHeight = setter.getHeight();
+    public Doctor(Field field, int worldWidth, int worldHeight){
+        this.field = field;
+        this.worldWidth = worldWidth;
+        this.worldHeight = worldHeight;
         this.random = new Random();
         InputParser.subscribeToInputParser(this::setNewTeleportationField);
     }
