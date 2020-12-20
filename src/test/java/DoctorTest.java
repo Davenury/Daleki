@@ -1,3 +1,4 @@
+import com.google.inject.Inject;
 import model.map.Direction;
 import model.creatures.Doctor;
 import model.map.Field;
@@ -10,8 +11,8 @@ public class DoctorTest {
     @Test
     public void DoctorMoveDirection(){
     //given
+        Doctor doctor = new Doctor(new Field(0, 0), 11, 11);
         Field field = new Field(1,1);
-        Doctor doctor = new Doctor(field);
         doctor.setField(field);
     //when
         doctor.move(Direction.convertInputToDirection("8"));
@@ -21,8 +22,8 @@ public class DoctorTest {
     @Test
     public void DoctorMoveField(){
         //given
+        Doctor doctor = new Doctor(new Field(0, 0), 11, 11);
         Field field = new Field(1,1);
-        Doctor doctor = new Doctor(field);
         doctor.setField(field);
         //when
         doctor.moveTo(new Field(0,1));
