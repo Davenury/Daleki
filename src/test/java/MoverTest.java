@@ -1,12 +1,8 @@
-import com.google.inject.Guice;
-import com.google.inject.Injector;
 import exceptions.EndGameException;
 import exceptions.GameWonException;
 import exceptions.TeleportationTimesException;
-import guice.GuiceModule;
 import model.creatures.Dalek;
 import model.creatures.Doctor;
-import model.creatures.DoctorFactory;
 import model.creatures.Movable;
 import model.map.Direction;
 import model.map.Field;
@@ -18,13 +14,12 @@ import java.util.*;
 
 public class MoverTest {
 
-    private Injector injector = Guice.createInjector(new GuiceModule());
 
     @Test
     public void moveAllDaleksBoomTestAndGameWon()
             throws TeleportationTimesException, EndGameException, GameWonException {
         //given
-        Doctor doctor = DoctorFactory.createDoctor(new Field(6,4), injector);
+        Doctor doctor = new Doctor(new Field(6,4));
         Dalek dalek1 = new Dalek(doctor, new Field(5, 2));
         Dalek dalek2 = new Dalek(doctor, new Field(7, 2));
         ArrayList<Movable> toMove = new ArrayList<>();
@@ -41,7 +36,7 @@ public class MoverTest {
     public void moveDaleksBoomTestAndTheresPileOfJunkOnTheMap()
             throws TeleportationTimesException, EndGameException, GameWonException {
         //given
-        Doctor doctor = DoctorFactory.createDoctor(new Field(6,4), injector);
+        Doctor doctor = new Doctor(new Field(6,4));
         Dalek boom1 = new Dalek(doctor, new Field(5, 2));
         Dalek boom2 = new Dalek(doctor, new Field(7, 2));
         ArrayList<Movable> toMove = new ArrayList<>();

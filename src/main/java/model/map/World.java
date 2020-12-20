@@ -2,7 +2,7 @@ package model.map;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
-import diproviders.dimensions.IDimensionsSetter;
+import com.google.inject.name.Named;
 import exceptions.EndGameException;
 import exceptions.GameWonException;
 import exceptions.TeleportationTimesException;
@@ -21,24 +21,24 @@ import java.util.stream.Collectors;
 public class World {
     private List<MapObject> mapObjects = new ArrayList<>();
 
-    private final int width;
-    private final int height;
+    public int width;
+    public int height;
+
+    private Doctor doctor;
 
     private final Mover mover;
-    private Injector injector;
 
     private Boolean gameOver = false;
     private Boolean gameWon = false;
 
     @Inject
-    private World(IDimensionsSetter setter){
-        this.width = setter.getWidth();
-        this.height = setter.getHeight();
+    public World(Doctor doctor, @Named("worldWidth") int width, @Named("worldHeight") int height){
+        this.doctor = doctor;
+        this.width = width;
+        this.height = height;
+        System.out.println(this.width + this.height);
         this.mover = new Mover(width, height);
-    }
-
-    public void setInjector(Injector injector){
-        this.injector = injector;
+        this.generateExampleGame();
     }
 
     public void generateExampleGame(){
@@ -73,7 +73,6 @@ public class World {
             this.mapObjects = this.mover.moveAll(
                     mapObjects.stream()
                             .filter(item -> item instanceof Movable)
-                            .filter(Movable.class::isInstance)
                             .map(Movable.class::cast)
                             .collect(Collectors.toList()),
                     directionInput);
@@ -94,25 +93,21 @@ public class World {
 
     /**To boom Daleks, please move one step up (press W key right after beginning of the game)*/
     private void generateDaleksToBoom(){
-        Doctor doctor = DoctorFactory.createDoctor(new Field(6, 4), injector);
         mapObjects.add(doctor);
         mapObjects.add(new Dalek(doctor, new Field(5, 2)));
         mapObjects.add(new Dalek(doctor, new Field(7, 2)));
     }
 
     private void generateDoctorToMoveAround(){
-        Doctor doctor = DoctorFactory.createDoctor(new Field(width/2 + 1, height/2 + 1), injector);
         mapObjects.add(doctor);
     }
 
     private void generateDalekToMoveBehindTheDoctor(){
-        Doctor doctor = DoctorFactory.createDoctor(new Field(width/2 + 1, height/2 + 1), injector);
         mapObjects.add(doctor);
         mapObjects.add(new Dalek(doctor, new Field(1, 1)));
     }
 
     private void generateDalekToBoomIntoPieceOfJunk(){
-        Doctor doctor = DoctorFactory.createDoctor(new Field(6, 4), injector);
         mapObjects.add(doctor);
         mapObjects.add(new Dalek(doctor, new Field(4, 4)));
         List<NotSoMovable> initialMap = new ArrayList<>();
@@ -127,7 +122,7 @@ public class World {
         oldDoctor.resetTeleportationTimes();
         IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
         mapObjects.clear();
-        WorldFactory.resetWorld();
+        this.generateExampleGame();
         Doctor newDoctor = (Doctor) mapObjects.stream()
                 .filter(mapObject -> mapObject instanceof Doctor)
                 .collect(Collectors.toList()).get(0);

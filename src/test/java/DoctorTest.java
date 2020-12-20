@@ -1,7 +1,3 @@
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import guice.GuiceModule;
-import model.creatures.DoctorFactory;
 import model.map.Direction;
 import model.creatures.Doctor;
 import model.map.Field;
@@ -11,13 +7,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DoctorTest {
 
-    private Injector injector = Guice.createInjector(new GuiceModule());
-
     @Test
     public void DoctorMoveDirection(){
     //given
         Field field = new Field(1,1);
-        Doctor doctor = DoctorFactory.createDoctor(field, injector);
+        Doctor doctor = new Doctor(field);
         doctor.setField(field);
     //when
         doctor.move(Direction.convertInputToDirection("8"));
@@ -28,7 +22,7 @@ public class DoctorTest {
     public void DoctorMoveField(){
         //given
         Field field = new Field(1,1);
-        Doctor doctor = DoctorFactory.createDoctor(field, injector);
+        Doctor doctor = new Doctor(field);
         doctor.setField(field);
         //when
         doctor.moveTo(new Field(0,1));

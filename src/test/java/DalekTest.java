@@ -1,9 +1,5 @@
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import guice.GuiceModule;
 import model.creatures.Dalek;
 import model.creatures.Doctor;
-import model.creatures.DoctorFactory;
 import model.map.Direction;
 import model.map.Field;
 import org.junit.jupiter.api.Test;
@@ -13,8 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 //Tests outdated due to improved implementation of Dalek class
 //TODO: rewrite those tests
 public class DalekTest {
-
-    private Injector injector = Guice.createInjector(new GuiceModule());
 
     @Test
     public void DalekisMoveToDoctor(){
@@ -31,7 +25,7 @@ public class DalekTest {
         new Field(-2,0), //W
         new Field(-2,2)};//NW
 
-        Doctor doctor = DoctorFactory.createDoctor(field, injector);
+        Doctor doctor = new Doctor(field);
         doctor.setField(field);
 
         Dalek[] daleks = new Dalek[8];
