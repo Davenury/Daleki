@@ -21,10 +21,7 @@ public class Field {
 
     @Override
     public int hashCode() {
-        int hash = 13;
-        hash += this.x * 31;
-        hash += this.y * 17;
-        return hash;
+        return Objects.hash(x, y);
     }
 
     public boolean equals(Object other){
@@ -35,7 +32,7 @@ public class Field {
             return false;
         }
         Field that = (Field) other;
-        return ((this.x == that.x) && (this.y==that.y));
+        return Objects.equals(this.x, that.x) && Objects.equals(this.y, that.y);
     }
 
     public int getX() { return x;}
