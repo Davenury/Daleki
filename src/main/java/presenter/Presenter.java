@@ -28,7 +28,7 @@ public class Presenter {
     public void setUpPresenter(Stage primaryStage, World world) {
         this.world = world;
         this.view = new View(primaryStage);
-        //this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
+        this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
         this.paintWorld();
         this.setInput();
         this.inputer.setStageAndAddHandler(primaryStage);
