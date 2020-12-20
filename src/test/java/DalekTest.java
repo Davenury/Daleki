@@ -1,3 +1,4 @@
+import com.google.inject.Inject;
 import model.creatures.Dalek;
 import model.creatures.Doctor;
 import model.map.Direction;
@@ -7,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 //Tests outdated due to improved implementation of Dalek class
-//TODO: rewrite those tests
 public class DalekTest {
 
     @Test
@@ -25,7 +25,7 @@ public class DalekTest {
         new Field(-2,0), //W
         new Field(-2,2)};//NW
 
-        Doctor doctor = new Doctor(field);
+        Doctor doctor = new Doctor(new Field(0, 0), 11, 11);
         doctor.setField(field);
 
         Dalek[] daleks = new Dalek[8];
