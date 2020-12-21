@@ -82,15 +82,14 @@ public class World {
                             .collect(Collectors.toList()),
                     directionInput);
         } catch (EndGameException e) {
-            e.printStackTrace();
             this.gameOver = true;
         } catch (GameWonException e) {
-            e.printStackTrace();
             this.gameWon = true;
         }
         catch (IllegalStateException e){
             e.printStackTrace();
             System.out.println(e.getMessage());
+            //TODO -> I would also do it as a dialog?
         } catch (TeleportationTimesException e){
             //TODO -> show that you have no teleportations - dialog maybe?
         }
