@@ -74,9 +74,7 @@ public class Presenter {
     }
 
     public IntegerProperty doctorTeleportationTimesProperty(){
-        Doctor doctor = (Doctor) world.getMapObjects().stream()
-                .filter(mapObject -> mapObject instanceof Doctor)
-                .collect(Collectors.toList()).get(0);
+        Doctor doctor = world.getDoctor();
         return doctor.teleportationTimesProperty();
     }
 }
