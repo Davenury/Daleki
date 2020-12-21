@@ -10,8 +10,6 @@ import javafx.beans.property.IntegerProperty;
 import model.creatures.*;
 import model.moves.Mover;
 import model.other.ListConcatener;
-import model.things.NotSoMovable;
-import model.things.PileOfJunk;
 import view.input.InputParser;
 
 import java.util.ArrayList;
@@ -24,12 +22,14 @@ public class World {
     public int width;
     public int height;
 
-    private Doctor doctor;
+    private final Doctor doctor;
 
     private final Mover mover;
 
     private Boolean gameOver = false;
     private Boolean gameWon = false;
+
+    private final GameGenerator gameGenerator;
 
     @Inject
     public World(Doctor doctor, @Named("worldWidth") int width, @Named("worldHeight") int height){
@@ -38,11 +38,8 @@ public class World {
         this.height = height;
         System.out.println(this.width + this.height);
         this.mover = new Mover(width, height);
-        this.generateExampleGame();
-    }
-
-    public void generateExampleGame(){
-        this.generateDaleksToBoom();
+        this.gameGenerator = new GameGenerator(this);
+        this.gameGenerator.generateExampleGame();
     }
 
     public int getWidth(){ return width; }
@@ -57,6 +54,10 @@ public class World {
         return ListConcatener.concatenate(mapObjects, mover.getMapObjects());
     }
 
+    public Doctor getDoctor() { return this.doctor; }
+
+    public Mover getMover() { return this.mover; }
+
     public void update(String input){
         System.out.println(input);
         if(gameOver || gameWon) {
@@ -65,6 +66,10 @@ public class World {
         else {
             move(input);
         }
+    }
+
+    public void addMapObject(MapObject mapObject){
+        this.mapObjects.add(mapObject);
     }
 
     private void move(String input){
@@ -91,30 +96,6 @@ public class World {
         }
     }
 
-    /**To boom Daleks, please move one step up (press W key right after beginning of the game)*/
-    private void generateDaleksToBoom(){
-        mapObjects.add(doctor);
-        mapObjects.add(new Dalek(doctor, new Field(5, 2)));
-        mapObjects.add(new Dalek(doctor, new Field(7, 2)));
-    }
-
-    private void generateDoctorToMoveAround(){
-        mapObjects.add(doctor);
-    }
-
-    private void generateDalekToMoveBehindTheDoctor(){
-        mapObjects.add(doctor);
-        mapObjects.add(new Dalek(doctor, new Field(1, 1)));
-    }
-
-    private void generateDalekToBoomIntoPieceOfJunk(){
-        mapObjects.add(doctor);
-        mapObjects.add(new Dalek(doctor, new Field(4, 4)));
-        List<NotSoMovable> initialMap = new ArrayList<>();
-        initialMap.add(new PileOfJunk(5,4));
-        this.mover.setInitialMap(initialMap);
-    }
-
     private void resetWorld(){
         Doctor oldDoctor = (Doctor) mapObjects.stream()
                 .filter(mapObject -> mapObject instanceof Doctor)
@@ -122,7 +103,7 @@ public class World {
         oldDoctor.resetTeleportationTimes();
         IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
         mapObjects.clear();
-        this.generateExampleGame();
+        this.gameGenerator.generateExampleGame();
         Doctor newDoctor = (Doctor) mapObjects.stream()
                 .filter(mapObject -> mapObject instanceof Doctor)
                 .collect(Collectors.toList()).get(0);
