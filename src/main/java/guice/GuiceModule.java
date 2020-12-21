@@ -10,19 +10,19 @@ import view.input.InputerInterface;
 
 public class GuiceModule extends AbstractModule {
 
-    private final int worldWidth = 11;
-    private final int worldHeight = 11;
+    private static final int WORLD_WIDTH = 11;
+    private static final int WORLD_HEIGHT = 11;
 
     @Override
     protected void configure() {
         bind(InputerInterface.class).to(Inputer.class);
-        bind(Integer.class).annotatedWith(Names.named("worldWidth")).toInstance(worldWidth);
-        bind(Integer.class).annotatedWith(Names.named("worldHeight")).toInstance(worldHeight);
+        bind(Integer.class).annotatedWith(Names.named("worldWidth")).toInstance(WORLD_WIDTH);
+        bind(Integer.class).annotatedWith(Names.named("worldHeight")).toInstance(WORLD_HEIGHT);
     }
 
     @Provides
     public Doctor provideDoctor(){
-        return new Doctor(new Field(this.worldWidth/2 + 1, this.worldHeight/2 + 1),
-                this.worldWidth, this.worldHeight);
+        return new Doctor(new Field(WORLD_WIDTH/2 + 1, WORLD_HEIGHT /2 + 1),
+                WORLD_WIDTH, WORLD_HEIGHT);
     }
 }
