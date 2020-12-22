@@ -28,9 +28,7 @@ public class Mover {
         if(results != null) {
             this.evaluateResults(results, toMoveObjects, input);
         }
-        return toMoveObjects.stream()
-                .map(it -> (MapObject) it)
-                .collect(Collectors.toList());
+        return List.copyOf(toMoveObjects);
     }
 
     private void evaluateResults(HashMap<Movable, MoveResult> results, List<Movable> toMoveObjects, Direction input)

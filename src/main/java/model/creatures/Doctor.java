@@ -1,8 +1,6 @@
 package model.creatures;
 
 import com.google.inject.Inject;
-import diproviders.dimensions.IDimensionsSetter;
-import exceptions.DoctorDiesException;
 import exceptions.EndGameException;
 import exceptions.TeleportationTimesException;
 import javafx.beans.property.IntegerProperty;
@@ -16,9 +14,8 @@ import java.util.Random;
 
 public class Doctor extends Movable {
 
-    private final int worldWidth;
-
-    private final int worldHeight;
+    private int worldWidth;
+    private int worldHeight;
 
     private final Random random;
     private Field teleportationField;
@@ -28,9 +25,10 @@ public class Doctor extends Movable {
     private Boolean diedInThisRound = false;
 
     @Inject
-    private Doctor(IDimensionsSetter setter){
-        this.worldWidth = setter.getWidth();
-        this.worldHeight = setter.getHeight();
+    public Doctor(Field field, int worldWidth, int worldHeight){
+        this.field = field;
+        this.worldWidth = worldWidth;
+        this.worldHeight = worldHeight;
         this.random = new Random();
         InputParser.subscribeToInputParser(this::setNewTeleportationField);
     }
@@ -91,7 +89,7 @@ public class Doctor extends Movable {
         return this.teleportationField;
     }
 
-    public void die() throws EndGameException{
+    public void die() throws EndGameException {
         System.out.println(teleportationField);
         if (!diedInThisRound){//Lose one life in case of many Daleks
             this.spareLives.set(this.spareLives.get() - 1);
