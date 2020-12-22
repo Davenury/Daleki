@@ -1,5 +1,6 @@
 package model.moves;
 
+import exceptions.DoctorDiesException;
 import exceptions.EndGameException;
 import exceptions.TeleportationTimesException;
 import model.creatures.Doctor;
@@ -88,7 +89,7 @@ public class MoveDecider {
     }
 
     private HashMap<Movable, MoveResult> simulateMoveWithoutTeleportation(List<Movable> movables, Direction input,
-                                          HashMap<Movable, MoveResult> results) throws EndGameException{
+                                          HashMap<Movable, MoveResult> results) throws EndGameException {
         for (Movable movable : movables){
             if(movable instanceof Doctor) {
                 if (!isInMap(movable, input))
@@ -107,10 +108,10 @@ public class MoveDecider {
 
     private void checkCollisionWithPieceOfJunkInTheMap(Movable movable,
                                                        HashMap<Movable, MoveResult> results, Direction input)
-            throws EndGameException, IllegalStateException {
+            throws IllegalStateException, EndGameException {
         Field calculatedField = calculateField(movable, input);
         if(map.get(calculatedField) != null){
-            if(movable instanceof Doctor) throw new EndGameException();
+            if(movable instanceof Doctor) ((Doctor) movable).die();
             else results.put(movable, MoveResult.COLLISION);
         }
         else{
@@ -139,7 +140,8 @@ public class MoveDecider {
     private void evaluateNotNullEncounter(Movable movable, HashMap<Movable, MoveResult> results,
                                           Field calculatedField, Movable movableOnFutureField) throws EndGameException {
         if(movable instanceof Doctor || movableOnFutureField instanceof Doctor){
-            throw new EndGameException();
+            if (movable instanceof Doctor) ((Doctor) movable).die();
+            if (movableOnFutureField instanceof Doctor) ((Doctor) movableOnFutureField).die();
         }
         else{
             results.put(movable, MoveResult.COLLISION);
