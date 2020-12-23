@@ -16,7 +16,7 @@ public class GameGenerator {
     }
 
     public void generateExampleGame(){
-        this.generateDaleksToBoom();
+        this.generateDaleksToBoomAndOneSurvivor();
     }
 
     /**To boom Daleks, please move one step up (press W key right after beginning of the game)*/
@@ -41,5 +41,12 @@ public class GameGenerator {
         List<NotSoMovable> initialMap = new ArrayList<>();
         initialMap.add(new PileOfJunk(5,4));
         world.getMover().setInitialMap(initialMap);
+    }
+
+    private void generateDaleksToBoomAndOneSurvivor(){
+        world.addMapObject(world.getDoctor());
+        world.addMapObject(new Dalek(world.getDoctor(), new Field(5, 2)));
+        world.addMapObject(new Dalek(world.getDoctor(), new Field(7, 2)));
+        world.addMapObject(new Dalek(world.getDoctor(), new Field(4, 1)));
     }
 }

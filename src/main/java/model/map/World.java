@@ -36,10 +36,9 @@ public class World {
         this.doctor = doctor;
         this.width = width;
         this.height = height;
-        System.out.println(this.width + this.height);
-        this.mover = new Mover(width, height);
         this.gameGenerator = new GameGenerator(this);
         this.gameGenerator.generateExampleGame();
+        this.mover = new Mover(width, height, mapObjects);
     }
 
     public int getWidth(){ return width; }
@@ -61,6 +60,7 @@ public class World {
     public void update(String input){
         System.out.println(input);
         if(gameOver || gameWon) {
+            System.out.println("here");
             resetWorld();
         }
         else {
@@ -100,13 +100,13 @@ public class World {
                 .filter(mapObject -> mapObject instanceof Doctor)
                 .collect(Collectors.toList()).get(0);
         oldDoctor.resetTeleportationTimes();
-        IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
-        mapObjects.clear();
+        //IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
+        mapObjects = new ArrayList<>();
         this.gameGenerator.generateExampleGame();
-        Doctor newDoctor = (Doctor) mapObjects.stream()
+        /*Doctor newDoctor = (Doctor) mapObjects.stream()
                 .filter(mapObject -> mapObject instanceof Doctor)
                 .collect(Collectors.toList()).get(0);
-        newDoctor.setTeleportationTimesProperty(teleportTimes);
+        newDoctor.setTeleportationTimesProperty(teleportTimes);*/
         this.mover.clearMap();
         gameOver = false;
         gameWon = false;

@@ -80,4 +80,9 @@ public class Doctor extends Movable {
     public Field getTeleportationField(){
         return this.teleportationField;
     }
+
+    public void incrementTeleportation(){
+        this.teleportationTimes.set(this.teleportationTimes.get() + 1);
+        System.out.println("Teleport " + this.teleportationTimes.get());
+    }
 }

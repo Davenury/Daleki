@@ -4,6 +4,7 @@ package model.moves;
 import exceptions.EndGameException;
 import exceptions.GameWonException;
 import exceptions.TeleportationTimesException;
+import exceptions.UndoException;
 import model.creatures.Dalek;
 import model.creatures.MapObject;
 import model.creatures.Movable;
@@ -11,19 +12,23 @@ import model.map.Direction;
 import model.things.NotSoMovable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Mover {
     private MoveDecider moveDecider;
     private boolean allDaleksRemoved;
 
-    public Mover(int mapWidth, int mapHeight){
-        this.moveDecider = new MoveDecider(mapWidth, mapHeight);
+    public Mover(int mapWidth, int mapHeight, List<MapObject> mapObjects){
+        this.moveDecider = new MoveDecider(mapWidth, mapHeight, mapObjects);
     }
 
     public List<MapObject> moveAll(List<Movable> toMoveObjects, Direction input)
             throws EndGameException, IllegalStateException, GameWonException, TeleportationTimesException {
-        HashMap<Movable, MoveResult> results = this.moveDecider.simulateMove(toMoveObjects, input);
+        HashMap<Movable, MoveResult> results;
+        try {
+            results = this.moveDecider.simulateMove(toMoveObjects, input);
+        } catch (UndoException e) {
+            return List.copyOf(e.getMovables());
+        }
         if(results != null) {
             this.evaluateResults(results, toMoveObjects, input);
         }
@@ -36,7 +41,6 @@ public class Mover {
         for (Map.Entry<Movable, MoveResult> entry : results.entrySet()) {
             this.evaluateMovable(entry, toMoveObjects, input);
         }
-        this.printResults(results);
         if(this.allDaleksRemoved) throw new GameWonException();
     }
 

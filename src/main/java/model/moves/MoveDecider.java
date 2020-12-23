@@ -2,6 +2,7 @@ package model.moves;
 
 import exceptions.EndGameException;
 import exceptions.TeleportationTimesException;
+import exceptions.UndoException;
 import model.creatures.Doctor;
 import model.creatures.MapObject;
 import model.creatures.Movable;
@@ -13,33 +14,63 @@ import java.util.*;
 import java.util.HashMap;
 
 public class MoveDecider {
-    private final HashMap<Field, MapObject> map;
-    private final HashMap<Field, Movable> move;
-    private final HashMap<Field, Movable> previousMove;
+    private HashMap<Field, MapObject> map = new HashMap<>();
+    private HashMap<Field, Movable> move = new HashMap<>();
+    private HashMap<Field, Movable> previousMove = new HashMap<>();
+    private final WorldMapStack worldStack;
 
     private final int mapWidth;
     private final int mapHeight;
 
-    public MoveDecider(int mapWidth, int mapHeight){
+    public MoveDecider(int mapWidth, int mapHeight, List<MapObject> mapObjects){
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
-        this.map = new HashMap<>();
-        this.move = new HashMap<>();
-        this.previousMove = new HashMap<>();
+        this.worldStack = new WorldMapStack(mapObjects);
     }
 
     public HashMap<Movable, MoveResult> simulateMove(List<Movable> movables, Direction input)
-            throws EndGameException, IllegalStateException, TeleportationTimesException {
+            throws EndGameException, IllegalStateException, TeleportationTimesException, UndoException {
         HashMap<Movable, MoveResult> results = new HashMap<>();
-        if(input == Direction.TELEPORT){
+        this.setUpHashMaps();
+        if(input == Direction.UNDO){
+            this.undo();
+        }
+        else if(input == Direction.TELEPORT){
             simulateMoveWithTeleportation(movables, results);
         }
         else{
             results = simulateMoveWithoutTeleportation(movables, input, results);
         }
-        this.copyMove();
-        this.move.clear();
+
+        HashMap<Field, Movable> moveClone = new HashMap<>(this.move);
+        HashMap<Field, MapObject> mapClone = new HashMap<>(this.map);
+        this.worldStack.addMoveMap(moveClone);
+        this.worldStack.addWorldMap(mapClone);
+        this.worldStack.addMove(input);
         return results;
+    }
+
+    private void setUpHashMaps(){
+        this.move.clear();
+        this.previousMove.clear();
+        this.map.clear();
+        this.map = this.worldStack.getWorldMap();
+    }
+
+    private void undo() throws UndoException {
+        List<Movable> movables = new ArrayList<>();
+        Direction direction = this.worldStack.undo();
+        for (Map.Entry<Field, Movable> entry : this.worldStack.getMove().entrySet()) {
+            Movable movable = entry.getValue();
+            movable.setField(entry.getKey());
+            movables.add(movable);
+        }
+        if(direction == Direction.TELEPORT){
+            getDoctorFromMovables(movables).incrementTeleportation();
+        }
+        this.map = new HashMap<>(this.worldStack.getWorldMap());
+        this.move = new HashMap<>(this.worldStack.getMove());
+        throw new UndoException(movables);
     }
 
     private void simulateMoveWithTeleportation(List<Movable> movables, HashMap<Movable,
@@ -93,8 +124,14 @@ public class MoveDecider {
             if(movable instanceof Doctor) {
                 if (!isInMap(movable, input))
                     return null;
+                checkCollisions(movable, results, input);
+                break;
             }
-            checkCollisions(movable, results, input);
+        }
+        for(Movable movable : movables){
+            if(!(movable instanceof Doctor)){
+                checkCollisions(movable, results, input);
+            }
         }
         return results;
     }
@@ -122,12 +159,8 @@ public class MoveDecider {
             throws EndGameException, IllegalStateException {
         Field calculatedField = calculateField(movable, input);
         Movable movableOnFutureField = move.get(calculatedField);
-        Movable movableOnField = move.get(movable.getField());
         if(movableOnFutureField != null){
             evaluateNotNullEncounter(movable, results, calculatedField, movableOnFutureField);
-        }
-        else if(movableOnField != null){
-            evaluateNotNullEncounter(movable, results, calculatedField, movableOnField);
         }
         else{
             if(results.get(movable) != MoveResult.COLLISION)
@@ -180,8 +213,18 @@ public class MoveDecider {
     }
 
     public void clearMap(){
-        this.move.clear();
+        this.worldStack.clear();
         this.map.clear();
+        this.move.clear();
         this.previousMove.clear();
+    }
+
+    private Doctor getDoctorFromMovables(List<Movable> movables){
+        for(Movable movable : movables){
+            if(movable instanceof Doctor){
+                return (Doctor) movable;
+            }
+        }
+        throw new IllegalStateException("No doctor in movables list!");
     }
 }
