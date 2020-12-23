@@ -1,7 +1,7 @@
 package model.map;
 
 public enum Direction {
-    NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST, STAY, TELEPORT;
+    NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST, STAY, TELEPORT, UNDO;
 
     public Direction next(){
         return getDirection(NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST, NORTH);
@@ -23,7 +23,7 @@ public enum Direction {
             case SOUTH_WEST -> south;
             case WEST -> southWest;
             case NORTH_WEST -> west;
-            case STAY, TELEPORT -> Direction.STAY;
+            case STAY, TELEPORT, UNDO -> Direction.STAY;
         };
     }
 
@@ -37,7 +37,7 @@ public enum Direction {
             case SOUTH_WEST -> new Field(-1, -1);
             case WEST -> new Field(-1, 0);
             case NORTH_WEST -> new Field(-1, 1);
-            case STAY, TELEPORT -> new Field(0, 0);
+            case STAY, TELEPORT, UNDO -> new Field(0, 0);
         };
     }
 

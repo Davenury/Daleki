@@ -29,15 +29,16 @@ public class World {
     private Boolean gameOver = false;
     private Boolean gameWon = false;
 
-    private final GameGenerator gameGenerator = null;
+    private GameGenerator gameGenerator;
 
     @Inject
     public World(Doctor doctor, @Named("worldWidth") int width, @Named("worldHeight") int height){
         this.doctor = doctor;
         this.width = width;
         this.height = height;
-        System.out.println(this.width + this.height);
-        this.mover = new Mover(width, height);
+        this.gameGenerator = new GameGenerator(this);
+        this.gameGenerator.generateExampleGame();
+        this.mover = new Mover(width, height, mapObjects);
     }
 
 
@@ -60,6 +61,7 @@ public class World {
     public void update(String input){
         System.out.println(input);
         if(gameOver || gameWon) {
+            System.out.println("here");
             resetWorld();
         }
         else {
@@ -102,13 +104,15 @@ public class World {
         oldDoctor.resetSpareLives();
         IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
         IntegerProperty spareLives = oldDoctor.spareLivesProperty();
-        mapObjects.clear();
+        //IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
+        mapObjects = new ArrayList<>();
         this.gameGenerator.generateExampleGame();
         Doctor newDoctor = (Doctor) mapObjects.stream()
                 .filter(mapObject -> mapObject instanceof Doctor)
                 .collect(Collectors.toList()).get(0);
         newDoctor.setTeleportationTimesProperty(teleportTimes);
         newDoctor.setSpareLivesProperty(spareLives);
+        newDoctor.setTeleportationTimesProperty(teleportTimes);
         this.mover.clearMap();
         gameOver = false;
         gameWon = false;

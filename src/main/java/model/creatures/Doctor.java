@@ -106,7 +106,12 @@ public class Doctor extends Movable {
     public IntegerProperty spareLivesProperty(){
         return spareLives;
     }
-    public void resetSpareLives(){
+    public void resetSpareLives() {
         this.spareLives.set(Constants.SPARE_LIVES);
+    }
+
+    public void incrementTeleportation(){
+        this.teleportationTimes.set(this.teleportationTimes.get() + 1);
+        System.out.println("Teleport " + this.teleportationTimes.get());
     }
 }
