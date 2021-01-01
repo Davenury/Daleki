@@ -76,7 +76,7 @@ public class View {
         GridPane worldGrid = createWorldGrid();
         gameView.getChildren().add(worldGrid);
 
-        VBox sidePanel = new SidePanel(sidePanelWidth, teleportTimes, spareLives).sidePanel;
+        SidePanel sidePanel = new SidePanel(sidePanelWidth, teleportTimes, spareLives);
         gameView.getChildren().add(sidePanel);
 
         root.getChildren().add(gameView);
