@@ -1,35 +1,49 @@
 package view;
 
-import com.sun.webkit.graphics.WCRectangle;
-import javafx.beans.property.IntegerProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
-public class SidePanel {
-    public VBox sidePanel;
+public class SidePanel extends VBox{
 
-    SidePanel(double sidePanelWidth, Label teleportTimes, Label spareLives){
+    private final double width;
 
-        VBox sidePanel = new VBox();
-        sidePanel.setPrefWidth(sidePanelWidth);
-        sidePanel.setAlignment(Pos.CENTER);
-        sidePanel.setBackground(new Background(new BackgroundFill(Color.DIMGRAY,
+    private final Label teleportTimes;
+    private final Label spareLives;
+
+    public SidePanel(double sidePanelWidth, Label teleportTimes, Label spareLives){
+        this.width = sidePanelWidth;
+
+        configureSidePanel();
+
+        this.teleportTimes = teleportTimes;
+        this.spareLives = spareLives;
+
+        Text instruction = createInstructions();
+        VBox currentGameData = createCurrentGameData();
+
+        this.getChildren().addAll(instruction, currentGameData);
+    }
+
+    private void configureSidePanel(){
+        this.setPrefWidth(width);
+        this.setAlignment(Pos.CENTER);
+        this.setSpacing(30);
+        this.setBackground(new Background(new BackgroundFill(Color.DIMGRAY,
                 CornerRadii.EMPTY,
                 Insets.EMPTY)));
+        this.getStylesheets().add("https://fonts.googleapis.com/css2?family=Langar");
+    }
 
+    private Text createInstructions(){
         Text instruction = new Text(
-                "W/8\t\tgo North\n" +
+                        "W/8\t\tgo North\n" +
                         "9\t\tgo North-East\n" +
                         "D/6\t\tgo East\n" +
                         "3\t\tgo South-East\n" +
@@ -41,25 +55,27 @@ public class SidePanel {
                         "T\t\tteleport"
         );
         instruction.setFill(Color.LIGHTGRAY);
+        return instruction;
+    }
 
-        Rectangle space = new Rectangle(10, 30);
-        space.setFill(Color.TRANSPARENT);
+    private VBox createCurrentGameData(){
+        VBox currentGameData = new VBox();
 
-        teleportTimes.setTextFill(Color.LIGHTGRAY);
-        Text teleports = new Text("Teleports left\t\t" + teleportTimes.getText());
-        teleports.setTextAlignment(TextAlignment.LEFT);
-        teleports.setFill(Color.LIGHTGRAY);
+        currentGameData.setPrefWidth(this.getPrefWidth());
+        currentGameData.setAlignment(Pos.CENTER);
+        currentGameData.setSpacing(10);
 
-        spareLives.setTextFill(Color.LIGHTGRAY);
-        Text lives = new Text("Lives left\t\t\t" + spareLives.getText());
-        lives.setTextAlignment(TextAlignment.LEFT);
-        lives.setFill(Color.LIGHTGRAY);
+        Text teleports = createTextFromLabel(teleportTimes, "Teleports left");
+        Text lives = createTextFromLabel(spareLives, "Lives left");
 
-        teleports.setStyle("-fx-font-family: Langar; -fx-font-size: 20;");
-        lives.setStyle("-fx-font-family: Langar; -fx-font-size: 20;");
-        sidePanel.getStylesheets().add("https://fonts.googleapis.com/css2?family=Langar");
+        currentGameData.getChildren().addAll(teleports, lives);
+        return currentGameData;
+    }
 
-        sidePanel.getChildren().addAll(instruction, space, teleports, lives);
-        this.sidePanel = sidePanel;
+    private Text createTextFromLabel(Label label, String name){
+        Text text = new Text(name + "\t\t" + label.getText());
+        text.setFill(Color.LIGHTGRAY);
+        text.setStyle("-fx-font-family: Langar; -fx-font-size: 20;");
+        return text;
     }
 }

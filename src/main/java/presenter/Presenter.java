@@ -12,9 +12,6 @@ import view.input.StringOperationInterface;
 import view.input.InputerInterface;
 import view.input.VoidOperationInterface;
 
-import java.io.FileNotFoundException;
-import java.util.stream.Collectors;
-
 public class Presenter {
     private World world;
     private View view;
@@ -80,9 +77,7 @@ public class Presenter {
     }
 
     public IntegerProperty doctorSpareLivesProperty(){
-        Doctor doctor = (Doctor) world.getMapObjects().stream()
-                .filter(mapObject -> mapObject instanceof Doctor)
-                .collect(Collectors.toList()).get(0);
+        Doctor doctor = world.getDoctor();
         return doctor.spareLivesProperty();
     }
 }
