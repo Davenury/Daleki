@@ -47,6 +47,6 @@ public class GameGenerator {
         world.addMapObject(world.getDoctor());
         world.addMapObject(new Dalek(world.getDoctor(), new Field(5, 2)));
         world.addMapObject(new Dalek(world.getDoctor(), new Field(7, 2)));
-        world.addMapObject(new Dalek(world.getDoctor(), new Field(4, 1)));
+        world.addMapObject(new Dalek(world.getDoctor(), new Field(1, 1)));
     }
 }

@@ -1,14 +1,17 @@
 package view;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class SidePanel extends VBox{
 
@@ -16,19 +19,100 @@ public class SidePanel extends VBox{
 
     private final Label teleportTimes;
     private final Label spareLives;
+    private final Label level;
 
-    public SidePanel(double sidePanelWidth, Label teleportTimes, Label spareLives){
+    private GridPane dialogBox;
+
+
+
+    public SidePanel(double sidePanelWidth, Label teleportTimes, Label spareLives, Label level){
         this.width = sidePanelWidth;
 
         configureSidePanel();
 
         this.teleportTimes = teleportTimes;
         this.spareLives = spareLives;
+        this.level = level;
 
+        GridPane currentGameData = createCurrentGameData();
+
+        createDialogBox();
+        dialogBoxSetNeutral();
+
+        this.getChildren().addAll(this.dialogBox, currentGameData);
+    }
+
+    private void createDialogBox(){
+        this.dialogBox = new GridPane();
+
+        this.dialogBox.setBackground(new Background(new BackgroundFill(Color.DIMGRAY,
+                CornerRadii.EMPTY,
+                Insets.EMPTY)));
+        //centering the column
+        ColumnConstraints col = new ColumnConstraints();
+        col.setHalignment(HPos.CENTER);
+        dialogBox.getColumnConstraints().add(col);
+
+
+        this.dialogBox.setAlignment(Pos.CENTER);
+
+        this.dialogBox.setPadding(new Insets(10, 10, 10, 10));
+        //Setting the vertical and horizontal gaps between the columns
+        this.dialogBox.setVgap(5);
+        this.dialogBox.setHgap(15);
+        //Setting size for the pane
+        dialogBox.setMinSize(225, 350);
+
+    }
+
+    public void dialogBoxSetNeutral(){
+        this.dialogBox.setBackground(new Background(new BackgroundFill(Color.DIMGRAY,
+                CornerRadii.EMPTY,
+                Insets.EMPTY)));
+        this.dialogBox.getChildren().clear();
         Text instruction = createInstructions();
-        VBox currentGameData = createCurrentGameData();
+        this.dialogBox.add(instruction, 0, 0);
+    }
 
-        this.getChildren().addAll(instruction, currentGameData);
+    //TODO filePaths should be moved away
+    public void dialogBoxSetMessageTeleportationExceeded(){
+        setDialogBoxTextAndPicture("You've run out of\nteleportations!", "src/images/phone_booth.png", Color.BURLYWOOD);
+    }
+
+    public void dialogBoxSetMessageLevelUp(){
+        setDialogBoxTextAndPicture("LEVEL UP!", "src/images/phone_booth.png", Color.CORNFLOWERBLUE);
+
+    }
+
+    public void dialogBoxSetMessageLostLife(){
+        setDialogBoxTextAndPicture("You lost life!", "src/images/phone_booth.png", Color.ROSYBROWN);
+
+    }
+
+    private void setDialogBoxTextAndPicture(String text, String filePath, Color color){
+        this.dialogBox.getChildren().clear();
+
+        this.dialogBox.setBackground(new Background(new BackgroundFill(color,
+                CornerRadii.EMPTY,
+                Insets.EMPTY)));
+
+        Text message = new Text(text);
+        message.setStyle("-fx-font-family: Audiowide; -fx-font-size: 20;");
+
+        Image image = null;
+        try {
+            image = new Image(new FileInputStream(filePath));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ImageView imageView = new ImageView(image);
+
+        //imageView.setFitHeight(200);
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(150);
+
+        this.dialogBox.add(message, 0, 0);
+        this.dialogBox.add(imageView, 0, 1);
     }
 
     private void configureSidePanel(){
@@ -39,6 +123,7 @@ public class SidePanel extends VBox{
                 CornerRadii.EMPTY,
                 Insets.EMPTY)));
         this.getStylesheets().add("https://fonts.googleapis.com/css2?family=Langar");
+        this.getStylesheets().add("https://fonts.googleapis.com/css2?family=Audiowide&display=swap");
     }
 
     private Text createInstructions(){
@@ -55,27 +140,39 @@ public class SidePanel extends VBox{
                         "T\t\tteleport"
         );
         instruction.setFill(Color.LIGHTGRAY);
+
+        instruction.setStyle("-fx-font-size: 15;");
         return instruction;
     }
 
-    private VBox createCurrentGameData(){
-        VBox currentGameData = new VBox();
+    private GridPane createCurrentGameData(){
+        GridPane currentGameData = new GridPane();
+
 
         currentGameData.setPrefWidth(this.getPrefWidth());
-        currentGameData.setAlignment(Pos.CENTER);
-        currentGameData.setSpacing(10);
 
-        Text teleports = createTextFromLabel(teleportTimes, "Teleports left");
-        Text lives = createTextFromLabel(spareLives, "Lives left");
+        //Setting the padding
+        currentGameData.setPadding(new Insets(10, 10, 10, 10));
+        //Setting the vertical and horizontal gaps between the columns
+        currentGameData.setVgap(5);
+        currentGameData.setHgap(15);
+        //Setting the Grid alignment
+        currentGameData.setAlignment(Pos.CENTER_LEFT);
 
-        currentGameData.getChildren().addAll(teleports, lives);
+        currentGameData.add(createFormatedText("Teleports left"), 0, 0);
+        currentGameData.add(createFormatedText(teleportTimes.getText()), 1, 0);
+        currentGameData.add(createFormatedText("Lives left"), 0, 1);
+        currentGameData.add(createFormatedText(spareLives.getText()), 1, 1);
+        currentGameData.add(createFormatedText("LEVEL"), 0, 2);
+        currentGameData.add(createFormatedText(level.getText()), 1, 2);
+
         return currentGameData;
     }
 
-    private Text createTextFromLabel(Label label, String name){
-        Text text = new Text(name + "\t\t" + label.getText());
+    private Text createFormatedText(String text0){
+        Text text = new Text(text0);
         text.setFill(Color.LIGHTGRAY);
-        text.setStyle("-fx-font-family: Langar; -fx-font-size: 20;");
+        text.setStyle("-fx-font-family: Audiowide; -fx-font-size: 20;");
         return text;
     }
 }

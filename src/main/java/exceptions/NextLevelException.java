@@ -1,7 +1,7 @@
 package exceptions;
 
-public class GameWonException extends Exception{
-    public GameWonException(){
+public class NextLevelException extends Exception{
+    public NextLevelException(){
         super("Game won");
     }
 }

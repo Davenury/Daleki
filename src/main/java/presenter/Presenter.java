@@ -27,6 +27,8 @@ public class Presenter {
         this.view = new View(primaryStage);
         this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
         this.view.bindSpareLivesProperty(doctorSpareLivesProperty());
+        this.view.bindLevelProperty(worldLevelProperty());
+
         this.paintWorld();
         this.setInput();
         this.inputer.setStageAndAddHandler(primaryStage);
@@ -37,6 +39,23 @@ public class Presenter {
             this.view.setGameLostScene();
             return;
         }
+        if (world.getTeleportationDialog()){
+            world.resetTeleportationDialog();
+            this.view.setTeleportationSideDialog();
+            return;
+        }
+
+        if (world.getDoctorDiesDialog()){
+            world.resetDoctorDiesDialog();
+            this.view.setDoctorDiesSideDialog();
+            return;
+        }
+        if (world.getUpdateLevel()){
+            world.resetUpdateLevel();
+            this.view.setLevelUpSideDialog();
+            return;
+        }
+        //TODO we never win
         else if (world.getGameWon()){
             this.view.setGameWonScene();
             return;
@@ -79,5 +98,9 @@ public class Presenter {
     public IntegerProperty doctorSpareLivesProperty(){
         Doctor doctor = world.getDoctor();
         return doctor.spareLivesProperty();
+    }
+
+    public IntegerProperty worldLevelProperty(){
+        return this.world.getLevelManager().levelProperty();
     }
 }
