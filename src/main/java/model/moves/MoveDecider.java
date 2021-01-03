@@ -121,17 +121,18 @@ public class MoveDecider {
 
     private HashMap<Movable, MoveResult> simulateMoveWithoutTeleportation(List<Movable> movables, Direction input,
                                           HashMap<Movable, MoveResult> results) throws EndGameException {
+
+        for(Movable movable : movables){
+            if(!(movable instanceof Doctor)){
+                checkCollisions(movable, results, input);
+            }
+        }
         for (Movable movable : movables){
             if(movable instanceof Doctor) {
                 if (!isInMap(movable, input))
                     return null;
                 checkCollisions(movable, results, input);
                 break;
-            }
-        }
-        for(Movable movable : movables){
-            if(!(movable instanceof Doctor)){
-                checkCollisions(movable, results, input);
             }
         }
         return results;
@@ -159,6 +160,7 @@ public class MoveDecider {
     private void checkCollisionWithPreviousMovables(Movable movable, HashMap<Movable, MoveResult> results, Direction input)
             throws EndGameException, IllegalStateException {
         Field calculatedField = calculateField(movable, input);
+
         Movable movableOnFutureField = move.get(calculatedField);
         if(movableOnFutureField != null){
             evaluateNotNullEncounter(movable, results, calculatedField, movableOnFutureField);

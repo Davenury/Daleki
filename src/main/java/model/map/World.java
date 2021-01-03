@@ -3,12 +3,11 @@ package model.map;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.name.Named;
-import exceptions.EndGameException;
-import exceptions.GameWonException;
-import exceptions.TeleportationTimesException;
+import exceptions.*;
 import javafx.beans.property.IntegerProperty;
 import model.creatures.*;
 import model.moves.Mover;
+import model.other.LevelManager;
 import model.other.ListConcatener;
 import view.input.InputParser;
 
@@ -26,8 +25,13 @@ public class World {
 
     private final Mover mover;
 
+    private final LevelManager levelManager = new LevelManager();
+
     private Boolean gameOver = false;
     private Boolean gameWon = false;
+    private Boolean updateLevelDialog = false;
+    private Boolean teleportationDialog = false;
+    private Boolean doctorDiesDialog = false;
 
     private GameGenerator gameGenerator;
 
@@ -46,9 +50,24 @@ public class World {
 
     public int getHeight(){ return height; }
 
+    public LevelManager getLevelManager(){ return this.levelManager;}
+
     public boolean getGameOver(){ return this.gameOver; }
 
     public boolean getGameWon() { return this.gameWon; }
+
+    public boolean getUpdateLevel(){ return this.updateLevelDialog; }
+
+    public boolean resetUpdateLevel(){ return this.updateLevelDialog = false; }
+
+    public boolean getTeleportationDialog(){ return this.teleportationDialog; }
+
+    public boolean resetTeleportationDialog(){ return this.teleportationDialog = false; }
+
+    public boolean getDoctorDiesDialog(){ return this.doctorDiesDialog; }
+
+    public boolean resetDoctorDiesDialog(){ return this.doctorDiesDialog = false; }
+
 
     public List<MapObject> getMapObjects() {
         return ListConcatener.concatenate(mapObjects, mover.getMapObjects());
@@ -82,17 +101,25 @@ public class World {
                             .map(Movable.class::cast)
                             .collect(Collectors.toList()),
                     directionInput);
-        } catch (EndGameException e) {
-            this.gameOver = true;
-        } catch (GameWonException e) {
-            this.gameWon = true;
         }
-        catch (IllegalStateException e){
+        catch (EndGameException e) {
+            this.gameOver = true;
+            this.levelManager.resetLevel();
+        } catch (NextLevelException e) {
+            this.updateLevelDialog = true;
+            this.levelManager.incrementLevel();
+            resetWorld();
+        } catch (IllegalStateException e){
             e.printStackTrace();
             System.out.println(e.getMessage());
             //TODO -> I would also do it as a dialog?
-        } catch (TeleportationTimesException e){
-            //TODO -> show that you have no teleportations - dialog maybe?
+        }
+        catch (TeleportationTimesException e){
+            teleportationDialog = true;
+        }
+        //TODO -> DoctorDiesDialog is not made with exceptions, other dialogs are, is it ok?
+        if (this.doctor.getDiedInPrevRound()){
+            this.doctorDiesDialog = true;
         }
     }
 
@@ -104,7 +131,8 @@ public class World {
         oldDoctor.resetSpareLives();
         IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
         IntegerProperty spareLives = oldDoctor.spareLivesProperty();
-        //IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
+        //IntegerProperty level = this.levelManager.levelProperty();
+
         mapObjects = new ArrayList<>();
         this.gameGenerator.generateExampleGame();
         Doctor newDoctor = (Doctor) mapObjects.stream()
@@ -112,7 +140,7 @@ public class World {
                 .collect(Collectors.toList()).get(0);
         newDoctor.setTeleportationTimesProperty(teleportTimes);
         newDoctor.setSpareLivesProperty(spareLives);
-        newDoctor.setTeleportationTimesProperty(teleportTimes);
+
         this.mover.clearMap();
         gameOver = false;
         gameWon = false;

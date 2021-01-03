@@ -40,12 +40,14 @@ public class View {
     private final String dalekTexturePath = "src/images/dalek.png";
 
     private double junkSize;
-    private final Color junkColor = Color.DARKGRAY;
+    private final String junkTexturePath = "src/images/scrap.png";
 
     private final double sidePanelWidth = 200.0d;
+    SidePanel sidePanel;
 
     private final Label teleportTimes = new Label();
     private final Label spareLives = new Label();
+    private final Label level = new Label();
 
     public View(Stage primaryStage){
         this.stage = primaryStage;
@@ -59,12 +61,17 @@ public class View {
         setGameOverScene(true);
     }
 
+    //pBinding properties
     public void bindTeleportTimesProperty(IntegerProperty teleportTimes){
         this.teleportTimes.textProperty().bindBidirectional(teleportTimes, new NumberStringConverter());
     }
+
     public void bindSpareLivesProperty(IntegerProperty spareLives) {
         this.spareLives.textProperty().bindBidirectional(spareLives, new NumberStringConverter());
 
+    }
+    public void bindLevelProperty(IntegerProperty level){
+        this.level.textProperty().bindBidirectional(level, new NumberStringConverter());
     }
 
     public void paintWorld(){
@@ -76,7 +83,7 @@ public class View {
         GridPane worldGrid = createWorldGrid();
         gameView.getChildren().add(worldGrid);
 
-        SidePanel sidePanel = new SidePanel(sidePanelWidth, teleportTimes, spareLives);
+        this.sidePanel = new SidePanel(sidePanelWidth, teleportTimes, spareLives, level);
         gameView.getChildren().add(sidePanel);
 
         root.getChildren().add(gameView);
@@ -117,7 +124,7 @@ public class View {
                 paintImageTypeElement(dalekTexturePath, dalekSize, gridX, gridY);
             }
             default -> {
-                paintCircleTypeElement(junkSize, junkColor, gridX, gridY);
+                paintImageTypeElement(junkTexturePath, junkSize, gridX, gridY);
             }
         }
     }
@@ -146,7 +153,7 @@ public class View {
         fieldSize = Math.min(fieldMaxWidth, fieldMaxHeight);
         doctorSize = fieldSize * 0.9d;
         dalekSize = fieldSize * 0.8d;
-        junkSize = fieldSize;
+        junkSize = fieldSize * 0.9d;
 
         stage.setResizable(false);
     }
@@ -189,4 +196,14 @@ public class View {
     }
 
 
+    public void setTeleportationSideDialog() {
+        this.sidePanel.dialogBoxSetMessageTeleportationExceeded();
+    }
+    public void setLevelUpSideDialog() {
+        this.sidePanel.dialogBoxSetMessageLevelUp();
+    }
+
+    public void setDoctorDiesSideDialog() {
+        this.sidePanel.dialogBoxSetMessageLostLife();
+    }
 }

@@ -23,10 +23,13 @@ public class Doctor extends Movable {
     private IntegerProperty spareLives = new SimpleIntegerProperty(Constants.SPARE_LIVES);
 
     private Boolean diedInThisRound = false;
+    private Boolean diedInPrevRound = false;
+
+    private Boolean teleportationPossible = true;
 
     @Inject
     public Doctor(Field field, int worldWidth, int worldHeight){
-        this.field = field;
+        this.field = field; //inherited from MapObjects
         this.worldWidth = worldWidth;
         this.worldHeight = worldHeight;
         this.random = new Random();
@@ -48,6 +51,7 @@ public class Doctor extends Movable {
                 this.teleportationTimes.set(this.teleportationTimes.get() - 1);
             }
         }
+        diedInPrevRound = diedInThisRound;
         diedInThisRound = false;
     }
 
@@ -70,6 +74,7 @@ public class Doctor extends Movable {
         teleportationField = new Field(this.random.nextInt(worldWidth) + 1, this.random.nextInt(worldHeight) + 1);
     }
 
+    //Teleportation Times Property
     public IntegerProperty teleportationTimesProperty(){
         return teleportationTimes;
     }
@@ -77,16 +82,25 @@ public class Doctor extends Movable {
     public void setTeleportationTimesProperty(IntegerProperty teleportationTimes){
         this.teleportationTimes = teleportationTimes;
     }
-    public void setSpareLivesProperty(IntegerProperty teleportationTimes){
-        this.teleportationTimes = teleportationTimes;
-    }
-
     public void resetTeleportationTimes(){
         this.teleportationTimes.set(Constants.TELEPORTATION_TIMES);
     }
 
-    public Field getTeleportationField(){
-        return this.teleportationField;
+    public void incrementTeleportation(){
+        this.teleportationTimes.set(this.teleportationTimes.get() + 1);
+        System.out.println("Teleport " + this.teleportationTimes.get());
+    }
+
+    //Spare Lives Property
+    public IntegerProperty spareLivesProperty(){
+        return spareLives;
+    }
+    public void resetSpareLives() {
+        this.spareLives.set(Constants.SPARE_LIVES);
+    }
+
+    public void setSpareLivesProperty(IntegerProperty teleportationTimes){
+        this.teleportationTimes = teleportationTimes;
     }
 
     public void die() throws EndGameException {
@@ -100,18 +114,16 @@ public class Doctor extends Movable {
             teleportationField = new Field(this.random.nextInt(worldWidth) + 1, this.random.nextInt(worldHeight) + 1);
             super.updateField(teleportationField);
         }
+        diedInPrevRound = diedInThisRound;
         diedInThisRound = true;
 
     }
-    public IntegerProperty spareLivesProperty(){
-        return spareLives;
-    }
-    public void resetSpareLives() {
-        this.spareLives.set(Constants.SPARE_LIVES);
+    public Field getTeleportationField(){
+        return this.teleportationField;
     }
 
-    public void incrementTeleportation(){
-        this.teleportationTimes.set(this.teleportationTimes.get() + 1);
-        System.out.println("Teleport " + this.teleportationTimes.get());
-    }
+    public Boolean getDiedInPrevRound(){return this.diedInPrevRound;}
+
+
+
 }
