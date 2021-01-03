@@ -40,7 +40,7 @@ public class View {
     private final String dalekTexturePath = "src/images/dalek.png";
 
     private double junkSize;
-    private final Color junkColor = Color.DARKGRAY;
+    private final String junkTexturePath = "src/images/scrap.png";
 
     private final double sidePanelWidth = 200.0d;
     SidePanel sidePanel;
@@ -124,7 +124,7 @@ public class View {
                 paintImageTypeElement(dalekTexturePath, dalekSize, gridX, gridY);
             }
             default -> {
-                paintCircleTypeElement(junkSize, junkColor, gridX, gridY);
+                paintImageTypeElement(junkTexturePath, junkSize, gridX, gridY);
             }
         }
     }
@@ -153,7 +153,7 @@ public class View {
         fieldSize = Math.min(fieldMaxWidth, fieldMaxHeight);
         doctorSize = fieldSize * 0.9d;
         dalekSize = fieldSize * 0.8d;
-        junkSize = fieldSize;
+        junkSize = fieldSize * 0.9d;
 
         stage.setResizable(false);
     }
