@@ -81,12 +81,14 @@ public class SidePanel extends VBox{
 
     public void dialogBoxSetMessageLevelUp(){
         setDialogBoxTextAndPicture("LEVEL UP!", dialogBoxTexturePath, Color.CORNFLOWERBLUE);
-
     }
 
     public void dialogBoxSetMessageLostLife(){
         setDialogBoxTextAndPicture("You lost life!", dialogBoxTexturePath, Color.ROSYBROWN);
+    }
 
+    public void setDialogBoxSetMessageNoPowerUps(){
+        setDialogBoxTextAndPicture("You have no\nPower Ups!", dialogBoxTexturePath, Color.CRIMSON);
     }
 
     private void setDialogBoxTextAndPicture(String text, String filePath, Color color){
@@ -137,7 +139,8 @@ public class SidePanel extends VBox{
                         "A/4\t\tgo West\n" +
                         "7\t\tgo North-West\n" +
                         "Q/5\t\tstay\n" +
-                        "T\t\tteleport"
+                        "T\t\tteleport\n" +
+                        "U\t\tundo\n"
         );
         instruction.setFill(Color.LIGHTGRAY);
 

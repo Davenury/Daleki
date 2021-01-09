@@ -216,4 +216,6 @@ public class View {
     public void setDoctorDiesSideDialog() {
         this.sidePanel.dialogBoxSetMessageLostLife();
     }
+
+    public void setNoPowerUpsSideDialog() { this.sidePanel.setDialogBoxSetMessageNoPowerUps(); }
 }
