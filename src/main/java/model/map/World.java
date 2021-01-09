@@ -32,8 +32,9 @@ public class World {
     private Boolean updateLevelDialog = false;
     private Boolean teleportationDialog = false;
     private Boolean doctorDiesDialog = false;
+    private Boolean noPowerUpsDialog = false;
 
-    private GameGenerator gameGenerator;
+    private final GameGenerator gameGenerator;
 
     @Inject
     public World(Doctor doctor, @Named("worldWidth") int width, @Named("worldHeight") int height){
@@ -68,6 +69,9 @@ public class World {
 
     public boolean resetDoctorDiesDialog(){ return this.doctorDiesDialog = false; }
 
+    public boolean getNoPowerUpsDialog() { return this.noPowerUpsDialog; }
+
+    public boolean resetNoPowerUpsDialog() { return this.noPowerUpsDialog = false; }
 
     public List<MapObject> getMapObjects() {
         return ListConcatener.concatenate(mapObjects, mover.getMapObjects());
