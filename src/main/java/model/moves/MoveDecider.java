@@ -1,16 +1,16 @@
 package model.moves;
 
-import exceptions.DoctorDiesException;
-import exceptions.EndGameException;
-import exceptions.TeleportationTimesException;
-import exceptions.UndoException;
+import exceptions.*;
 import model.creatures.Doctor;
 import model.creatures.MapObject;
 import model.creatures.Movable;
 import model.map.*;
+import model.other.Constants;
 import model.things.NotSoMovable;
 import model.things.PileOfJunk;
+import model.things.PowerUp;
 
+import javax.print.Doc;
 import java.util.*;
 import java.util.HashMap;
 
@@ -23,6 +23,8 @@ public class MoveDecider {
     private final int mapWidth;
     private final int mapHeight;
 
+    private final Random random = new Random();
+
     public MoveDecider(int mapWidth, int mapHeight, List<MapObject> mapObjects){
         this.mapWidth = mapWidth;
         this.mapHeight = mapHeight;
@@ -30,10 +32,18 @@ public class MoveDecider {
     }
 
     public HashMap<Movable, MoveResult> simulateMove(List<Movable> movables, Direction input)
-            throws EndGameException, IllegalStateException, TeleportationTimesException, UndoException {
+            throws EndGameException, IllegalStateException, TeleportationTimesException, UndoException, PowerUpException {
         HashMap<Movable, MoveResult> results = new HashMap<>();
         this.setUpHashMaps();
         if(input == Direction.UNDO){
+            Doctor doctor = null;
+            for(Movable movable : movables){
+                if(movable instanceof Doctor){
+                    doctor = (Doctor) movable;
+                    break;
+                }
+            }
+            doctor.removePowerUp();
             this.undo();
         }
         else if(input == Direction.TELEPORT){
@@ -41,6 +51,11 @@ public class MoveDecider {
         }
         else{
             results = simulateMoveWithoutTeleportation(movables, input, results);
+        }
+
+        if(shouldAddPowerUp()){
+            Field powerUpField = randomizePowerUpField();
+            map.put(powerUpField, new PowerUp(powerUpField.getX(), powerUpField.getY()));
         }
 
         HashMap<Field, Movable> moveClone = new HashMap<>(this.move);
@@ -149,8 +164,16 @@ public class MoveDecider {
             throws IllegalStateException, EndGameException {
         Field calculatedField = calculateField(movable, input);
         if(map.get(calculatedField) != null){
-            if(movable instanceof Doctor) ((Doctor) movable).die();
-            else results.put(movable, MoveResult.COLLISION);
+            MapObject object = map.get(calculatedField);
+            if(object instanceof PileOfJunk) {
+                if (movable instanceof Doctor) ((Doctor) movable).die();
+                else results.put(movable, MoveResult.COLLISION);
+            }
+            else if(object instanceof PowerUp && movable instanceof Doctor) {
+                ((Doctor) movable).addPowerUp();
+                //TODO: remove power up
+                map.remove(object);
+            }
         }
         else{
             results.put(movable, MoveResult.OK);
@@ -230,5 +253,17 @@ public class MoveDecider {
             }
         }
         throw new IllegalStateException("No doctor in movables list!");
+    }
+
+    private boolean shouldAddPowerUp(){
+        return random.nextInt(101)%(100/Constants.POWER_UP_CHANCE_PERCENT) == 0;
+    }
+
+    private Field randomizePowerUpField(){
+        Field powerUpField;
+        do{
+            powerUpField = new Field(random.nextInt(mapWidth), random.nextInt(mapHeight));
+        } while(map.get(powerUpField) != null);
+        return powerUpField;
     }
 }

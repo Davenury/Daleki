@@ -7,12 +7,13 @@ import model.creatures.Dalek;
 import model.creatures.Doctor;
 import model.creatures.MapObject;
 import model.map.*;
+import model.things.PileOfJunk;
 import view.*;
 import view.input.StringOperationInterface;
 import view.input.InputerInterface;
 import view.input.VoidOperationInterface;
 
-import javax.print.Doc;
+import java.util.ListIterator;
 
 public class Presenter {
     private World world;
@@ -71,14 +72,18 @@ public class Presenter {
         this.view.setParameters(this.getWorldWidth(), this.getWorldHeight());
         this.view.paintWorld();
 
-        for(MapObject mapObject : world.getMapObjects()){
+        ListIterator<MapObject> listIterator = world.getMapObjects().listIterator(world.getMapObjects().size());
+        while(listIterator.hasPrevious()){
+            MapObject mapObject = listIterator.previous();
             Element element;
             if(mapObject instanceof Doctor)
                 element = Element.DOCTOR;
             else if(mapObject instanceof Dalek)
                 element = Element.DALEK;
-            else
+            else if(mapObject instanceof PileOfJunk)
                 element = Element.JUNK;
+            else
+                element = Element.POWERUP;
             this.view.paintElement(element, mapObject.getField().getX(), mapObject.getField().getY());
         }
     }
