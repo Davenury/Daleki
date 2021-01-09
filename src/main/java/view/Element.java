@@ -1,5 +1,5 @@
 package view;
 
 public enum Element {
-    JUNK, DOCTOR, DALEK
+    JUNK, DOCTOR, DALEK, POWERUP
 }
