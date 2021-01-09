@@ -19,7 +19,7 @@ public class Mover {
     }
 
     public List<MapObject> moveAll(List<Movable> toMoveObjects, Direction input)
-            throws EndGameException, IllegalStateException, NextLevelException, TeleportationTimesException {
+            throws EndGameException, IllegalStateException, NextLevelException, TeleportationTimesException, PowerUpException {
         HashMap<Movable, MoveResult> results;
         try {
             results = this.moveDecider.simulateMove(toMoveObjects, input);

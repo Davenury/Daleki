@@ -2,6 +2,7 @@ package model.creatures;
 
 import com.google.inject.Inject;
 import exceptions.EndGameException;
+import exceptions.PowerUpException;
 import exceptions.TeleportationTimesException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -101,8 +102,8 @@ public class Doctor extends Movable {
         this.spareLives.set(Constants.SPARE_LIVES);
     }
 
-    public void setSpareLivesProperty(IntegerProperty teleportationTimes){
-        this.teleportationTimes = teleportationTimes;
+    public void setSpareLivesProperty(IntegerProperty spareLives){
+        this.spareLives = spareLives;
     }
 
     public IntegerProperty powerUpsProperty() { return powerUps; }
@@ -114,13 +115,21 @@ public class Doctor extends Movable {
     }
 
     public void addPowerUp(){
-        this.powerUps.add(new SimpleIntegerProperty(1));
+        this.powerUps.setValue(powerUps.getValue() + 1);
+    }
+
+    public void removePowerUp() throws PowerUpException {
+        if(powerUps.get() == 0){
+            throw new PowerUpException();
+        }
+        powerUps.setValue(powerUps.getValue() - 1);
     }
 
     public void die() throws EndGameException {
         System.out.println(teleportationField);
         if (!diedInThisRound){//Lose one life in case of many Daleks
             this.spareLives.set(this.spareLives.get() - 1);
+            this.resetPowerUps();
             if(this.spareLives.get() <= 0) {
                 throw new EndGameException();
             }

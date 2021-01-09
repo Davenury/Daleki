@@ -7,12 +7,15 @@ import exceptions.*;
 import javafx.beans.property.IntegerProperty;
 import model.creatures.*;
 import model.moves.Mover;
+import model.other.Constants;
 import model.other.LevelManager;
 import model.other.ListConcatener;
+import model.things.PowerUp;
 import view.input.InputParser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class World {
@@ -120,6 +123,8 @@ public class World {
         }
         catch (TeleportationTimesException e){
             teleportationDialog = true;
+        } catch (PowerUpException e) {
+            e.printStackTrace();
         }
         //TODO -> DoctorDiesDialog is not made with exceptions, other dialogs are, is it ok?
         if (this.doctor.getDiedInPrevRound()){
@@ -133,6 +138,7 @@ public class World {
                 .collect(Collectors.toList()).get(0);
         oldDoctor.resetTeleportationTimes();
         oldDoctor.resetSpareLives();
+        oldDoctor.resetPowerUps();
         IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
         IntegerProperty spareLives = oldDoctor.spareLivesProperty();
         //IntegerProperty level = this.levelManager.levelProperty();
