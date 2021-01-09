@@ -21,6 +21,7 @@ public class Doctor extends Movable {
     private Field teleportationField;
     private IntegerProperty teleportationTimes = new SimpleIntegerProperty(Constants.TELEPORTATION_TIMES);
     private IntegerProperty spareLives = new SimpleIntegerProperty(Constants.SPARE_LIVES);
+    private IntegerProperty powerUps = new SimpleIntegerProperty(Constants.POWER_UPS);
 
     private Boolean diedInThisRound = false;
     private Boolean diedInPrevRound = false;
@@ -95,12 +96,25 @@ public class Doctor extends Movable {
     public IntegerProperty spareLivesProperty(){
         return spareLives;
     }
+
     public void resetSpareLives() {
         this.spareLives.set(Constants.SPARE_LIVES);
     }
 
     public void setSpareLivesProperty(IntegerProperty teleportationTimes){
         this.teleportationTimes = teleportationTimes;
+    }
+
+    public IntegerProperty powerUpsProperty() { return powerUps; }
+
+    public void resetPowerUps() { this.powerUps.set(Constants.POWER_UPS); }
+
+    public void setPowerUpsProperty(IntegerProperty powerUps){
+        this.powerUps = powerUps;
+    }
+
+    public void addPowerUp(){
+        this.powerUps.add(new SimpleIntegerProperty(1));
     }
 
     public void die() throws EndGameException {

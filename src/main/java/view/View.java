@@ -1,8 +1,6 @@
 package view;
 
 import javafx.beans.property.IntegerProperty;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -14,7 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.converter.NumberStringConverter;
@@ -42,12 +39,16 @@ public class View {
     private double junkSize;
     private final String junkTexturePath = "src/images/scrap.png";
 
+    private double powerUpSize;
+    private final Color powerUpColor = Color.LIMEGREEN;
+
     private final double sidePanelWidth = 200.0d;
-    SidePanel sidePanel;
+    private SidePanel sidePanel;
 
     private final Label teleportTimes = new Label();
     private final Label spareLives = new Label();
     private final Label level = new Label();
+    private final Label powerUps = new Label();
 
     public View(Stage primaryStage){
         this.stage = primaryStage;
@@ -74,6 +75,10 @@ public class View {
         this.level.textProperty().bindBidirectional(level, new NumberStringConverter());
     }
 
+    public void bindPowerUpsProperty(IntegerProperty powerUps){
+        this.powerUps.textProperty().bindBidirectional(powerUps, new NumberStringConverter());
+    }
+
     public void paintWorld(){
         root = new Group();
         stage.setTitle("Daleki");
@@ -83,7 +88,7 @@ public class View {
         GridPane worldGrid = createWorldGrid();
         gameView.getChildren().add(worldGrid);
 
-        this.sidePanel = new SidePanel(sidePanelWidth, teleportTimes, spareLives, level);
+        this.sidePanel = new SidePanel(sidePanelWidth, teleportTimes, spareLives, level, powerUps);
         gameView.getChildren().add(sidePanel);
 
         root.getChildren().add(gameView);
@@ -123,8 +128,11 @@ public class View {
             case DALEK -> {
                 paintImageTypeElement(dalekTexturePath, dalekSize, gridX, gridY);
             }
-            default -> {
+            case JUNK -> {
                 paintImageTypeElement(junkTexturePath, junkSize, gridX, gridY);
+            }
+            case POWERUP -> {
+                paintCircleTypeElement(powerUpSize, powerUpColor, gridX, gridY);
             }
         }
     }
@@ -154,6 +162,7 @@ public class View {
         doctorSize = fieldSize * 0.9d;
         dalekSize = fieldSize * 0.8d;
         junkSize = fieldSize * 0.9d;
+        powerUpSize = fieldSize * 0.9d;
 
         stage.setResizable(false);
     }
@@ -199,6 +208,7 @@ public class View {
     public void setTeleportationSideDialog() {
         this.sidePanel.dialogBoxSetMessageTeleportationExceeded();
     }
+
     public void setLevelUpSideDialog() {
         this.sidePanel.dialogBoxSetMessageLevelUp();
     }

@@ -12,6 +12,8 @@ import view.input.StringOperationInterface;
 import view.input.InputerInterface;
 import view.input.VoidOperationInterface;
 
+import javax.print.Doc;
+
 public class Presenter {
     private World world;
     private View view;
@@ -28,6 +30,7 @@ public class Presenter {
         this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
         this.view.bindSpareLivesProperty(doctorSpareLivesProperty());
         this.view.bindLevelProperty(worldLevelProperty());
+        this.view.bindPowerUpsProperty(doctorPowerUpsProperty());
 
         this.paintWorld();
         this.setInput();
@@ -102,5 +105,10 @@ public class Presenter {
 
     public IntegerProperty worldLevelProperty(){
         return this.world.getLevelManager().levelProperty();
+    }
+
+    public IntegerProperty doctorPowerUpsProperty(){
+        Doctor doctor = world.getDoctor();
+        return doctor.powerUpsProperty();
     }
 }

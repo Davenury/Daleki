@@ -20,12 +20,12 @@ public class SidePanel extends VBox{
     private final Label teleportTimes;
     private final Label spareLives;
     private final Label level;
+    private final Label powerUps;
 
     private GridPane dialogBox;
+    private final String dialogBoxTexturePath = "src/images/phone_booth.png";
 
-
-
-    public SidePanel(double sidePanelWidth, Label teleportTimes, Label spareLives, Label level){
+    public SidePanel(double sidePanelWidth, Label teleportTimes, Label spareLives, Label level, Label powerUps){
         this.width = sidePanelWidth;
 
         configureSidePanel();
@@ -33,6 +33,7 @@ public class SidePanel extends VBox{
         this.teleportTimes = teleportTimes;
         this.spareLives = spareLives;
         this.level = level;
+        this.powerUps = powerUps;
 
         GridPane currentGameData = createCurrentGameData();
 
@@ -48,21 +49,20 @@ public class SidePanel extends VBox{
         this.dialogBox.setBackground(new Background(new BackgroundFill(Color.DIMGRAY,
                 CornerRadii.EMPTY,
                 Insets.EMPTY)));
+        
         //centering the column
         ColumnConstraints col = new ColumnConstraints();
         col.setHalignment(HPos.CENTER);
         dialogBox.getColumnConstraints().add(col);
-
-
         this.dialogBox.setAlignment(Pos.CENTER);
-
         this.dialogBox.setPadding(new Insets(10, 10, 10, 10));
+        
         //Setting the vertical and horizontal gaps between the columns
         this.dialogBox.setVgap(5);
         this.dialogBox.setHgap(15);
+        
         //Setting size for the pane
         dialogBox.setMinSize(225, 350);
-
     }
 
     public void dialogBoxSetNeutral(){
@@ -74,18 +74,18 @@ public class SidePanel extends VBox{
         this.dialogBox.add(instruction, 0, 0);
     }
 
-    //TODO filePaths should be moved away
+
     public void dialogBoxSetMessageTeleportationExceeded(){
-        setDialogBoxTextAndPicture("You've run out of\nteleportations!", "src/images/phone_booth.png", Color.BURLYWOOD);
+        setDialogBoxTextAndPicture("You've run out of\nteleportations!", dialogBoxTexturePath, Color.BURLYWOOD);
     }
 
     public void dialogBoxSetMessageLevelUp(){
-        setDialogBoxTextAndPicture("LEVEL UP!", "src/images/phone_booth.png", Color.CORNFLOWERBLUE);
+        setDialogBoxTextAndPicture("LEVEL UP!", dialogBoxTexturePath, Color.CORNFLOWERBLUE);
 
     }
 
     public void dialogBoxSetMessageLostLife(){
-        setDialogBoxTextAndPicture("You lost life!", "src/images/phone_booth.png", Color.ROSYBROWN);
+        setDialogBoxTextAndPicture("You lost life!", dialogBoxTexturePath, Color.ROSYBROWN);
 
     }
 
@@ -148,7 +148,6 @@ public class SidePanel extends VBox{
     private GridPane createCurrentGameData(){
         GridPane currentGameData = new GridPane();
 
-
         currentGameData.setPrefWidth(this.getPrefWidth());
 
         //Setting the padding
@@ -165,6 +164,8 @@ public class SidePanel extends VBox{
         currentGameData.add(createFormatedText(spareLives.getText()), 1, 1);
         currentGameData.add(createFormatedText("LEVEL"), 0, 2);
         currentGameData.add(createFormatedText(level.getText()), 1, 2);
+        currentGameData.add(createFormatedText("Power Ups"), 0, 3);
+        currentGameData.add(createFormatedText(powerUps.getText()), 1, 3);
 
         return currentGameData;
     }
