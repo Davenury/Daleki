@@ -28,4 +28,8 @@ public class LevelManager {
             throw new GameWonException();
         }
     }
+
+    public Integer getCurrentLevel(){
+        return this.level.get();
+    }
 }

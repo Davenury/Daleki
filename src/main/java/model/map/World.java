@@ -22,7 +22,7 @@ public class World {
 
     private final Doctor doctor;
 
-    private final Mover mover;
+    private Mover mover;
 
     private final LevelManager levelManager = new LevelManager();
 
@@ -94,7 +94,6 @@ public class World {
     public void update(String input){
         System.out.println(input);
         if(gameOver || gameWon) {
-            System.out.println("here");
             resetWorld();
         }
         else {
@@ -162,9 +161,20 @@ public class World {
         newDoctor.setTeleportationTimesProperty(teleportTimes);
         newDoctor.setSpareLivesProperty(spareLives);
 
-        this.mover.clearMap();
+        this.mover = new Mover(width, height, mapObjects);
         gameOver = false;
         gameWon = false;
+    }
+
+    public Integer getLevel(){
+        return this.levelManager.getCurrentLevel();
+    }
+
+    public List<Movable> getMovables(){
+        return this.mapObjects.stream()
+                .filter(object -> object instanceof Movable)
+                .map(object -> (Movable) object)
+                .collect(Collectors.toList());
     }
 
 }
