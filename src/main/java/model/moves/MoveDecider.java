@@ -46,6 +46,7 @@ public class MoveDecider {
                 this.undo();
             }
             else{
+                updateWorldStack(input);
                 throw new CantUndoException();
             }
         }
@@ -61,11 +62,7 @@ public class MoveDecider {
             map.put(powerUpField, new PowerUp(powerUpField.getX(), powerUpField.getY()));
         }
 
-        HashMap<Field, Movable> moveClone = new HashMap<>(this.move);
-        HashMap<Field, MapObject> mapClone = new HashMap<>(this.map);
-        this.worldStack.addMoveMap(moveClone);
-        this.worldStack.addWorldMap(mapClone);
-        this.worldStack.addMove(input);
+        updateWorldStack(input);
         return results;
     }
 
@@ -264,5 +261,13 @@ public class MoveDecider {
             powerUpField = new Field(random.nextInt(mapWidth + 1), random.nextInt(mapHeight + 1));
         } while(map.get(powerUpField) != null);
         return powerUpField;
+    }
+
+    private void updateWorldStack(Direction input){
+        HashMap<Field, Movable> moveClone = new HashMap<>(this.move);
+        HashMap<Field, MapObject> mapClone = new HashMap<>(this.map);
+        this.worldStack.addMoveMap(moveClone);
+        this.worldStack.addWorldMap(mapClone);
+        this.worldStack.addMove(input);
     }
 }
