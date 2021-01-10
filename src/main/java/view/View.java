@@ -40,12 +40,13 @@ public class View {
     private final String junkTexturePath = "src/images/scrap.png";
 
     private double powerUpSize;
-    private final Color powerUpColor = Color.LIMEGREEN;
+    private final String powerUpTexturePath = "src/images/powerup.png";
 
     private final double sidePanelWidth = 200.0d;
     private SidePanel sidePanel;
 
     private final Label teleportTimes = new Label();
+    private final Label undosTimes = new Label();
     private final Label spareLives = new Label();
     private final Label level = new Label();
     private final Label powerUps = new Label();
@@ -65,6 +66,10 @@ public class View {
     //pBinding properties
     public void bindTeleportTimesProperty(IntegerProperty teleportTimes){
         this.teleportTimes.textProperty().bindBidirectional(teleportTimes, new NumberStringConverter());
+    }
+
+    public void bindUndosTimesPropetry(IntegerProperty undosTimes){
+        this.undosTimes.textProperty().bindBidirectional(undosTimes, new NumberStringConverter());
     }
 
     public void bindSpareLivesProperty(IntegerProperty spareLives) {
@@ -88,7 +93,7 @@ public class View {
         GridPane worldGrid = createWorldGrid();
         gameView.getChildren().add(worldGrid);
 
-        this.sidePanel = new SidePanel(sidePanelWidth, teleportTimes, spareLives, level, powerUps);
+        this.sidePanel = new SidePanel(sidePanelWidth, teleportTimes, spareLives, level, undosTimes);
         gameView.getChildren().add(sidePanel);
 
         root.getChildren().add(gameView);
@@ -132,7 +137,7 @@ public class View {
                 paintImageTypeElement(junkTexturePath, junkSize, gridX, gridY);
             }
             case POWERUP -> {
-                paintCircleTypeElement(powerUpSize, powerUpColor, gridX, gridY);
+                paintImageTypeElement(powerUpTexturePath, powerUpSize, gridX, gridY);
             }
         }
     }
@@ -209,6 +214,10 @@ public class View {
         this.sidePanel.dialogBoxSetMessageTeleportationExceeded();
     }
 
+    public void setUndoSideDialog() {
+        this.sidePanel.dialogBoxSetMessageUndoExceeded();
+    }
+
     public void setLevelUpSideDialog() {
         this.sidePanel.dialogBoxSetMessageLevelUp();
     }
@@ -216,6 +225,4 @@ public class View {
     public void setDoctorDiesSideDialog() {
         this.sidePanel.dialogBoxSetMessageLostLife();
     }
-
-    public void setNoPowerUpsSideDialog() { this.sidePanel.setDialogBoxSetMessageNoPowerUps(); }
 }

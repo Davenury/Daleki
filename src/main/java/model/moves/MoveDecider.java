@@ -32,19 +32,22 @@ public class MoveDecider {
     }
 
     public HashMap<Movable, MoveResult> simulateMove(List<Movable> movables, Direction input)
-            throws EndGameException, IllegalStateException, TeleportationTimesException, UndoException, PowerUpException {
+            throws EndGameException, IllegalStateException, TeleportationTimesException, UndoException,
+            PowerUpException, CantUndoException {
         HashMap<Movable, MoveResult> results = new HashMap<>();
         this.setUpHashMaps();
         if(input == Direction.UNDO){
-            Doctor doctor = null;
-            for(Movable movable : movables){
-                if(movable instanceof Doctor){
-                    doctor = (Doctor) movable;
-                    break;
+            Doctor doctor = getDoctorFromMovables(movables);
+            if(doctor.canUndo()) {
+                doctor.decrementUndoTimes();
+                if (doctor.hasPowerUps()) {
+                    doctor.removePowerUp();
                 }
+                this.undo();
             }
-            doctor.removePowerUp();
-            this.undo();
+            else{
+                throw new CantUndoException();
+            }
         }
         else if(input == Direction.TELEPORT){
             simulateMoveWithTeleportation(movables, results);
@@ -91,12 +94,8 @@ public class MoveDecider {
 
     private void simulateMoveWithTeleportation(List<Movable> movables, HashMap<Movable,
             MoveResult> results) throws EndGameException, TeleportationTimesException {
-        for(Movable movable : movables){
-            if(movable instanceof Doctor){
-                this.findTeleportationField((Doctor) movable, results);
-                break;
-            }
-        }
+        Doctor doctor = this.getDoctorFromMovables(movables);
+        this.findTeleportationField(doctor, results);
         for(Movable movable : movables){
             if(!(movable instanceof Doctor)){
                 checkCollisions(movable, results, Direction.STAY);
@@ -172,7 +171,7 @@ public class MoveDecider {
             else if(object instanceof PowerUp && movable instanceof Doctor) {
                 ((Doctor) movable).addPowerUp();
                 //TODO: remove power up
-                map.remove(object);
+                map.remove(object.field);
             }
         }
         else{

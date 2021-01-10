@@ -29,6 +29,7 @@ public class Presenter {
         this.world = world;
         this.view = new View(primaryStage);
         this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
+        this.view.bindUndosTimesPropetry(doctorUndoTimesProperty());
         this.view.bindSpareLivesProperty(doctorSpareLivesProperty());
         this.view.bindLevelProperty(worldLevelProperty());
         this.view.bindPowerUpsProperty(doctorPowerUpsProperty());
@@ -49,6 +50,12 @@ public class Presenter {
             return;
         }
 
+        if (world.getUndoDialog()){
+            world.resetUndoDialog();
+            this.view.setUndoSideDialog();
+            return;
+        }
+
         if (world.getDoctorDiesDialog()){
             world.resetDoctorDiesDialog();
             this.view.setDoctorDiesSideDialog();
@@ -59,11 +66,7 @@ public class Presenter {
             this.view.setLevelUpSideDialog();
             return;
         }
-        if (world.getNoPowerUpsDialog()){
-            world.resetNoPowerUpsDialog();
-            this.view.setNoPowerUpsSideDialog();
-            return;
-        }
+
         //TODO we never win
         else if (world.getGameWon()){
             this.view.setGameWonScene();
@@ -106,6 +109,11 @@ public class Presenter {
     public IntegerProperty doctorTeleportationTimesProperty(){
         Doctor doctor = world.getDoctor();
         return doctor.teleportationTimesProperty();
+    }
+
+    public IntegerProperty doctorUndoTimesProperty(){
+        Doctor doctor = world.getDoctor();
+        return doctor.undoTimesProperty();
     }
 
     public IntegerProperty doctorSpareLivesProperty(){

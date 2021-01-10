@@ -16,7 +16,7 @@ public class GameGenerator {
     }
 
     public void generateExampleGame(){
-        this.generateDaleksToBoomAndOneSurvivor();
+        this.generateDalekToMoveBehindTheDoctor();
     }
 
     /**To boom Daleks, please move one step up (press W key right after beginning of the game)*/
