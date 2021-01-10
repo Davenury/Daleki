@@ -1,21 +1,17 @@
 package model.map;
 
 import com.google.inject.Inject;
-import com.google.inject.Injector;
 import com.google.inject.name.Named;
 import exceptions.*;
 import javafx.beans.property.IntegerProperty;
 import model.creatures.*;
 import model.moves.Mover;
-import model.other.Constants;
 import model.other.LevelManager;
 import model.other.ListConcatener;
-import model.things.PowerUp;
 import view.input.InputParser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 public class World {
@@ -34,6 +30,7 @@ public class World {
     private Boolean gameWon = false;
     private Boolean updateLevelDialog = false;
     private Boolean teleportationDialog = false;
+    private Boolean undoDialog = false;
     private Boolean doctorDiesDialog = false;
     private Boolean noPowerUpsDialog = false;
 
@@ -62,19 +59,29 @@ public class World {
 
     public boolean getUpdateLevel(){ return this.updateLevelDialog; }
 
-    public boolean resetUpdateLevel(){ return this.updateLevelDialog = false; }
+    public void resetUpdateLevel(){
+        this.updateLevelDialog = false;
+    }
 
     public boolean getTeleportationDialog(){ return this.teleportationDialog; }
 
-    public boolean resetTeleportationDialog(){ return this.teleportationDialog = false; }
+    public boolean getUndoDialog(){return this.undoDialog;}
+
+    public void resetUndoDialog(){this.undoDialog = false;}
+
+    public void resetTeleportationDialog(){ this.teleportationDialog = false; }
 
     public boolean getDoctorDiesDialog(){ return this.doctorDiesDialog; }
 
-    public boolean resetDoctorDiesDialog(){ return this.doctorDiesDialog = false; }
+    public void resetDoctorDiesDialog(){
+        this.doctorDiesDialog = false;
+    }
 
     public boolean getNoPowerUpsDialog() { return this.noPowerUpsDialog; }
 
-    public boolean resetNoPowerUpsDialog() { return this.noPowerUpsDialog = false; }
+    public void resetNoPowerUpsDialog() {
+        this.noPowerUpsDialog = false;
+    }
 
     public List<MapObject> getMapObjects() {
         return ListConcatener.concatenate(mapObjects, mover.getMapObjects());
@@ -114,19 +121,23 @@ public class World {
             this.levelManager.resetLevel();
         } catch (NextLevelException e) {
             this.updateLevelDialog = true;
-            this.levelManager.incrementLevel();
+            try {
+                this.levelManager.incrementLevel();
+            } catch (GameWonException gameWonException) {
+                this.gameWon = true;
+            }
             resetWorld();
         } catch (IllegalStateException e){
             e.printStackTrace();
             System.out.println(e.getMessage());
-            //TODO -> I would also do it as a dialog?
         }
         catch (TeleportationTimesException e){
             teleportationDialog = true;
         } catch (PowerUpException e) {
             e.printStackTrace();
+        } catch(CantUndoException e){
+            undoDialog = true;
         }
-        //TODO -> DoctorDiesDialog is not made with exceptions, other dialogs are, is it ok?
         if (this.doctor.getDiedInPrevRound()){
             this.doctorDiesDialog = true;
         }

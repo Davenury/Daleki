@@ -20,12 +20,12 @@ public class SidePanel extends VBox{
     private final Label teleportTimes;
     private final Label spareLives;
     private final Label level;
-    private final Label powerUps;
+    private final Label undos;
 
     private GridPane dialogBox;
     private final String dialogBoxTexturePath = "src/images/phone_booth.png";
 
-    public SidePanel(double sidePanelWidth, Label teleportTimes, Label spareLives, Label level, Label powerUps){
+    public SidePanel(double sidePanelWidth, Label teleportTimes, Label spareLives, Label level, Label undos){
         this.width = sidePanelWidth;
 
         configureSidePanel();
@@ -33,7 +33,7 @@ public class SidePanel extends VBox{
         this.teleportTimes = teleportTimes;
         this.spareLives = spareLives;
         this.level = level;
-        this.powerUps = powerUps;
+        this.undos = undos;
 
         GridPane currentGameData = createCurrentGameData();
 
@@ -79,16 +79,16 @@ public class SidePanel extends VBox{
         setDialogBoxTextAndPicture("You've run out of\nteleportations!", dialogBoxTexturePath, Color.BURLYWOOD);
     }
 
+    public void dialogBoxSetMessageUndoExceeded(){
+        setDialogBoxTextAndPicture("You've run out of\nundos!", dialogBoxTexturePath, Color.BURLYWOOD);
+    }
+
     public void dialogBoxSetMessageLevelUp(){
         setDialogBoxTextAndPicture("LEVEL UP!", dialogBoxTexturePath, Color.CORNFLOWERBLUE);
     }
 
     public void dialogBoxSetMessageLostLife(){
         setDialogBoxTextAndPicture("You lost life!", dialogBoxTexturePath, Color.ROSYBROWN);
-    }
-
-    public void setDialogBoxSetMessageNoPowerUps(){
-        setDialogBoxTextAndPicture("You have no\nPower Ups!", dialogBoxTexturePath, Color.CRIMSON);
     }
 
     private void setDialogBoxTextAndPicture(String text, String filePath, Color color){
@@ -163,12 +163,12 @@ public class SidePanel extends VBox{
 
         currentGameData.add(createFormatedText("Teleports left"), 0, 0);
         currentGameData.add(createFormatedText(teleportTimes.getText()), 1, 0);
-        currentGameData.add(createFormatedText("Lives left"), 0, 1);
-        currentGameData.add(createFormatedText(spareLives.getText()), 1, 1);
-        currentGameData.add(createFormatedText("LEVEL"), 0, 2);
-        currentGameData.add(createFormatedText(level.getText()), 1, 2);
-        currentGameData.add(createFormatedText("Power Ups"), 0, 3);
-        currentGameData.add(createFormatedText(powerUps.getText()), 1, 3);
+        currentGameData.add(createFormatedText("Undos left"), 0, 1);
+        currentGameData.add(createFormatedText(undos.getText()), 1, 1);
+        currentGameData.add(createFormatedText("Lives left"), 0, 2);
+        currentGameData.add(createFormatedText(spareLives.getText()), 1, 2);
+        currentGameData.add(createFormatedText("LEVEL"), 0, 3);
+        currentGameData.add(createFormatedText(level.getText()), 1, 3);
 
         return currentGameData;
     }

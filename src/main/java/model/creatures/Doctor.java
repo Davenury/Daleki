@@ -12,6 +12,7 @@ import model.other.Constants;
 import view.input.InputParser;
 
 import java.util.Random;
+import java.util.concurrent.locks.Condition;
 
 public class Doctor extends Movable {
 
@@ -23,6 +24,7 @@ public class Doctor extends Movable {
     private IntegerProperty teleportationTimes = new SimpleIntegerProperty(Constants.TELEPORTATION_TIMES);
     private IntegerProperty spareLives = new SimpleIntegerProperty(Constants.SPARE_LIVES);
     private IntegerProperty powerUps = new SimpleIntegerProperty(Constants.POWER_UPS);
+    private IntegerProperty undoTimes = new SimpleIntegerProperty(Constants.UNDO_TIMES);
 
     private Boolean diedInThisRound = false;
     private Boolean diedInPrevRound = false;
@@ -93,6 +95,29 @@ public class Doctor extends Movable {
         System.out.println("Teleport " + this.teleportationTimes.get());
     }
 
+    //Undo
+    public IntegerProperty undoTimesProperty(){return this.undoTimes;}
+
+    public void setUndoTimesProperty(IntegerProperty undoTimes){
+        this.undoTimes = undoTimes;
+    }
+
+    public void resetUndoTimes(){
+        this.undoTimes.set(Constants.UNDO_TIMES);
+    }
+
+    public void incrementUndoTimes(){
+        this.undoTimes.set(this.undoTimes.get() + 1);
+    }
+
+    public void decrementUndoTimes(){
+        this.undoTimes.set(this.undoTimes.get() - 1);
+    }
+
+    public boolean canUndo(){
+        return this.undoTimes.get() > 0;
+    }
+
     //Spare Lives Property
     public IntegerProperty spareLivesProperty(){
         return spareLives;
@@ -115,7 +140,12 @@ public class Doctor extends Movable {
     }
 
     public void addPowerUp(){
-        this.powerUps.setValue(powerUps.getValue() + 1);
+        if(random.nextInt(10) % 2 == 0){
+            this.incrementTeleportation();
+        }
+        else{
+            this.incrementUndoTimes();
+        }
     }
 
     public void removePowerUp() throws PowerUpException {
@@ -123,6 +153,10 @@ public class Doctor extends Movable {
             throw new PowerUpException();
         }
         powerUps.setValue(powerUps.getValue() - 1);
+    }
+
+    public boolean hasPowerUps(){
+        return this.powerUps.get() > 0;
     }
 
     public void die() throws EndGameException {

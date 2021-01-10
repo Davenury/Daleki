@@ -4,6 +4,7 @@ import model.creatures.MapObject;
 import model.creatures.Movable;
 import model.map.Direction;
 import model.map.Field;
+import model.things.NotSoMovable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,28 +19,29 @@ public class WorldMapStack {
         this.worldMapStack = new ArrayList<>();
         this.moveStack = new ArrayList<>();
         this.moves = new ArrayList<>();
-        this.makeFirstMove(mapObjects);
+        this.makeFirst(mapObjects);
     }
 
-    private void makeFirstMove(List<MapObject> mapObjects) {
+    private void makeFirst(List<MapObject> mapObjects) {
         HashMap<Field, Movable> move = new HashMap<>();
-        System.out.println(mapObjects.size());
+        HashMap<Field, MapObject> map = new HashMap<>();
         mapObjects.stream()
                 .filter(object -> object instanceof Movable)
                 .map(object -> (Movable) object)
                 .forEach(movable -> move.put(movable.getField(), movable));
-        System.out.println(move.size());
+        mapObjects.stream()
+                .filter(object -> object instanceof NotSoMovable)
+                .map(object -> (NotSoMovable) object)
+                .forEach(object -> map.put(object.getField(), object));
         moveStack.add(move);
+        worldMapStack.add(map);
     }
 
     public void addWorldMap(HashMap<Field, MapObject> worldMap){
-        System.out.println("Put on map");
         this.worldMapStack.add(worldMap);
     }
 
     public void addMoveMap(HashMap<Field, Movable> move){
-        System.out.println("Put on move");
-        System.out.println(this.moveStack.size());
         this.moveStack.add(move);
     }
 
@@ -71,14 +73,6 @@ public class WorldMapStack {
     public HashMap<Field, Movable> getMove(){
         System.out.println(this.moveStack.size());
         return this.moveStack.size() > 0 ? this.moveStack.get(this.moveStack.size() - 1) : new HashMap<>();
-    }
-
-    public HashMap<Field, Movable> getPreviousMove(){
-        return this.moveStack.size() > 1 ? this.moveStack.get(this.moveStack.size() - 2) : new HashMap<>();
-    }
-
-    public Direction getLastMove(){
-        return this.moves.size() > 0 ? this.moves.get(this.moves.size() - 1) : Direction.STAY;
     }
 
     public void clear(){
