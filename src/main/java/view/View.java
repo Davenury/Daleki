@@ -55,31 +55,10 @@ public class View {
         this.stage = primaryStage;
     }
 
-    public void setGameLostScene(){
-        setGameOverScene(false);
-    }
-
-    public void setGameWonScene(){ setGameOverScene(true); }
-
-    //pBinding properties
-    public void bindTeleportTimesProperty(IntegerProperty teleportTimes){
-        this.teleportTimes.textProperty().bindBidirectional(teleportTimes, new NumberStringConverter());
-    }
-
-    public void bindUndosTimesPropetry(IntegerProperty undosTimes){
-        this.undosTimes.textProperty().bindBidirectional(undosTimes, new NumberStringConverter());
-    }
-
-    public void bindSpareLivesProperty(IntegerProperty spareLives) {
-        this.spareLives.textProperty().bindBidirectional(spareLives, new NumberStringConverter());
-
-    }
-    public void bindLevelProperty(IntegerProperty level){
-        this.level.textProperty().bindBidirectional(level, new NumberStringConverter());
-    }
-
-    public void bindPowerUpsProperty(IntegerProperty powerUps){
-        this.powerUps.textProperty().bindBidirectional(powerUps, new NumberStringConverter());
+    public void setParameters(int worldWidth, int worldHeight){
+        this.setWorldWidth(worldWidth);
+        this.setWorldHeight(worldHeight);
+        this.setWindowSize();
     }
 
     public void paintWorld(){
@@ -101,6 +80,67 @@ public class View {
         stage.show();
     }
 
+    public void paintElement(Element elementType, int gridX, int gridY){
+        switch (elementType) {
+            case DOCTOR -> {
+                paintImageTypeElement(doctorTexturePath, doctorSize, gridX, gridY);
+            }
+            case DALEK -> {
+                paintImageTypeElement(dalekTexturePath, dalekSize, gridX, gridY);
+            }
+            case JUNK -> {
+                paintImageTypeElement(junkTexturePath, junkSize, gridX, gridY);
+            }
+            case POWERUP -> {
+                paintImageTypeElement(powerUpTexturePath, powerUpSize, gridX, gridY);
+            }
+        }
+    }
+
+
+    public void setGameLostScene(){
+        setGameOverScene(false);
+    }
+
+    public void setGameWonScene(){ setGameOverScene(true); }
+
+
+    public void setTeleportationSideDialog() {
+        this.sidePanel.dialogBoxSetMessageTeleportationExceeded();
+    }
+
+    public void setUndoSideDialog() { this.sidePanel.dialogBoxSetMessageUndoExceeded(); }
+
+    public void setLevelUpSideDialog() {
+        this.sidePanel.dialogBoxSetMessageLevelUp();
+    }
+
+    public void setDoctorDiesSideDialog() {
+        this.sidePanel.dialogBoxSetMessageLostLife();
+    }
+
+
+    public void bindTeleportTimesProperty(IntegerProperty teleportTimes){
+        this.teleportTimes.textProperty().bindBidirectional(teleportTimes, new NumberStringConverter());
+    }
+
+    public void bindUndosTimesPropetry(IntegerProperty undosTimes){
+        this.undosTimes.textProperty().bindBidirectional(undosTimes, new NumberStringConverter());
+    }
+
+    public void bindSpareLivesProperty(IntegerProperty spareLives) {
+        this.spareLives.textProperty().bindBidirectional(spareLives, new NumberStringConverter());
+
+    }
+    public void bindLevelProperty(IntegerProperty level){
+        this.level.textProperty().bindBidirectional(level, new NumberStringConverter());
+    }
+
+    public void bindPowerUpsProperty(IntegerProperty powerUps){
+        this.powerUps.textProperty().bindBidirectional(powerUps, new NumberStringConverter());
+    }
+
+
     private void paintImageTypeElement(String elementTexturePath, double elementSize, int gridX, int gridY){
         Image image = null;
         try {
@@ -121,29 +161,6 @@ public class View {
         Shape element = new Circle(calculateElementPosition(gridX, false),
                 calculateElementPosition(gridY, true), elementSize / 2.0d,  elementColor);
         root.getChildren().add(element);
-    }
-
-    public void paintElement(Element elementType, int gridX, int gridY){
-        switch (elementType) {
-            case DOCTOR -> {
-                paintImageTypeElement(doctorTexturePath, doctorSize, gridX, gridY);
-            }
-            case DALEK -> {
-                paintImageTypeElement(dalekTexturePath, dalekSize, gridX, gridY);
-            }
-            case JUNK -> {
-                paintImageTypeElement(junkTexturePath, junkSize, gridX, gridY);
-            }
-            case POWERUP -> {
-                paintImageTypeElement(powerUpTexturePath, powerUpSize, gridX, gridY);
-            }
-        }
-    }
-
-    public void setParameters(int worldWidth, int worldHeight){
-        this.setWorldWidth(worldWidth);
-        this.setWorldHeight(worldHeight);
-        this.setWindowSize();
     }
 
     private void setWorldWidth(int worldWidth){
@@ -205,22 +222,5 @@ public class View {
             endMessage = "You've lost";
         stage.setScene(new GameEnd(endMessage, root, worldHeight*(fieldSize+fieldGap) - fieldGap,
                 worldWidth*(fieldSize+fieldGap) - fieldGap + sidePanelWidth).getScene());
-    }
-
-
-    public void setTeleportationSideDialog() {
-        this.sidePanel.dialogBoxSetMessageTeleportationExceeded();
-    }
-
-    public void setUndoSideDialog() {
-        this.sidePanel.dialogBoxSetMessageUndoExceeded();
-    }
-
-    public void setLevelUpSideDialog() {
-        this.sidePanel.dialogBoxSetMessageLevelUp();
-    }
-
-    public void setDoctorDiesSideDialog() {
-        this.sidePanel.dialogBoxSetMessageLostLife();
     }
 }
