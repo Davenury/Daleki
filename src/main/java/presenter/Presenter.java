@@ -66,8 +66,6 @@ public class Presenter {
             this.view.setLevelUpSideDialog();
             return;
         }
-
-        //TODO we never win
         else if (world.getGameWon()){
             this.view.setGameWonScene();
             return;

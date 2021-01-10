@@ -261,7 +261,7 @@ public class MoveDecider {
     private Field randomizePowerUpField(){
         Field powerUpField;
         do{
-            powerUpField = new Field(random.nextInt(mapWidth), random.nextInt(mapHeight));
+            powerUpField = new Field(random.nextInt(mapWidth + 1), random.nextInt(mapHeight + 1));
         } while(map.get(powerUpField) != null);
         return powerUpField;
     }

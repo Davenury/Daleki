@@ -59,9 +59,7 @@ public class View {
         setGameOverScene(false);
     }
 
-    public void setGameWonScene(){
-        setGameOverScene(true);
-    }
+    public void setGameWonScene(){ setGameOverScene(true); }
 
     //pBinding properties
     public void bindTeleportTimesProperty(IntegerProperty teleportTimes){

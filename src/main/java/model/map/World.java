@@ -132,10 +132,12 @@ public class World {
         }
         catch (TeleportationTimesException e){
             teleportationDialog = true;
-        } catch (PowerUpException e) {
-            e.printStackTrace();
         } catch(CantUndoException e){
             undoDialog = true;
+        } catch (PowerUpException e) {
+            e.printStackTrace();
+        } catch (UndoException e) {
+            e.printStackTrace();
         }
         if (this.doctor.getDiedInPrevRound()){
             this.doctorDiesDialog = true;
