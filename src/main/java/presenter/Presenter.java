@@ -28,46 +28,14 @@ public class Presenter {
     public void setUpPresenter(Stage primaryStage, World world) {
         this.world = world;
         this.view = new View(primaryStage);
-        this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
-        this.view.bindUndosTimesPropetry(doctorUndoTimesProperty());
-        this.view.bindSpareLivesProperty(doctorSpareLivesProperty());
-        this.view.bindLevelProperty(worldLevelProperty());
-        this.view.bindPowerUpsProperty(doctorPowerUpsProperty());
-
+        this.bindPropertiesToView();
         this.paintWorld();
         this.setInput();
         this.inputer.setStageAndAddHandler(primaryStage);
     }
 
     private void paintWorld(){
-        if (world.getGameOver()){
-            this.view.setGameLostScene();
-            return;
-        }
-        if (world.getTeleportationDialog()){
-            world.resetTeleportationDialog();
-            this.view.setTeleportationSideDialog();
-            return;
-        }
-
-        if (world.getUndoDialog()){
-            world.resetUndoDialog();
-            this.view.setUndoSideDialog();
-            return;
-        }
-
-        if (world.getDoctorDiesDialog()){
-            world.resetDoctorDiesDialog();
-            this.view.setDoctorDiesSideDialog();
-            return;
-        }
-        if (world.getUpdateLevel()){
-            world.resetUpdateLevel();
-            this.view.setLevelUpSideDialog();
-            return;
-        }
-        else if (world.getGameWon()){
-            this.view.setGameWonScene();
+        if(showDialogOrEndGame()){
             return;
         }
         this.view.setParameters(this.getWorldWidth(), this.getWorldHeight());
@@ -93,38 +61,68 @@ public class Presenter {
         StringOperationInterface updateWorld = this.world::update;
         VoidOperationInterface repaint = this::paintWorld;
         this.inputer.subscribeToInput(updateWorld, repaint);
-
     }
 
-    public int getWorldWidth(){
+    private void bindPropertiesToView(){
+        this.view.bindTeleportTimesProperty(doctorTeleportationTimesProperty());
+        this.view.bindUndosTimesPropetry(doctorUndoTimesProperty());
+        this.view.bindSpareLivesProperty(doctorSpareLivesProperty());
+        this.view.bindLevelProperty(worldLevelProperty());
+        this.view.bindPowerUpsProperty(doctorPowerUpsProperty());
+    }
+
+    private int getWorldWidth(){
         return this.world.getWidth();
     }
 
-    public int getWorldHeight(){
+    private int getWorldHeight(){
         return this.world.getHeight();
     }
 
-    public IntegerProperty doctorTeleportationTimesProperty(){
+    private IntegerProperty doctorTeleportationTimesProperty(){
         Doctor doctor = world.getDoctor();
         return doctor.teleportationTimesProperty();
     }
 
-    public IntegerProperty doctorUndoTimesProperty(){
+    private IntegerProperty doctorUndoTimesProperty(){
         Doctor doctor = world.getDoctor();
         return doctor.undoTimesProperty();
     }
 
-    public IntegerProperty doctorSpareLivesProperty(){
+    private IntegerProperty doctorSpareLivesProperty(){
         Doctor doctor = world.getDoctor();
         return doctor.spareLivesProperty();
     }
 
-    public IntegerProperty worldLevelProperty(){
+    private IntegerProperty worldLevelProperty(){
         return this.world.getLevelManager().levelProperty();
     }
 
-    public IntegerProperty doctorPowerUpsProperty(){
+    private IntegerProperty doctorPowerUpsProperty(){
         Doctor doctor = world.getDoctor();
         return doctor.powerUpsProperty();
+    }
+
+    private boolean showDialogOrEndGame() {
+        if (world.getGameOver()) {
+            this.view.setGameLostScene();
+        } else if (world.getGameWon()) {
+            this.view.setGameWonScene();
+        } else if (world.getTeleportationDialog()) {
+            world.resetTeleportationDialog();
+            this.view.setTeleportationSideDialog();
+        } else if (world.getUndoDialog()) {
+            world.resetUndoDialog();
+            this.view.setUndoSideDialog();
+        } else if (world.getDoctorDiesDialog()) {
+            world.resetDoctorDiesDialog();
+            this.view.setDoctorDiesSideDialog();
+        } else if (world.getUpdateLevel()) {
+            world.resetUpdateLevel();
+            this.view.setLevelUpSideDialog();
+        } else {
+            return false;
+        }
+        return true;
     }
 }
