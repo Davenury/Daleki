@@ -149,9 +149,6 @@ public class Doctor extends Movable {
     }
 
     public void removePowerUp() throws PowerUpException {
-        if(powerUps.get() == 0){
-            throw new PowerUpException();
-        }
         powerUps.setValue(powerUps.getValue() - 1);
     }
 
