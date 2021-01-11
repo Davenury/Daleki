@@ -34,6 +34,10 @@ Link do diagramu klas: https://app.diagrams.net/#G14g6zF8lE2PfWCMw01uFXGjzt2axL6
 
 ---
 
+### Sposób testowania (na dzień 11.01.2021)
+Gra jest gotowa, so have fun! Instrukcja sterowania pokazana jest na bocznym panelu.
+
+
 ### Sposób testowania (na dzień 30.11.2020)
 W chwili obecnej (godzina 11:13), testować program można na dwa sposoby.
 
