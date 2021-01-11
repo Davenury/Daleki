@@ -32,7 +32,6 @@ public class World {
     private Boolean teleportationDialog = false;
     private Boolean undoDialog = false;
     private Boolean doctorDiesDialog = false;
-    private Boolean noPowerUpsDialog = false;
 
     private final GameGenerator gameGenerator;
 
@@ -77,12 +76,6 @@ public class World {
         this.doctorDiesDialog = false;
     }
 
-    public boolean getNoPowerUpsDialog() { return this.noPowerUpsDialog; }
-
-    public void resetNoPowerUpsDialog() {
-        this.noPowerUpsDialog = false;
-    }
-
     public List<MapObject> getMapObjects() {
         return ListConcatener.concatenate(mapObjects, mover.getMapObjects());
     }
@@ -119,29 +112,28 @@ public class World {
             this.gameOver = true;
             this.levelManager.resetLevel();
         } catch (NextLevelException e) {
-            this.updateLevelDialog = true;
-            try {
-                this.levelManager.incrementLevel();
-            } catch (GameWonException gameWonException) {
-                this.gameWon = true;
-            }
-            resetWorld();
-        } catch (IllegalStateException e){
+            this.resolveNextLevelException();
+        } catch (IllegalStateException | UndoException e){
             e.printStackTrace();
-            System.out.println(e.getMessage());
         }
         catch (TeleportationTimesException e){
             teleportationDialog = true;
         } catch(CantUndoException e){
             undoDialog = true;
-        } catch (PowerUpException e) {
-            e.printStackTrace();
-        } catch (UndoException e) {
-            e.printStackTrace();
         }
         if (this.doctor.getDiedInPrevRound()){
             this.doctorDiesDialog = true;
         }
+    }
+
+    private void resolveNextLevelException() {
+        this.updateLevelDialog = true;
+        try {
+            this.levelManager.incrementLevel();
+        } catch (GameWonException gameWonException) {
+            this.gameWon = true;
+        }
+        resetWorld();
     }
 
     private void resetWorld(){
@@ -153,7 +145,6 @@ public class World {
         oldDoctor.resetPowerUps();
         IntegerProperty teleportTimes = oldDoctor.teleportationTimesProperty();
         IntegerProperty spareLives = oldDoctor.spareLivesProperty();
-        //IntegerProperty level = this.levelManager.levelProperty();
 
         mapObjects = new ArrayList<>();
         this.gameGenerator.generateExampleGame();

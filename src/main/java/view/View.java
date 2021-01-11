@@ -82,18 +82,10 @@ public class View {
 
     public void paintElement(Element elementType, int gridX, int gridY){
         switch (elementType) {
-            case DOCTOR -> {
-                paintImageTypeElement(doctorTexturePath, doctorSize, gridX, gridY);
-            }
-            case DALEK -> {
-                paintImageTypeElement(dalekTexturePath, dalekSize, gridX, gridY);
-            }
-            case JUNK -> {
-                paintImageTypeElement(junkTexturePath, junkSize, gridX, gridY);
-            }
-            case POWERUP -> {
-                paintImageTypeElement(powerUpTexturePath, powerUpSize, gridX, gridY);
-            }
+            case DOCTOR -> paintImageTypeElement(doctorTexturePath, doctorSize, gridX, gridY);
+            case DALEK -> paintImageTypeElement(dalekTexturePath, dalekSize, gridX, gridY);
+            case JUNK -> paintImageTypeElement(junkTexturePath, junkSize, gridX, gridY);
+            case POWERUP -> paintImageTypeElement(powerUpTexturePath, powerUpSize, gridX, gridY);
         }
     }
 
@@ -106,17 +98,19 @@ public class View {
 
 
     public void setTeleportationSideDialog() {
-        this.sidePanel.dialogBoxSetMessageTeleportationExceeded();
+        this.sidePanel.setDialogBoxMessage("You've run out of\nteleportations!", Color.BURLYWOOD);
     }
 
-    public void setUndoSideDialog() { this.sidePanel.dialogBoxSetMessageUndoExceeded(); }
+    public void setUndoSideDialog() {
+        this.sidePanel.setDialogBoxMessage("You've run out of\nundos!", Color.BURLYWOOD);
+    }
 
     public void setLevelUpSideDialog() {
-        this.sidePanel.dialogBoxSetMessageLevelUp();
+        this.sidePanel.setDialogBoxMessage("LEVEL UP!", Color.CORNFLOWERBLUE);
     }
 
-    public void setDoctorDiesSideDialog() {
-        this.sidePanel.dialogBoxSetMessageLostLife();
+    public void setDoctorLostLifeDialog() {
+        this.sidePanel.setDialogBoxMessage("You lost life!", Color.ROSYBROWN);
     }
 
 
@@ -140,7 +134,6 @@ public class View {
         this.powerUps.textProperty().bindBidirectional(powerUps, new NumberStringConverter());
     }
 
-
     private void paintImageTypeElement(String elementTexturePath, double elementSize, int gridX, int gridY){
         Image image = null;
         try {
@@ -155,12 +148,6 @@ public class View {
         imageView1.setFitHeight(elementSize);
         imageView1.setFitWidth(elementSize);
         root.getChildren().add(imageView1);
-    }
-
-    private void paintCircleTypeElement(double elementSize, Color elementColor, int gridX, int gridY){
-        Shape element = new Circle(calculateElementPosition(gridX, false),
-                calculateElementPosition(gridY, true), elementSize / 2.0d,  elementColor);
-        root.getChildren().add(element);
     }
 
     private void setWorldWidth(int worldWidth){
@@ -185,11 +172,6 @@ public class View {
         powerUpSize = fieldSize * 0.9d;
 
         stage.setResizable(false);
-    }
-
-    private double calculateElementPosition(int gridPosition, boolean yAxis){
-        if(yAxis) gridPosition = worldHeight - gridPosition + 1;
-        return (double)gridPosition*fieldSize - fieldSize/2.0d + ((double)gridPosition-1.0d)*fieldGap;
     }
 
     private double calculateImageElementPosition(int gridPosition, double picSize, boolean yAxis){

@@ -10,7 +10,6 @@ import model.things.NotSoMovable;
 import model.things.PileOfJunk;
 import model.things.PowerUp;
 
-import javax.print.Doc;
 import java.util.*;
 import java.util.HashMap;
 
@@ -33,22 +32,11 @@ public class MoveDecider {
 
     public HashMap<Movable, MoveResult> simulateMove(List<Movable> movables, Direction input)
             throws EndGameException, IllegalStateException, TeleportationTimesException, UndoException,
-            PowerUpException, CantUndoException {
+            CantUndoException {
         HashMap<Movable, MoveResult> results = new HashMap<>();
         this.setUpHashMaps();
         if(input == Direction.UNDO){
-            Doctor doctor = getDoctorFromMovables(movables);
-            if(doctor.canUndo()) {
-                doctor.decrementUndoTimes();
-                if (doctor.hasPowerUps()) {
-                    doctor.removePowerUp();
-                }
-                this.undo();
-            }
-            else{
-                updateWorldStack(input);
-                throw new CantUndoException();
-            }
+            this.doUndo(movables, input);
         }
         else if(input == Direction.TELEPORT){
             simulateMoveWithTeleportation(movables, results);
@@ -64,6 +52,21 @@ public class MoveDecider {
 
         updateWorldStack(input);
         return results;
+    }
+
+    private void doUndo(List<Movable> movables, Direction input) throws UndoException, CantUndoException {
+        Doctor doctor = getDoctorFromMovables(movables);
+        if(doctor.canUndo()) {
+            doctor.decrementUndoTimes();
+            if (doctor.hasPowerUps()) {
+                doctor.removePowerUp();
+            }
+            this.undo();
+        }
+        else{
+            updateWorldStack(input);
+            throw new CantUndoException();
+        }
     }
 
     private void setUpHashMaps(){
@@ -125,7 +128,8 @@ public class MoveDecider {
         return false;
     }
 
-    private void checkCollisions(Movable movable, HashMap<Movable, MoveResult> results, Direction input) throws EndGameException {
+    private void checkCollisions(Movable movable, HashMap<Movable, MoveResult> results, Direction input)
+            throws EndGameException {
         checkCollisionWithPieceOfJunkInTheMap(movable, results, input);
         checkCollisionWithPreviousMovables(movable, results, input);
     }
@@ -138,14 +142,12 @@ public class MoveDecider {
                 checkCollisions(movable, results, input);
             }
         }
-        for (Movable movable : movables){
-            if(movable instanceof Doctor) {
-                if (!isInMap(movable, input))
-                    return null;
-                checkCollisions(movable, results, input);
-                break;
-            }
+
+        Doctor doctor = getDoctorFromMovables(movables);
+        if(!isInMap(doctor, input)){
+            return null;
         }
+        checkCollisions(doctor, results, input);
         return results;
     }
 
@@ -167,7 +169,6 @@ public class MoveDecider {
             }
             else if(object instanceof PowerUp && movable instanceof Doctor) {
                 ((Doctor) movable).addPowerUp();
-                //TODO: remove power up
                 map.remove(object.field);
             }
         }
@@ -215,13 +216,6 @@ public class MoveDecider {
             result.add(object);
         }
         return result;
-    }
-
-    private void copyMove() {
-        previousMove.clear();
-        for(Map.Entry<Field, Movable> entry : move.entrySet()){
-            previousMove.put(entry.getKey(), entry.getValue());
-        }
     }
 
     /**

@@ -20,7 +20,7 @@ public class Mover {
 
     public List<MapObject> moveAll(List<Movable> toMoveObjects, Direction input)
             throws EndGameException, IllegalStateException, NextLevelException,
-            TeleportationTimesException, PowerUpException, CantUndoException, UndoException {
+            TeleportationTimesException, CantUndoException, UndoException {
         HashMap<Movable, MoveResult> results;
         try {
             results = this.moveDecider.simulateMove(toMoveObjects, input);
@@ -58,7 +58,6 @@ public class Mover {
         movable.move(input);
     }
 
-
     private void printResults(HashMap<Movable, MoveResult> results) {
         for(Map.Entry<Movable, MoveResult> entry : results.entrySet()){
             System.out.println(entry.getKey().toString() + " = " + entry.getValue().toString());
@@ -72,9 +71,5 @@ public class Mover {
     /**For use cases look in the MoveDecider class*/
     public void setInitialMap(List<NotSoMovable> objectsToAddOnMap){
         this.moveDecider.setInitialMap(objectsToAddOnMap);
-    }
-
-    public void clearMap(){
-        this.moveDecider.clearMap();
     }
 }

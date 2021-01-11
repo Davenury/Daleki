@@ -74,21 +74,8 @@ public class SidePanel extends VBox{
         this.dialogBox.add(instruction, 0, 0);
     }
 
-
-    public void dialogBoxSetMessageTeleportationExceeded(){
-        setDialogBoxTextAndPicture("You've run out of\nteleportations!", dialogBoxTexturePath, Color.BURLYWOOD);
-    }
-
-    public void dialogBoxSetMessageUndoExceeded(){
-        setDialogBoxTextAndPicture("You've run out of\nundos!", dialogBoxTexturePath, Color.BURLYWOOD);
-    }
-
-    public void dialogBoxSetMessageLevelUp(){
-        setDialogBoxTextAndPicture("LEVEL UP!", dialogBoxTexturePath, Color.CORNFLOWERBLUE);
-    }
-
-    public void dialogBoxSetMessageLostLife(){
-        setDialogBoxTextAndPicture("You lost life!", dialogBoxTexturePath, Color.ROSYBROWN);
+    public void setDialogBoxMessage(String message, Color color){
+        setDialogBoxTextAndPicture(message, dialogBoxTexturePath, color);
     }
 
     private void setDialogBoxTextAndPicture(String text, String filePath, Color color){
@@ -109,7 +96,6 @@ public class SidePanel extends VBox{
         }
         ImageView imageView = new ImageView(image);
 
-        //imageView.setFitHeight(200);
         imageView.setPreserveRatio(true);
         imageView.setFitWidth(150);
 

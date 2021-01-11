@@ -7,7 +7,6 @@ import model.map.Field;
 import model.things.NotSoMovable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class WorldMapStack {
 
