@@ -12,9 +12,6 @@ public class LevelManager {
         return level;
     }
 
-    public void setLevelProperty(IntegerProperty level){
-        this.level = level;
-    }
     public void resetLevel(){
         this.level.set(0);
     }
@@ -22,7 +19,6 @@ public class LevelManager {
     public void incrementLevel() throws GameWonException{
         if(this.level.get() < Constants.MAX_LEVEL) {
             this.level.set(this.level.get() + 1);
-            System.out.println("LEVEL " + this.level.get());
         }
         else{
             throw new GameWonException();

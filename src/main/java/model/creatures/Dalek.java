@@ -25,7 +25,6 @@ public class Dalek extends Movable {
         if(direction == Direction.TELEPORT){
             return new Field(0, 0);
         }
-        //TODO Daleks follow wrong position of doctor after moving twice
         int horizontal_diff = this.getField().getX() - this.doctor.calculateNextMove(direction).getX();
         int vertical_diff = this.getField().getY() - this.doctor.calculateNextMove(direction).getY();
 

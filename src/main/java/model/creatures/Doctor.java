@@ -29,8 +29,6 @@ public class Doctor extends Movable {
     private Boolean diedInThisRound = false;
     private Boolean diedInPrevRound = false;
 
-    private Boolean teleportationPossible = true;
-
     @Inject
     public Doctor(Field field, int worldWidth, int worldHeight){
         this.field = field; //inherited from MapObjects
@@ -98,14 +96,6 @@ public class Doctor extends Movable {
     //Undo
     public IntegerProperty undoTimesProperty(){return this.undoTimes;}
 
-    public void setUndoTimesProperty(IntegerProperty undoTimes){
-        this.undoTimes = undoTimes;
-    }
-
-    public void resetUndoTimes(){
-        this.undoTimes.set(Constants.UNDO_TIMES);
-    }
-
     public void incrementUndoTimes(){
         this.undoTimes.set(this.undoTimes.get() + 1);
     }
@@ -135,10 +125,6 @@ public class Doctor extends Movable {
 
     public void resetPowerUps() { this.powerUps.set(Constants.POWER_UPS); }
 
-    public void setPowerUpsProperty(IntegerProperty powerUps){
-        this.powerUps = powerUps;
-    }
-
     public void addPowerUp(){
         if(random.nextInt(10) % 2 == 0){
             this.incrementTeleportation();
@@ -148,7 +134,7 @@ public class Doctor extends Movable {
         }
     }
 
-    public void removePowerUp() throws PowerUpException {
+    public void removePowerUp() {
         powerUps.setValue(powerUps.getValue() - 1);
     }
 

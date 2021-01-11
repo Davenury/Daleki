@@ -13,6 +13,7 @@ import view.input.StringOperationInterface;
 import view.input.InputerInterface;
 import view.input.VoidOperationInterface;
 
+import java.util.*;
 import java.util.ListIterator;
 
 public class Presenter {
@@ -41,7 +42,8 @@ public class Presenter {
         this.view.setParameters(this.getWorldWidth(), this.getWorldHeight());
         this.view.paintWorld();
 
-        ListIterator<MapObject> listIterator = world.getMapObjects().listIterator(world.getMapObjects().size());
+        List<MapObject> mapObjectList = world.getMapObjects();
+        ListIterator<MapObject> listIterator = mapObjectList.listIterator(mapObjectList.size());
         while(listIterator.hasPrevious()){
             MapObject mapObject = listIterator.previous();
             Element element;
@@ -116,7 +118,7 @@ public class Presenter {
             this.view.setUndoSideDialog();
         } else if (world.getDoctorDiesDialog()) {
             world.resetDoctorDiesDialog();
-            this.view.setDoctorDiesSideDialog();
+            this.view.setDoctorLostLifeDialog();
         } else if (world.getUpdateLevel()) {
             world.resetUpdateLevel();
             this.view.setLevelUpSideDialog();

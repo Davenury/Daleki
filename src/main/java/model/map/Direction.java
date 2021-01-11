@@ -3,30 +3,6 @@ package model.map;
 public enum Direction {
     NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST, STAY, TELEPORT, UNDO;
 
-    public Direction next(){
-        return getDirection(NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST, NORTH_WEST, NORTH);
-    }
-
-    public Direction previous(){
-        return getDirection(NORTH_WEST, NORTH, NORTH_EAST, EAST, SOUTH_EAST, SOUTH, SOUTH_WEST, WEST);
-    }
-
-    private Direction getDirection(Direction northWest, Direction north, Direction northEast,
-                                   Direction east, Direction southEast, Direction south,
-                                   Direction southWest, Direction west) {
-        return switch (this) {
-            case NORTH -> northWest;
-            case NORTH_EAST -> north;
-            case EAST -> northEast;
-            case SOUTH_EAST -> east;
-            case SOUTH -> southEast;
-            case SOUTH_WEST -> south;
-            case WEST -> southWest;
-            case NORTH_WEST -> west;
-            case STAY, TELEPORT, UNDO -> Direction.STAY;
-        };
-    }
-
     public Field convertToField(){
         return switch(this){
             case NORTH -> new Field(0, 1);

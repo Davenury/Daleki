@@ -52,10 +52,6 @@ public class Field {
         return this.moveInDirection(direction);
     }
 
-    public boolean isADirection(){
-        return this.x <=1 && this.x >=-1 && this.y <=1 && this.y >=-1;
-    }
-
     public boolean moreThan(Field other){
         return this.x >= other.x && this.y >= other.y;
     }
